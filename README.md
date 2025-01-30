@@ -21,16 +21,21 @@ This repository contains code for creating and managing simulated agents using l
     pip install -r requirements.txt
     ```
 
-## Configuration
+## LLM Configuration
 
-Before running the agents, you need to configure the language model settings. Update the `context_agent.json` file with your OpenAI API key and other settings.
+Before running the agents, you need to configure the language model settings. Update the `llm_wrapper.py` file with your OpenAI API key and other settings.
+
+
+## Agent Cofiguration
+
+Agents can easily be configured using .json files.
 
 Example `context_agent.json`:
 
 ```json
 {
     "llm": "openAI",
-    "system_prompt": "You are context bot. You gather observations/actions from a scene and summarize them. The output should be max 3 sentences.",
+    "system_prompt": "Your name is bob. You are shy, funny, and a bit neurotic.",
     "memory_limit": 5
 }
 ```
