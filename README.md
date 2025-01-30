@@ -36,7 +36,7 @@ Before running the agents, you need to configure the language model settings. Se
 
 Agents can easily be configured using .json files.
 
-Example `context_agent.json`:
+Example `bob.json`:
 
 ```json
 {
