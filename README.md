@@ -6,7 +6,7 @@ This repository contains code for creating and managing simulated agents using l
 
 1. Clone the repository:
     ```sh
-    git clone https://github.com/yourusername/simulated_agents.git
+    git clone https://github.com/samsniderheld/simulated_agents.git
     cd simulated_agents
     ```
 
