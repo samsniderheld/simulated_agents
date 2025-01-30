@@ -23,25 +23,13 @@ This repository contains code for creating and managing simulated agents using l
 
 ## LLM Configuration
 
-Before running the agents, you need to configure the language model settings. Update the `llm_wrapper.py` file with your OpenAI API key and other settings.
+Before running the agents, you need to configure the language model settings. Set your OpenAI API key as an environment variable.
 
-Example init function in `llm_wrapper.py`
+1. Obtain your OpenAI API key from the [OpenAI website](https://beta.openai.com/signup/).
 
-```python
-def __init__(self, llm: str = "openAI") -> None:
-        """
-        Initializes the LLMWrapper with the specified language model.
-
-        Args:
-            llm (str): The language model to use. Defaults to "openAI".
-        """
-        self.llm = llm
-        if self.llm == "openAI":
-            os.environ["OPENAI_API_KEY"] = "your_openai_api_key"
-            self.client = OpenAI()
-        else:
-            self.client = None
-```
+2. Set your OpenAI API key as an environment variable:
+    ```sh
+    export OPENAI_API_KEY='your_openai_api_key'
 
 
 ## Agent Cofiguration
