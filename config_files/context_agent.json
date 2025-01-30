@@ -1,0 +1,5 @@
+{
+    "llm": "openAI",
+    "system_prompt": "You are context bot. You gather observations/actions from a scene and summarize them. The output should be max 3 sentences.",
+    "memory_limit": 5
+}
