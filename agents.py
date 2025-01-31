@@ -187,7 +187,28 @@ class ScriptAgent(BaseAgent):
             str: Generated script.
         """
         messages = [
-            {"role": "system", "content": self.config["system_prompt"]},
+            {"role": "system", "content": (
+                f"{self.config["system_prompt"]}"
+                "make sure the script follows a format like the one below: "
+                "FADE IN:\n"
+                "INT. DRISKILL HOTEL SEMINAR ROOM - DAY\n"
+                "JOE and APRIL burst through the doors into a clean, well-lit seminar room.\n"
+                "JOE\n"
+                "Are we in time?\n"
+                "APRIL\n"
+                "How could they start without us?\n"
+                "We’re the main attraction.\n"
+                "Joe catches his breath as he leans against the podium at the front of the room.\n"
+                "JOE\n"
+                "(looking about the room)\n"
+                "We are?\n"
+                "APRIL\n"
+                "Don’t be an idiot. You know we’ve been invited to Austin to discuss script format.\n"
+                "JOE\n"
+                "But why is the room empty?\n"
+                "April and Joe look out across the room - rows of empty chairs and nary a person in sight."
+                
+                },
             {"role": "user", "content": " .".join(context)}
         ]
         self.script = self.llm.make_api_call(messages)
@@ -228,7 +249,24 @@ class InterviewAgent(BaseAgent):
                 "content": (
                     "You are a bot that simulates a confession booth scene in reality tv shows. You take in a character name, "
                     "and the character's long-term memory. You then generate a script that simulates the character's confessiong. "
-                    "The output should be in the format of a script. There should only be dialogue from the character and nothing else. "
+                    "The output should be in the format of a script. There should only be dialogue from the character and nothing else. Like the following: "
+                    "FADE IN:\n"
+                    "INT. DRISKILL HOTEL SEMINAR ROOM - DAY\n"
+                    "JOE and APRIL burst through the doors into a clean, well-lit seminar room.\n"
+                    "JOE\n"
+                    "Are we in time?\n"
+                    "APRIL\n"
+                    "How could they start without us?\n"
+                    "We’re the main attraction.\n"
+                    "Joe catches his breath as he leans against the podium at the front of the room.\n"
+                    "JOE\n"
+                    "(looking about the room)\n"
+                    "We are?\n"
+                    "APRIL\n"
+                    "Don’t be an idiot. You know we’ve been invited to Austin to discuss script format.\n"
+                    "JOE\n"
+                    "But why is the room empty?\n"
+                    "April and Joe look out across the room - rows of empty chairs and nary a person in sight."
                 )
             },
             {"role": "user", "content":  f"Name: {name} Long-term memory: {' '.join(long_memory)}"}
