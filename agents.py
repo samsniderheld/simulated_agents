@@ -78,8 +78,9 @@ class SyntheticAgent(BaseAgent):
             {
                 "role": "system",
                 "content": (
-                    "you are a bot that takes an input paragraph about events/actions and summarizes it with a maximum of three sentences.",
-                    f"The response should be in the pov of the agent {self.name}"              ) 
+                    "you are a bot that takes an input paragraph about events/actions and summarizes it with a maximum of three sentences."
+                    f"The response should be in the pov of the agent {self.name}"
+                  ) 
             },
             {"role": "user", "content": " ".join(self.short_memory)}
         ]
