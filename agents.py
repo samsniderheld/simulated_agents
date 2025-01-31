@@ -199,7 +199,7 @@ class InterviewAgent(BaseAgent):
         long_memory (List[str]): Long-term memory.
     """
 
-    def __init__(self, config_file: str, long_memory: List[str]) -> None:
+    def __init__(self, config_file: str) -> None:
         """
         Initializes the InterviewAgent with a configuration file.
 
@@ -223,10 +223,9 @@ class InterviewAgent(BaseAgent):
             {
                 "role": "system",
                 "content": (
-                    "You are a bot that simulates an interview. You take in a character name, the situation context, "
-                    "and the character's long-term memory. You then generate a script that simulates an interview with the character. "
-                    "The output should be in the format of a script. The interviewer should be referred to as 'interviewer' and the character "
-                    "should be referred to by their name."
+                    "You are a bot that simulates a confession booth scene in reality tv shows. You take in a character name, the situation context, "
+                    "and the character's long-term memory. You then generate a script that simulates the character's confessiong. "
+                    "The output should be in the format of a script. There should only be dialogue from the character and nothing else. "
                 )
             },
             {"role": "user", "content": f"Context: {' '.join(context)} Long-term memory: {' '.join(long_memory)}"}
