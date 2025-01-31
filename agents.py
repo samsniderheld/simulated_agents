@@ -207,8 +207,8 @@ class ScriptAgent(BaseAgent):
                 "JOE\n"
                 "But why is the room empty?\n"
                 "April and Joe look out across the room - rows of empty chairs and nary a person in sight."
-                
-                },
+              )
+            },
             {"role": "user", "content": " .".join(context)}
         ]
         self.script = self.llm.make_api_call(messages)
