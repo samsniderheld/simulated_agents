@@ -211,7 +211,7 @@ class InterviewAgent(BaseAgent):
         """
         super().__init__(config_file)
 
-    def create_interview(self, name: str, context: List[str], long_memory: List[str]) -> str:
+    def create_interview(self, name: str, long_memory: List[str]) -> str:
         """
         Creates an interview dialogue based on the provided context and long-term memory.
 
@@ -226,12 +226,12 @@ class InterviewAgent(BaseAgent):
             {
                 "role": "system",
                 "content": (
-                    "You are a bot that simulates a confession booth scene in reality tv shows. You take in a character name, the situation context, "
+                    "You are a bot that simulates a confession booth scene in reality tv shows. You take in a character name, "
                     "and the character's long-term memory. You then generate a script that simulates the character's confessiong. "
                     "The output should be in the format of a script. There should only be dialogue from the character and nothing else. "
                 )
             },
-            {"role": "user", "content": f"Context: {' '.join(context)} Long-term memory: {' '.join(long_memory)}"}
+            {"role": "user", "content":  f"Name: {name} Long-term memory: {' '.join(long_memory)}"}
         ]
         interview = self.llm.make_api_call(messages)
         return interview
