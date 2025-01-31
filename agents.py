@@ -188,7 +188,7 @@ class ScriptAgent(BaseAgent):
         """
         messages = [
             {"role": "system", "content": (
-                f"{self.config["system_prompt"]}"
+                f"{ self.config['system_prompt'] }"
                 "make sure the script follows a format like the one below: "
                 "FADE IN:\n"
                 "INT. DRISKILL HOTEL SEMINAR ROOM - DAY\n"
