@@ -249,7 +249,9 @@ class InterviewAgent(BaseAgent):
                 "content": (
                     "You are a bot that simulates a confession booth scene in reality tv shows. You take in a character name, "
                     "and the character's long-term memory. You then generate a script that simulates the character's confessiong. "
-                    "The output should be in the format of a script. There should only be dialogue from the character and nothing else. Like the following: "
+                    "The output should be in the format of a script. There should only be dialogue from the character and nothing else."
+                    "It always takes place in the INT. REALITY TV SHOW CONFESSION BOOTH"
+                    "The format should look like the follwoing"
                     "FADE IN:\n"
                     "INT. DRISKILL HOTEL SEMINAR ROOM - DAY\n"
                     "JOE and APRIL burst through the doors into a clean, well-lit seminar room.\n"
