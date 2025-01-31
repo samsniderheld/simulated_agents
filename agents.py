@@ -1,4 +1,5 @@
 import json
+import os
 from typing import List, Dict, Any
 from llm_wrapper import LLMWrapper
 
@@ -232,3 +233,52 @@ class InterviewAgent(BaseAgent):
         ]
         interview = self.llm.make_api_call(messages)
         return interview
+    
+class ShotAgent(BaseAgent):
+    """
+    Agent that breaks a script into a series of shots and generates txt2img prompts.
+
+    Attributes:
+        script (str): The script to be broken into shots.
+    """
+
+    def __init__(self, config_file: str) -> None:
+        """
+        Initializes the ShotAgent with a configuration file.
+
+        Args:
+            config_file (str): Path to the configuration file.
+        """
+        super().__init__(config_file)
+
+    def generate_shots(self, script_file: str, num_shots: int) -> List[str]:
+        """
+        Breaks the script into a series of shots and generates txt2img prompts.
+
+        Args:
+            script_file (str): Path to the script file to be broken into shots.
+            num_shots (int): The number of shots to generate.
+
+        Returns:
+            List[str]: List of txt2img prompts.
+        """
+        if not os.path.isfile(script_file):
+            raise FileNotFoundError(f"The file {script_file} does not exist.")
+
+        with open(script_file, 'r') as file:
+            script = file.read()
+
+        messages = [
+            {
+                "role": "system",
+                "content": (
+                    "You are a bot that takes a script and breaks it into a series of shots. "
+                    "Each shot should be described as a txt2img prompt for Stable Diffusion. The number of shots is given as input."
+                )
+            },
+            {"role": "user", "content": f"Script: {script} Number of shots: {num_shots}"}
+        ]
+        response = self.llm.make_api_call(messages)
+        shots = response.split('\n')
+        return shots
+
