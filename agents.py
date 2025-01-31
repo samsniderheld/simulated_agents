@@ -326,6 +326,7 @@ class ShotAgent(BaseAgent):
                   "Subject: The subject of the image we are trying to create."
                   "Style: What is the visual style we are trying to achieve"
                   "Composition: How is the image composed? What is the framing? What is the perspective? What is the depth of field?"
+                  "Environment: What is the environment of the image? What is the setting? What is the background?"
                   "Lighting: How is the image lit? What is the quality of the light? What is the color of the light? What is the direction of the light?"
                   "Color Palette: What is the color palette of the image? What are the dominant colors? What are the accent colors?"
                   "Mood/Atmosphere: What is the mood of the image? What is the atmosphere of the image? What is the feeling of the image?"
