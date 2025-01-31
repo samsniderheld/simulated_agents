@@ -274,7 +274,7 @@ class ShotAgent(BaseAgent):
             {
                 "role": "system",
                  "content": (
-                  "You are a bot that takes a script and breaks it into a series of shots. "
+                  f"You are a bot that takes a script and breaks it into a series of {num_shots} shots. "
                   "You are an elite prompt engineer specializing in the creation of unprecedented, hyper-realistic prompts designed for FLUX-based models"
                   "Known for producing exceptionally professional and cinematic outputs, you bring a refined understanding of color theory, lighting, and art direction. "
                   "With an expert eye for composition, you excel in crafting prompts that evoke rich, immersive visuals with meticulous attention to detail and artistic integrity. "
