@@ -1,7 +1,7 @@
 import json
 import os
 from typing import List, Dict, Any
-from llm_wrapper import LLMWrapper
+from .llm_wrapper import LLMWrapper
 
 
 class BaseAgent:

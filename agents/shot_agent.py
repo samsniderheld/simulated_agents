@@ -1,6 +1,8 @@
+import os
+
 from typing import List
-from base_agent import BaseAgent
-from synthetic_agent import SyntheticAgent
+from .base_agent import BaseAgent
+from .synthetic_agent import SyntheticAgent
 
 class ShotAgent(BaseAgent):
     """
@@ -49,10 +51,10 @@ class ShotAgent(BaseAgent):
                   "enabling you to generate prompts that capture the nuanced, textural depth of cinema."
                   "I want you to always apply this prompt structure while crafting your prompt."
                   "when explaining characters make sure you convert their name to their lora value"
-                  f"the conversiions are {', '.join([f"{character.name} = {character.lora_key_word}" for character in characters])}"
-                  f"make sure to describe the characters with their flux captions like {', '.join([f"{character.name} = {character.flux_key_word}" for character in characters])}" "
+                  f"the conversiions are {', '.join([f'{character.name} = {character.lora_key_word}' for character in characters])}"
+                  f"make sure to describe the characters with their flux captions like {', '.join([f'{character.name} = {character.flux_caption}' for character in characters])}"
                   "EXAMPLE PROMPT:"
-                  f"characters: {', '.join([f"{character.name}" for character in characters])}"
+                  f"characters: {', '.join([f'{character.name}' for character in characters])}"
                   "Subject: The subject of the image we are trying to create."
                   "Style: What is the visual style we are trying to achieve"
                   "Composition: How is the image composed? What is the framing? What is the perspective? What is the depth of field?"
@@ -62,7 +64,6 @@ class ShotAgent(BaseAgent):
                   "Mood/Atmosphere: What is the mood of the image? What is the atmosphere of the image? What is the feeling of the image?"
                   "Technical Details: What are the technical details of the image? What is the resolution? What is the aspect ratio? What is the camera type? What is the lens type?"
                   "Additional Elements: Any additional elements that should be included in the image."
-                  f"extra rules : {self.config['system_prompt']}"
               )
             },
             {"role": "user", "content": f"Script: {script} Number of shots: {num_shots}"}

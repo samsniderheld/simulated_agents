@@ -1,5 +1,5 @@
 from typing import List
-from base_agent import BaseAgent
+from .base_agent import BaseAgent
 
 class SyntheticAgent(BaseAgent):
     """
@@ -19,6 +19,8 @@ class SyntheticAgent(BaseAgent):
         """
         super().__init__(config_file)
         self.name = self.config["name"]
+        self.lora_key_word = self.config["lora_key_word"]
+        self.flux_caption = self.config["flux_caption"]
         self.short_memory: List[str] = []
         self.long_memory: List[str] = []
 

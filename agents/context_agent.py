@@ -1,3 +1,4 @@
+from typing import List
 from base_agent import BaseAgent
 
 class ContextAgent(BaseAgent):

@@ -1,5 +1,5 @@
 from typing import List
-from base_agent import BaseAgent
+from .base_agent import BaseAgent
 
 class InterviewAgent(BaseAgent):
     """
