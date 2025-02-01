@@ -1,5 +1,5 @@
 from typing import List
-from .ase_agent import BaseAgent
+from .base_agent import BaseAgent
 
 class ScriptAgent(BaseAgent):
     """
