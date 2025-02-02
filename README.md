@@ -1,6 +1,6 @@
 # Simulated Agents
 
-This repository contains code for creating and managing simulated agents using language models. The agents can handle synthetic memory, context updates, and script writing.
+This repository contains code for creating and managing simulated agents using language models. The agents can handle synthetic memory, context updates, script writing, and more.
 
 ## Installation
 
@@ -30,20 +30,20 @@ Before running the agents, you need to configure the language model settings. Se
 2. Set your OpenAI API key as an environment variable:
     ```sh
     export OPENAI_API_KEY='your_openai_api_key'
+    ```
 
+## Agent Configuration
 
-## Agent Cofiguration
+Agents can easily be configured using YAML files.
 
-Agents can easily be configured using .json files.
+Example `alex.yaml`:
 
-Example `bob.json`:
-
-```json
-{
-    "llm": "openAI",
-    "system_prompt": "Your name is bob. You are shy, funny, and a bit neurotic.",
-    "memory_limit": 5
-}
+```yaml
+name: alex,
+system_prompt: Your name is alex. You are passive aggressive, controlling, and inconsiderate,
+memory_limit: 5,
+lora_key_word: ALX2,
+flux_caption: ALX2 is wearing a dark green sweater and black pants. He has medium length blond hair.
 ```
 
 ## Usage
@@ -61,37 +61,82 @@ The `SyntheticAgent` class handles synthetic memory and processing.
 - `process_observation(observation: str, context: str, num_beats: int, current_beat: int) -> str`: Processes an observation within the given context and story beats.
 - `load_observations(observations: List[str])`: Loads multiple observations into short-term memory.
 
-### ContextAgent
-The `ContextAgent` class updates and manages context.
-
-#### Methods:
-- `update_context(context: List[str]) -> str`: Updates the context based on the provided context list.
-
-### ScriptAgent
-The `ScriptAgent` class writes scripts based on context.
-
-#### Methods:
-- `write_script(context: List[str]) -> str`: Writes a script based on the provided context list.
-
 ## Example
 
 Here is an example of how to use the `SyntheticAgent`:
 
 ```python
-from agents import SyntheticAgent
+    from utils import *
+    from agents import *
+    story_beats = 6
 
-# Initialize the agent with a configuration file
-agent = SyntheticAgent(config_file='config_files/context_agent.json')
+    bob = SyntheticAgent("config_files/bob.yaml")
+    base_observations = [
+        "bob just discovered that alex drank some of his beer.",
+        "he clearly wrote a note on it saying 'for bob only!!!!'",
+        "he wants to confront alex about it"
+    ]
+    bob.load_observations(base_observations)
 
-# Add observations to the agent's memory
-agent.add_to_memory("The sky is clear.")
-agent.add_to_memory("Birds are singing.")
+    alex = SyntheticAgent("config_files/alex.yaml")
+    base_observations = [
+        "alex is sitting in the living room, drinking one of bob's beers",
+        "he knows that he is not supposed to, but he doesn't care",
+        "he is looking forward to getting into an argument with bob, he likes riling him up."
+    ]
+    alex.load_observations(base_observations)
 
-# Summarize the memory
-agent.summarize_memory()
+    script_agent = BaseAgent("config_files/script_agent.yaml")
 
-# Reflect on the memory
-reflection = agent.reflect()
-print(reflection)
+    interview_agent = BaseAgent("config_files/interview_agent.yaml")
+
+    shot_agent = ShotAgent()
+
+    character_agents = [alex,bob]
+
+    scene = []
+    scene_context = "The scene has just begun"
+
+    observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
+    scene.append(observation)
+
+    print(f"{observation}\n\n")
+    for i in range(story_beats):
+    for agent in character_agents:
+        observation = agent.process_observation(observation, scene,story_beats,i)
+        print(f"{observation}\n\n")
+        scene.append(observation)
+
+    bob.summarize_memory()
+    alex.summarize_memory()
+
+    print(bob.long_memory)
+    print(alex.long_memory)
+
+    script = script_agent.basic_api_call(". ".join(scene))
+    print("Full Script \n\n")
+    print(f"script: {script}\n\n")
+
+    bob_interview_query = f"Name: {bob.name} Long-term memory: {' '.join(bob.long_memory)}"
+
+    bob_interview = interview_agent.basic_api_call(bob_interview_query)
+
+    print(f"bob interview: {bob_interview}'\n\n")
+
+    alex_interview_query = f"Name: {alex.name} Long-term memory: {' '.join(alex.long_memory)}"
+
+    alex_interview = interview_agent.basic_api_call(alex_interview_query)
+
+    print(f"alex interview: {alex_interview}\n\n")
+
+    full_script = [script,bob_interview,alex_interview]
+
+    list_to_txt(full_script,"scene_1")
+
+    shots = shot_agent.generate_shots("scene_1.txt",6,[bob,alex])
+
+    for shot in shots:
+    print(f"{shot}\n\n")
+
+    list_to_txt(shots,"shot_prompts")
 ```
-

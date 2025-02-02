@@ -1,4 +1,3 @@
-import json
 import yaml
 from typing import List, Dict, Any
 from .llm_wrapper import LLMWrapper
@@ -14,15 +13,17 @@ class BaseAgent:
         context (str): Context for the agent.
     """
 
-    def __init__(self, config_file: str) -> None:
+    def __init__(self, config_file: str = None) -> None:
         """
         Initializes the BaseAgent with a configuration file.
 
         Args:
-            config_file (str): Path to the configuration file.
+            config_file (str): Path to the configuration file. Defaults to None.
         """
-        self.config = self.load_config_file(config_file)
-        # self.llm = LLMWrapper(self.config["llm"])
+        if config_file:
+            self.config = self.load_config_file(config_file)
+        else:
+            self.config = self.default_config()
         self.llm = LLMWrapper("openAI")
 
     def load_config_file(self, config_file: str) -> Dict[str, Any]:
@@ -38,7 +39,19 @@ class BaseAgent:
         with open(config_file, 'r') as file:
             config = yaml.safe_load(file)
         return config
-    
+
+    def default_config(self) -> Dict[str, Any]:
+        """
+        Provides a default configuration.
+
+        Returns:
+            Dict[str, Any]: Default configuration dictionary.
+        """
+        return {
+            "system_prompt": "Default system prompt.",
+            "llm": "openAI"
+        }
+
     def basic_api_call(self, query: str) -> str:
         messages = [
             {
