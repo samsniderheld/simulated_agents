@@ -22,8 +22,8 @@ class BaseAgent:
             config_file (str): Path to the configuration file.
         """
         self.config = self.load_config_file(config_file)
-        self.llm = LLMWrapper(self.config["llm"])
-        self.context = ""
+        # self.llm = LLMWrapper(self.config["llm"])
+        self.llm = LLMWrapper("openAI")
 
     def load_config_file(self, config_file: str) -> Dict[str, Any]:
         """
