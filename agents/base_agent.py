@@ -1,5 +1,5 @@
 import json
-import os
+import yaml
 from typing import List, Dict, Any
 from .llm_wrapper import LLMWrapper
 
@@ -36,7 +36,7 @@ class BaseAgent:
             Dict[str, Any]: Configuration dictionary.
         """
         with open(config_file, 'r') as file:
-            config = json.load(file)
+            config = yaml.safe_load(file)
         return config
     
     def basic_api_call(self, query: str) -> str:
