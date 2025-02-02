@@ -66,77 +66,77 @@ The `SyntheticAgent` class handles synthetic memory and processing.
 Here is an example of how to use the `SyntheticAgent`:
 
 ```python
-    from utils import *
-    from agents import *
-    story_beats = 6
+from utils import *
+from agents import *
+story_beats = 6
 
-    bob = SyntheticAgent("config_files/bob.yaml")
-    base_observations = [
-        "bob just discovered that alex drank some of his beer.",
-        "he clearly wrote a note on it saying 'for bob only!!!!'",
-        "he wants to confront alex about it"
-    ]
-    bob.load_observations(base_observations)
+bob = SyntheticAgent("config_files/bob.yaml")
+base_observations = [
+    "bob just discovered that alex drank some of his beer.",
+    "he clearly wrote a note on it saying 'for bob only!!!!'",
+    "he wants to confront alex about it"
+]
+bob.load_observations(base_observations)
 
-    alex = SyntheticAgent("config_files/alex.yaml")
-    base_observations = [
-        "alex is sitting in the living room, drinking one of bob's beers",
-        "he knows that he is not supposed to, but he doesn't care",
-        "he is looking forward to getting into an argument with bob, he likes riling him up."
-    ]
-    alex.load_observations(base_observations)
+alex = SyntheticAgent("config_files/alex.yaml")
+base_observations = [
+    "alex is sitting in the living room, drinking one of bob's beers",
+    "he knows that he is not supposed to, but he doesn't care",
+    "he is looking forward to getting into an argument with bob, he likes riling him up."
+]
+alex.load_observations(base_observations)
 
-    script_agent = BaseAgent("config_files/script_agent.yaml")
+script_agent = BaseAgent("config_files/script_agent.yaml")
 
-    interview_agent = BaseAgent("config_files/interview_agent.yaml")
+interview_agent = BaseAgent("config_files/interview_agent.yaml")
 
-    shot_agent = ShotAgent()
+shot_agent = ShotAgent()
 
-    character_agents = [alex,bob]
+character_agents = [alex,bob]
 
-    scene = []
-    scene_context = "The scene has just begun"
+scene = []
+scene_context = "The scene has just begun"
 
-    observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
+observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
+scene.append(observation)
+
+print(f"{observation}\n\n")
+for i in range(story_beats):
+for agent in character_agents:
+    observation = agent.process_observation(observation, scene,story_beats,i)
+    print(f"{observation}\n\n")
     scene.append(observation)
 
-    print(f"{observation}\n\n")
-    for i in range(story_beats):
-    for agent in character_agents:
-        observation = agent.process_observation(observation, scene,story_beats,i)
-        print(f"{observation}\n\n")
-        scene.append(observation)
+bob.summarize_memory()
+alex.summarize_memory()
 
-    bob.summarize_memory()
-    alex.summarize_memory()
+print(bob.long_memory)
+print(alex.long_memory)
 
-    print(bob.long_memory)
-    print(alex.long_memory)
+script = script_agent.basic_api_call(". ".join(scene))
+print("Full Script \n\n")
+print(f"script: {script}\n\n")
 
-    script = script_agent.basic_api_call(". ".join(scene))
-    print("Full Script \n\n")
-    print(f"script: {script}\n\n")
+bob_interview_query = f"Name: {bob.name} Long-term memory: {' '.join(bob.long_memory)}"
 
-    bob_interview_query = f"Name: {bob.name} Long-term memory: {' '.join(bob.long_memory)}"
+bob_interview = interview_agent.basic_api_call(bob_interview_query)
 
-    bob_interview = interview_agent.basic_api_call(bob_interview_query)
+print(f"bob interview: {bob_interview}'\n\n")
 
-    print(f"bob interview: {bob_interview}'\n\n")
+alex_interview_query = f"Name: {alex.name} Long-term memory: {' '.join(alex.long_memory)}"
 
-    alex_interview_query = f"Name: {alex.name} Long-term memory: {' '.join(alex.long_memory)}"
+alex_interview = interview_agent.basic_api_call(alex_interview_query)
 
-    alex_interview = interview_agent.basic_api_call(alex_interview_query)
+print(f"alex interview: {alex_interview}\n\n")
 
-    print(f"alex interview: {alex_interview}\n\n")
+full_script = [script,bob_interview,alex_interview]
 
-    full_script = [script,bob_interview,alex_interview]
+list_to_txt(full_script,"scene_1")
 
-    list_to_txt(full_script,"scene_1")
+shots = shot_agent.generate_shots("scene_1.txt",6,[bob,alex])
 
-    shots = shot_agent.generate_shots("scene_1.txt",6,[bob,alex])
+for shot in shots:
+print(f"{shot}\n\n")
 
-    for shot in shots:
-    print(f"{shot}\n\n")
-
-    list_to_txt(shots,"shot_prompts")
+list_to_txt(shots,"shot_prompts")
 ```
