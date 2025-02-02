@@ -12,7 +12,7 @@ class ShotAgent(BaseAgent):
         script (str): The script to be broken into shots.
     """
 
-    def __init__(self, config_file: str) -> None:
+    def __init__(self, config_file: str = None) -> None:
         """
         Initializes the ShotAgent with a configuration file.
 
