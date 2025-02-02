@@ -38,3 +38,13 @@ class BaseAgent:
         with open(config_file, 'r') as file:
             config = json.load(file)
         return config
+    
+    def basic_api_call(self, query: str) -> str:
+        messages = [
+            {
+                "role": "system",
+                "content": self.config['system_prompt']
+            },
+            {"role": "user", "content": query}
+        ]
+        response = self.llm.make_api_call(messages)
