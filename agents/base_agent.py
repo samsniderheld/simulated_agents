@@ -48,3 +48,4 @@ class BaseAgent:
             {"role": "user", "content": query}
         ]
         response = self.llm.make_api_call(messages)
+        return response
