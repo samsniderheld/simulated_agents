@@ -4,6 +4,11 @@ from typing import List
 from .base_agent import BaseAgent
 from .synthetic_agent import SyntheticAgent
 
+from pydantic import BaseModel
+
+class Txt2ImgPrompt(BaseModel):
+    prompt: str
+
 class ShotAgent(BaseAgent):
     """
     Agent that breaks a script into a series of shots and generates txt2img prompts.
@@ -42,19 +47,19 @@ class ShotAgent(BaseAgent):
             {
                 "role": "system",
                  "content": (
-                  f"You are a bot that takes a script and breaks it into a series of {num_shots} image prompts. "
-                  "I want you to always apply this prompt structure while crafting your prompt."
-                  "EXAMPLE PROMPT:"
-                  "CMBND"
-                  f"characters: {', '.join([f'{character.name}' for character in characters])}"
-                  f"CMBND, Shot of {', '.join([f'{character.name}' for character in characters])}, wide shot." 
-                   "Bob has dark hair  in a buzz cut, and a five o clock shadow. He is wearing a baggy gray t-shirt, baggy, blue jeans. He has olive skin." 
-                   "Alex has has medium length blonde hair. He is wearing a green sweater, black jeans, and boots. He has pale white skin." 
-                   "The two are screaming at eachother in a modern apartment. The apartment is a luxury apartment in brooklyn."
+                  f"You are a bot that takes a script and breaks it into a series of {num_shots} text to image prompts for FLUX. "
+                  "I want you to always apply this prompt structure while crafting your prompt, but make sure each prompt is a single line. "
+                  "EXAMPLE PROMPT: "
+                  "CMBND, "
+                  f"characters: {', '.join([f'{character.name}' for character in characters])}, "
+                  f"composition: Shot of {', '.join([f'{character.name}' for character in characters])}, wide shot, " 
+                   "action: The two are screaming at eachother in a modern apartment. The apartment is a luxury apartment in brooklyn."
               )
             },
-            {"role": "user", "content": f"Take this the following Script: {script} and convert it to precisely this number of image prompts: {num_shots}. Do not mix two prompts together."}
+            {"role": "user", "content": f"Take this the following Script: {script} and convert it to precisely this number of image prompts: {num_shots}. Do not mix two prompts together. Important make sure the prompt is single line."},
+
         ]
+        print(messages)
         response = self.llm.make_api_call(messages)
         shots = response.split('\n')
         return shots

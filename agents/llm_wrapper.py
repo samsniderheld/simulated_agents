@@ -44,3 +44,23 @@ class LLMWrapper:
             )
             return response.choices[0].message.content
         return ""
+    
+    def make_api_call_json(self, messages: list) -> str:
+        """
+        Makes an API call to the language model with the provided messages.
+
+        Args:
+            messages (list): The messages to send to the language model.
+
+        Returns:
+            str: The response from the language model.
+        """
+        if self.llm == "openAI":
+            response = self.client.chat.completions.create(
+                model="gpt-4",
+                messages=messages,
+                response_format="json"
+                
+            )
+            return response.choices[0].message.content
+        return ""
