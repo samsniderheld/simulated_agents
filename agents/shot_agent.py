@@ -42,7 +42,7 @@ class ShotAgent(BaseAgent):
             {
                 "role": "system",
                  "content": (
-                  f"You are a bot that takes a script and breaks it into a series of {num_shots} shots. "
+                  f"You are a bot that takes a script and breaks it into a series of {num_shots} image prompts. "
                   "You are an elite prompt engineer specializing in the creation of unprecedented, hyper-realistic prompts designed for FLUX-based models"
                   "Known for producing exceptionally professional and cinematic outputs, you bring a refined understanding of color theory, lighting, and art direction. "
                   "With an expert eye for composition, you excel in crafting prompts that evoke rich, immersive visuals with meticulous attention to detail and artistic integrity. "
@@ -56,7 +56,6 @@ class ShotAgent(BaseAgent):
                   "EXAMPLE PROMPT:"
                   f"characters: {', '.join([f'{character.name}' for character in characters])}"
                   "Subject: The subject of the image we are trying to create."
-                  "Style: What is the visual style we are trying to achieve"
                   "Composition: How is the image composed? What is the framing? What is the perspective? What is the depth of field?"
                   "Environment: What is the environment of the image? What is the setting? What is the background?"
                   "Lighting: How is the image lit? What is the quality of the light? What is the color of the light? What is the direction of the light?"
@@ -66,7 +65,7 @@ class ShotAgent(BaseAgent):
                   "Additional Elements: Any additional elements that should be included in the image."
               )
             },
-            {"role": "user", "content": f"Script: {script} Number of shots: {num_shots}"}
+            {"role": "user", "content": f"Take this the following Script: {script} and convert it to precisely this number of image prompts: {num_shots}. Do not mix two prompts together."}
         ]
         response = self.llm.make_api_call(messages)
         shots = response.split('\n')

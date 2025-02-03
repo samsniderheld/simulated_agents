@@ -95,7 +95,6 @@ shot_agent = ShotAgent()
 character_agents = [alex,bob]
 
 scene = []
-scene_context = "The scene has just begun"
 
 observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
 scene.append(observation)
