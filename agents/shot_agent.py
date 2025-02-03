@@ -43,26 +43,14 @@ class ShotAgent(BaseAgent):
                 "role": "system",
                  "content": (
                   f"You are a bot that takes a script and breaks it into a series of {num_shots} image prompts. "
-                  "You are an elite prompt engineer specializing in the creation of unprecedented, hyper-realistic prompts designed for FLUX-based models"
-                  "Known for producing exceptionally professional and cinematic outputs, you bring a refined understanding of color theory, lighting, and art direction. "
-                  "With an expert eye for composition, you excel in crafting prompts that evoke rich, immersive visuals with meticulous attention to detail and artistic integrity. "
-                  "You possess an exceptional ability to analyze images, transforming even a single idea into fully realized, groundbreaking prompts. "
-                  "Your deep technical knowledge extends to motion picture equipment, including cine lenses and the distinctive qualities of film mediums such as 16mm, 35mm, and 70mm, "
-                  "enabling you to generate prompts that capture the nuanced, textural depth of cinema."
                   "I want you to always apply this prompt structure while crafting your prompt."
-                  "when explaining characters make sure you convert their name to their lora value"
-                  f"the conversiions are {', '.join([f'{character.name} = {character.lora_key_word}' for character in characters])}"
-                  f"make sure to describe the characters with their flux captions like {', '.join([f'{character.name} = {character.flux_caption}' for character in characters])}"
                   "EXAMPLE PROMPT:"
+                  "CMBND"
                   f"characters: {', '.join([f'{character.name}' for character in characters])}"
-                  "Subject: The subject of the image we are trying to create."
-                  "Composition: How is the image composed? What is the framing? What is the perspective? What is the depth of field?"
-                  "Environment: What is the environment of the image? What is the setting? What is the background?"
-                  "Lighting: How is the image lit? What is the quality of the light? What is the color of the light? What is the direction of the light?"
-                  "Color Palette: What is the color palette of the image? What are the dominant colors? What are the accent colors?"
-                  "Mood/Atmosphere: What is the mood of the image? What is the atmosphere of the image? What is the feeling of the image?"
-                  "Technical Details: What are the technical details of the image? What is the resolution? What is the aspect ratio? What is the camera type? What is the lens type?"
-                  "Additional Elements: Any additional elements that should be included in the image."
+                  f"CMBND, Shot of {', '.join([f'{character.name}' for character in characters])}, wide shot." 
+                   "Bob has dark hair  in a buzz cut, and a five o clock shadow. He is wearing a baggy gray t-shirt, baggy, blue jeans. He has olive skin." 
+                   "Alex has has medium length blonde hair. He is wearing a green sweater, black jeans, and boots. He has pale white skin." 
+                   "The two are screaming at eachother in a modern apartment. The apartment is a luxury apartment in brooklyn."
               )
             },
             {"role": "user", "content": f"Take this the following Script: {script} and convert it to precisely this number of image prompts: {num_shots}. Do not mix two prompts together."}
