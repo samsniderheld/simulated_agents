@@ -37,7 +37,7 @@ transformer = FluxTransformer2DModel.from_pretrained(
 )
 quantize_(transformer, int8_weight_only())
 
-story_beats = 6
+story_beats = 3
 
 history = []
 
@@ -92,7 +92,12 @@ def get_default_text(beat_number):
     return generate_text_for_beat(beat_number)
 
 def update_textboxes():
-    return [get_default_text(i) for i in range(story_beats)]
+    text_responses = []
+    for i in range(story_beats):
+        default_text = get_default_text(i)
+        text_responses.append(default_text)
+        text_responses.append(default_text)  # Duplicate the text response
+    return text_responses
 
 def generate_image(prompt):
   num_steps = 50
@@ -187,7 +192,7 @@ with gr.Blocks() as demo:
 
                     for agent in character_agents:
                         reflection = agent.reflect()
-                        thought = f"<br>{agent.name} thinks: {reflection}</br>"
+                        thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
                         history.append({"role": "assistant", "content": thought})
                         this_scene.append(reflection)
                         observation = agent.process_observation(observation, all_scenes, story_beats, current_beat)
@@ -209,7 +214,7 @@ with gr.Blocks() as demo:
                     for agent in character_agents:
                         time.sleep(3)
                         reflection = agent.reflect()
-                        thought = f"<b>{agent.name} thinks: {reflection}</b>"
+                        thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
                         history.append({"role": "assistant", "content": thought})
                         observation = agent.process_observation(observation, all_scenes, story_beats, i)
                         all_scenes.append(observation)
@@ -233,17 +238,21 @@ with gr.Blocks() as demo:
                 for j in range(3):
                     if i + j < story_beats:
                         with gr.Column():
-                            image = gr.Image(label=f"Image for Story Beat {i + j + 1}")
-                            default_text = get_default_text(i + j)
-                            textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
-                            textboxes.append(textbox)
-                            image_gen_button = gr.Button(f"Generate for Image {i + j + 1}",
-                                      variant="primary")
-                            image_gen_button.click(generate_image, inputs=textbox, outputs=image)
-                            video_gen_button = gr.Button(f"Generate for Video {i + j + 1}",
-                                      variant="primary")
-                            video = gr.Video(label=f"Video for Story Beat {i + j + 1}")
-                            video_gen_button.click(generate_video, inputs=[textbox,image], outputs=video)
+                            with gr.Tab("image"):
+                              image = gr.Image(label=f"Image for Story Beat {i + j + 1}")
+                              default_text = get_default_text(i + j)
+                              textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
+                              textboxes.append(textbox)
+                              image_gen_button = gr.Button(f"Generate for Image {i + j + 1}",
+                                        variant="primary")
+                              image_gen_button.click(generate_image, inputs=textbox, outputs=image)
+                            with gr.Tab("video"):
+                              video = gr.Video(label=f"Video for Story Beat {i + j + 1}")
+                              textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
+                              textboxes.append(textbox_2)
+                              video_gen_button = gr.Button(f"Generate for Video {i + j + 1}",
+                                        variant="primary")
+                              video_gen_button.click(generate_video, inputs=[textbox_2,image], outputs=video)
                             
                             
         
