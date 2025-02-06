@@ -1,73 +1,27 @@
 import gradio as gr
-import random
 import time
-
-import torch
-from diffusers import FluxPipeline,FluxTransformer2DModel
-import matplotlib.pyplot as plt
-import random
-
-from torchao.quantization import quantize_, int8_weight_only
-from sd_embed.embedding_funcs import get_weighted_text_embeddings_flux1
-
-import os
-import base64
-from runwayml import RunwayML
-from google.colab import userdata
-import urllib.request
-from PIL import Image
 
 from utils import *
 from agents import *
+from content_generation import *
 
-os.environ["RUNWAYML_API_SECRET"]= userdata.get('runway')
 
-model_id = "black-forest-labs/FLUX.1-dev"
-
-client = RunwayML()
-
-pipe = FluxPipeline.from_pretrained(model_id, torch_dtype=torch.bfloat16)
-pipe.load_lora_weights("/content/simulated_agents/cmbnd2.safetensors")
-pipe.to("cuda")
-
-transformer = FluxTransformer2DModel.from_pretrained(
-    model_id,
-    subfolder = "transformer",
-    torch_dtype = torch.bfloat16
-)
-quantize_(transformer, int8_weight_only())
+image_gen = FluxWrapper("runwayml/stable-diffusion-2-5", "lora/cmbnd2.safetensors")
+video_gen = VideoWrapper(api="runway")
 
 story_beats = 3
 
 history = []
 
-bob = SyntheticAgent("config_files/bob.yaml")
-base_observations = [
-    "bob just discovered that alex drank some of his beer.",
-    "he clearly wrote a note on it saying 'for bob only!!!!'",
-    "he wants to confront alex about it"
-]
-bob.load_observations(base_observations)
+synthetic_agents, helper_agents = instantiate_agents("agents/scenario.yaml")
 
-alex = SyntheticAgent("config_files/alex.yaml")
-base_observations = [
-    "alex is sitting in the living room, drinking one of bob's beers",
-    "he knows that he is not supposed to, but he doesn't care",
-    "he is looking forward to getting into an argument with bob, he likes riling him up."
-]
-alex.load_observations(base_observations)
+alex = get_agent_by_name("alex", synthetic_agents)
+bob = get_agent_by_name("bob", synthetic_agents)
+director = get_agent_by_name("director", helper_agents)
 
-overseer = SyntheticAgent("overseer.yaml")
-base_observations = [
-    "the overseer is ready to direct the scene",
-    "it wants to cultivate a dramatic scene",
-    "the scene should end up in a shouting match or a fight"
-]
-overseer.load_observations(base_observations)
+prompt_agent = get_agent_by_name("prompt", helper_agents)
 
-prompt_agent = BaseAgent("prompt.yaml")
-
-character_agents = [alex, bob, overseer]
+character_agents = [alex, bob, director]
 
 all_scenes = []
 
@@ -100,65 +54,11 @@ def update_textboxes():
     return text_responses
 
 def generate_image(prompt):
-  num_steps = 50
-  width = 1024
-  height = 576
-
-  print(prompt)
-  prompt_embeds, pooled_prompt_embeds = get_weighted_text_embeddings_flux1(
-    pipe= pipe,
-    prompt=prompt
-  )
-  seed = random.randint(0,100000)
-  image = pipe(
-      # prompt=prompt,
-      prompt_embeds=prompt_embeds,
-      pooled_prompt_embeds=pooled_prompt_embeds,
-      num_inference_steps=num_steps,
-      generator=torch.Generator("cuda").manual_seed(seed),
-      width=width,
-      height=height
-  ).images[0]
-  return image
+    image = image_gen.generate_image(prompt)
+    return image
 
 def generate_video(prompt,image):
- 
-    pil_image = Image.fromarray(image.astype('uint8'))
-
-    name = "tmp.jpg"
-    pil_image.save(name)
-
-    # encode image to base64
-    with open(name, "rb") as f:
-        base64_image = base64.b64encode(f.read()).decode("utf-8")
-
-    # Create a new image-to-video task using the "gen3a_turbo" model
-    task = client.image_to_video.create(
-      model='gen3a_turbo',
-      # Point this at your own image file
-      prompt_image=f"data:image/png;base64,{base64_image}",
-      prompt_text=prompt,
-      duration=5
-    )
-    task_id = task.id
-
-    # Poll the task until it's complete
-    time.sleep(10)  # Wait for a second before polling
-    task = client.tasks.retrieve(task_id)
-    while task.status not in ['SUCCEEDED', 'FAILED']:
-      time.sleep(10)  # Wait for ten seconds before polling
-      task = client.tasks.retrieve(task_id)
-      print("waiting")
-
-    print('Task complete:', task)
-    
-    name = prompt[:10].replace('"', '')
-    path = f"out_vids/{name}_img2video.mp4"
-
-    urllib.request.urlretrieve(task.output[0], path)
-
-    print(path)
-
+    path = video_gen.make_api_call(prompt,image)    
     return path
 
 

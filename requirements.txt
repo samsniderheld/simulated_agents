@@ -1,2 +1,8 @@
+diffusers
+gradio
+huggingface_hub
 openai
+peft
 pyyaml
+runwayml
+
