@@ -24,7 +24,9 @@ class BaseAgent:
             self.config = self.load_config_file(config_file)
         else:
             self.config = self.default_config()
+            
         self.llm = LLMWrapper("openAI")
+        self.name = self.config["name"]
 
     def load_config_file(self, config_file: str) -> Dict[str, Any]:
         """

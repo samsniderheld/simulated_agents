@@ -37,10 +37,10 @@ class VideoWrapper:
             )
             task_id = task.id
 
-            
             time.sleep(self.poll_rate) 
             task = self.client.tasks.retrieve(task_id)
             while task.status not in ['SUCCEEDED', 'FAILED']:
+                print("polling")
                 time.sleep(self.poll_rate) 
                 task = self.client.tasks.retrieve(task_id)
 

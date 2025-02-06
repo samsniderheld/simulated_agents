@@ -21,6 +21,7 @@ class SyntheticAgent(BaseAgent):
         self.name = self.config["name"]
         self.lora_key_word = self.config["lora_key_word"]
         self.flux_caption = self.config["flux_caption"]
+        self.base_observations = self.config["base_observations"]
         self.short_memory: List[str] = []
         self.long_memory: List[str] = []
 

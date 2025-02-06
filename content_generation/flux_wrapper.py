@@ -25,7 +25,7 @@ class FluxWrapper():
         )
         quantize_(self.transformer, int8_weight_only())
 
-    def generate_image(self, prompt, seed, width=1024, height=576,steps=40):
+    def generate_image(self, prompt, seed=None, width=1024, height=576,steps=40):
         prompt_embeds, pooled_prompt_embeds = get_weighted_text_embeddings_flux1(
             pipe= self.pipe,
             prompt=prompt

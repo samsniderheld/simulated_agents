@@ -1,23 +1,24 @@
 import gradio as gr
+import os
 import time
 
 from utils import *
 from agents import *
 from content_generation import *
 
+os.makedirs('out_imgs', exist_ok=True)
+os.makedirs('out_vids', exist_ok=True)
 
-image_gen = FluxWrapper("runwayml/stable-diffusion-2-5", "lora/cmbnd2.safetensors")
-video_gen = VideoWrapper(api="runway")
-
+print("loading agents")
 story_beats = 3
 
 history = []
 
-synthetic_agents, helper_agents = instantiate_agents("agents/scenario.yaml")
+synthetic_agents, helper_agents = instantiate_agents("config_files/scenario.yaml")
 
 alex = get_agent_by_name("alex", synthetic_agents)
 bob = get_agent_by_name("bob", synthetic_agents)
-director = get_agent_by_name("director", helper_agents)
+director = get_agent_by_name("director", synthetic_agents)
 
 prompt_agent = get_agent_by_name("prompt", helper_agents)
 
@@ -31,6 +32,12 @@ all_scenes.append(observation)
 current_beat = 0
 
 interactive = False
+
+
+print("loading content generation capabilities")
+image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/cmbnd2.safetensors")
+video_gen = VideoWrapper(api="runway")
+print("loading complete")
 
 def generate_text_for_beat(beat_number):
     global all_scenes
@@ -155,6 +162,4 @@ with gr.Blocks() as demo:
                               video_gen_button.click(generate_video, inputs=[textbox_2,image], outputs=video)
                             
                             
-        
-
 demo.launch(debug=True)

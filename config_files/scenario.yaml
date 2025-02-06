@@ -1,9 +1,9 @@
-config_files:
-  synthetic_agents:
-    - bob.yaml
-    - alex.yaml
-    - overseer.yaml
-  helper_agents:
-    - prompt.yaml
-    - script_agent.yaml
-    - interview_agent.yaml
+synthetic_agents: [
+  "config_files/bob.yaml",
+  "config_files/alex.yaml",
+  "config_files/director.yaml"
+]
+
+helper_agents: [
+  "config_files/prompt.yaml",
+]
