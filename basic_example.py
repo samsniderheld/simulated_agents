@@ -172,4 +172,4 @@ with gr.Blocks() as demo:
                               video_gen_button.click(generate_video, inputs=[textbox_2,image], outputs=video)
                             
                             
-demo.launch(debug=args.debug, share=args.share)
+demo.launch(debug=args.debug, share=args.share, server_port=9000)
