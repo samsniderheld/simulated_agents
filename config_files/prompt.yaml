@@ -1,5 +1,0 @@
-name: prompt
-system_prompt: Your job is to take a series of input sentences describing a scene, and output a single txt2img prompt for a stable diffusion model.
-memory_limit: 5,
-lora_key_word: NA,
-flux_caption: NA
