@@ -1,20 +1,29 @@
-import gradio as gr
+import argparse
 import os
 import time
+
+import gradio as gr
 
 from utils import *
 from agents import *
 from content_generation import *
 
+parser = argparse.ArgumentParser(description="Simulated Agents")
+parser.add_argument('--story_beats', type=int, default=3, help='Number of story beats')
+parser.add_argument('--scenario_file_path', type=str, default='config_files/scenario.yaml', help='Path to the scenario file')
+parser.add_argument('--share', action='store_true', help='Share the Gradio app')
+parser.add_argument('--debug', action='store_true', help='Debug mode')
+args = parser.parse_args()
+
 os.makedirs('out_imgs', exist_ok=True)
 os.makedirs('out_vids', exist_ok=True)
 
 print("loading agents")
-story_beats = 3
+story_beats = args.story_beats
 
 history = []
 
-synthetic_agents, helper_agents = instantiate_agents("config_files/scenario.yaml")
+synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
 
 alex = get_agent_by_name("alex", synthetic_agents)
 bob = get_agent_by_name("bob", synthetic_agents)
@@ -163,4 +172,4 @@ with gr.Blocks() as demo:
                               video_gen_button.click(generate_video, inputs=[textbox_2,image], outputs=video)
                             
                             
-demo.launch(debug=True, share=True)
+demo.launch(debug=args.debug, share=args.share)
