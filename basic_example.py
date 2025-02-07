@@ -20,27 +20,13 @@ args = parser.parse_args()
 
 os.makedirs('out_imgs', exist_ok=True)
 os.makedirs('out_vids', exist_ok=True)
+os.makedirs('out_audio', exist_ok=True)
 
-print("loading agents")
 story_beats = args.story_beats
 
 history = []
 
-synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
-
-alex = get_agent_by_name("alex", synthetic_agents)
-bob = get_agent_by_name("bob", synthetic_agents)
-director = get_agent_by_name("director", synthetic_agents)
-
-img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
-vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
-
-character_agents = [alex, bob, director]
-
 all_scenes = []
-
-observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
-all_scenes.append(observation)
 
 current_beat = 0
 
@@ -48,16 +34,36 @@ interactive = args.interactive
 
 show_simulated_thinking = args.show_simulated_thinking
 
+print("loading agents")
+synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
+alex = get_agent_by_name("alex", synthetic_agents)
+bob = get_agent_by_name("bob", synthetic_agents)
+director = get_agent_by_name("director", synthetic_agents)
+
+img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
+vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
+audio_prompt_agent = get_agent_by_name("audio_prompt", helper_agents)
+
+character_agents = [alex, bob, director]
+
+observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
+all_scenes.append(observation)
+
 print("loading content generation capabilities")
 image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/cmbnd2.safetensors")
 video_gen = VideoWrapper(api="runway")
+tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
 
-def generate_img_text_for_beat(beat_number):
+def concatenate_scenes(beat_number):
     global all_scenes
     character_num = len(character_agents)
     concatenated_actions = " ".join(all_scenes[beat_number:beat_number+character_num])
-    prompt = img_prompt_agent.basic_api_call(concatenated_actions)
+    return concatenated_actions
+
+def generate_img_text_for_beat(beat_number):
+    scene = concatenate_scenes(beat_number)
+    prompt = img_prompt_agent.basic_api_call(scene)
     for agent in character_agents:
         if agent.name in prompt.lower():
             prompt += f"\n\n{agent.flux_caption}"
@@ -67,13 +73,20 @@ def generate_vid_text_for_beat(img_text):
     prompt = vid_prompt_agent.basic_api_call(img_text)
     return prompt
 
+def generate_audio_text_for_beat(beat_number):
+    scene = concatenate_scenes(beat_number)
+    prompt = audio_prompt_agent.basic_api_call(scene)
+    return prompt
+
 def update_textboxes():
     text_responses = []
     for i in range(story_beats):
         img_text = generate_img_text_for_beat(i)
         text_responses.append(img_text)
         vid_text = generate_vid_text_for_beat(img_text)
-        text_responses.append(vid_text)  
+        text_responses.append(vid_text) 
+        audio_text = generate_audio_text_for_beat(img_text)
+        text_responses.append(audio_text)  
     return text_responses
 
 def generate_image(prompt):
@@ -82,6 +95,10 @@ def generate_image(prompt):
 
 def generate_video(prompt,image):
     path = video_gen.make_api_call(prompt,image)    
+    return path
+
+def generate_audio(prompt):
+    path = tts.make_api_call(prompt)
     return path
 
 def user(user_message, history: list):
@@ -183,6 +200,12 @@ with gr.Blocks() as demo:
                               video_gen_button = gr.Button(f"Generate for Video {i + j + 1}",
                                         variant="primary")
                               video_gen_button.click(generate_video, inputs=[textbox_2,image], outputs=video)
+                              textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j + 1}", value=default_text)
+                              textboxes.append(textbox_3)
+                              audio = gr.Audio()
+                              video_gen_button = gr.Button(f"Generate for Audio {i + j + 1}",
+                                        variant="primary")
+                              audio_gen_button.click(generate_audio, inputs=[textbox_3,], outputs=audio)
                             
                             
 demo.launch(debug=args.debug, share=args.share, server_port=9000)

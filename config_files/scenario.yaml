@@ -7,4 +7,5 @@ synthetic_agents: [
 helper_agents: [
   "config_files/img_prompt.yaml",
   "config_files/vid_prompt.yaml",
+  "config_files/audio_prompt.yaml",
 ]
