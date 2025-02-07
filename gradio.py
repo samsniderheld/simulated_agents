@@ -85,7 +85,7 @@ def update_textboxes():
         text_responses.append(img_text)
         vid_text = generate_vid_text_for_beat(img_text)
         text_responses.append(vid_text) 
-        audio_text = generate_audio_text_for_beat(img_text)
+        audio_text = generate_audio_text_for_beat(i)
         text_responses.append(audio_text)  
     return text_responses
 
@@ -187,7 +187,7 @@ with gr.Blocks() as demo:
                         with gr.Column():
                             with gr.Tab("image"):
                               image = gr.Image(label=f"Image for Story Beat {i + j + 1}")
-                              default_text = generate_img_text_for_beat(i + j)
+                              default_text = "input"
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
                               textboxes.append(textbox)
                               image_gen_button = gr.Button(f"Generate for Image {i + j + 1}",
@@ -203,7 +203,7 @@ with gr.Blocks() as demo:
                               textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j + 1}", value=default_text)
                               textboxes.append(textbox_3)
                               audio = gr.Audio()
-                              video_gen_button = gr.Button(f"Generate for Audio {i + j + 1}",
+                              audio_gen_button = gr.Button(f"Generate for Audio {i + j + 1}",
                                         variant="primary")
                               audio_gen_button.click(generate_audio, inputs=[textbox_3,], outputs=audio)
                             

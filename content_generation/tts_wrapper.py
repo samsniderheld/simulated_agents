@@ -13,7 +13,7 @@ class TTSWrapper:
         client (ElevenLabs): The ElevenLabs client object.
     """
 
-    def __init__(self, api: str = "eleven_labs") -> None:
+    def __init__(self, api: str = "eleven_labs", voice: str = "brandon") -> None:
         """
         Initializes the TTSWrapper with the specified API and poll rate.
 
@@ -22,6 +22,7 @@ class TTSWrapper:
             poll_rate (int): The rate at which to poll the API for task status. Defaults to 10 seconds.
         """
         self.api = api
+        self.voice = voice
         if self.api == "eleven_labs":
             api_key = os.getenv("ELEVENLABS_API_KEY")
             if not api_key:
@@ -43,6 +44,13 @@ class TTSWrapper:
             str: The path to the generated audio.
         """
         if self.api == "eleven_labs":
+
+            if self.voice == "clarion":
+                voice_id = "1vHrrFQuLuyqEl17e9gl"
+            elif self.voice == "brandom":
+                voice_id = "Rn9Yq7uum9irZ6RwppDN"
+            else:
+                raise ValueError("voice not specified")
             
             audio = self.client.text_to_speech.convert(
                 text=prompt,

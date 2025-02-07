@@ -1,8 +1,10 @@
 diffusers
+elevenlabs
 gradio
 huggingface_hub
 openai
 peft
+python-dotenv
 pyyaml
 runwayml
 

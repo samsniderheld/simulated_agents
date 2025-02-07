@@ -6,6 +6,8 @@ system_prompt: |
   describing what is happening in the scene, and who is saying what. You will have to simplify the scene, 
   and make the output concise.
 
+  The length of the output should be max 5 seconds
+
   Below are some example inputs and outputs
 
   Input
