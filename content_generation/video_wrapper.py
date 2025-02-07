@@ -8,7 +8,23 @@ from PIL import Image
 from runwayml import RunwayML
 
 class VideoWrapper:
-    def __init__(self, api: str = "runway", poll_rate: int=10) -> None:
+    """
+    A wrapper class for the RunwayML API to generate videos from images using a pre-trained model.
+
+    Attributes:
+        api (str): The API to use for video generation.
+        poll_rate (int): The rate at which to poll the API for task status.
+        client (RunwayML): The RunwayML client object.
+    """
+
+    def __init__(self, api: str = "runway", poll_rate: int = 10) -> None:
+        """
+        Initializes the VideoWrapper with the specified API and poll rate.
+
+        Args:
+            api (str): The API to use for video generation. Defaults to "runway".
+            poll_rate (int): The rate at which to poll the API for task status. Defaults to 10 seconds.
+        """
         self.api = api
         self.poll_rate = poll_rate 
         if self.api == "runway":
@@ -20,6 +36,16 @@ class VideoWrapper:
             self.client = None
 
     def make_api_call(self, prompt: str, img: np.ndarray) -> str:
+        """
+        Makes an API call to generate a video from the provided image and prompt.
+
+        Args:
+            prompt (str): The text prompt for generating the video.
+            img (np.ndarray): The image to use as the prompt.
+
+        Returns:
+            str: The path to the generated video.
+        """
         if self.api == "runway":
             pil_image = Image.fromarray(img.astype('uint8'))
 
@@ -30,10 +56,10 @@ class VideoWrapper:
                 base64_image = base64.b64encode(f.read()).decode("utf-8")
 
             task = self.client.image_to_video.create(
-            model='gen3a_turbo',
-            prompt_image=f"data:image/png;base64,{base64_image}",
-            prompt_text=prompt,
-            duration=5
+                model='gen3a_turbo',
+                prompt_image=f"data:image/png;base64,{base64_image}",
+                prompt_text=prompt,
+                duration=5
             )
             task_id = task.id
 
@@ -44,7 +70,6 @@ class VideoWrapper:
                 time.sleep(self.poll_rate) 
                 task = self.client.tasks.retrieve(task_id)
 
-            
             name = prompt[:10].replace('"', '')
             path = f"out_vids/{name}_img2video.mp4"
 

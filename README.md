@@ -21,6 +21,13 @@ This repository contains code for creating and managing simulated agents using l
     pip install -r requirements.txt
     ```
 
+4. Install extra dependencies:
+
+    ```sh
+    pip install torchao --extra-index-url https://download.pytorch.org/whl/cu121 # full options are cpu/cu118/cu121/cu124
+    pip install git+https://github.com/xhinker/sd_embed.git@main
+    ```
+
 ## LLM Configuration
 
 Before running the agents, you need to configure the language model settings. Set your OpenAI API key as an environment variable.
@@ -41,7 +48,6 @@ Example `alex.yaml`:
 ```yaml
 name: alex,
 system_prompt: Your name is alex. You are passive aggressive, controlling, and inconsiderate,
-memory_limit: 5,
 lora_key_word: ALX2,
 flux_caption: ALX2 is wearing a dark green sweater and black pants. He has medium length blond hair.
 ```
@@ -86,10 +92,6 @@ base_observations = [
 ]
 alex.load_observations(base_observations)
 
-script_agent = BaseAgent("config_files/script_agent.yaml")
-
-interview_agent = BaseAgent("config_files/interview_agent.yaml")
-
 shot_agent = ShotAgent()
 
 character_agents = [alex,bob]
@@ -108,34 +110,23 @@ for agent in character_agents:
 
 bob.summarize_memory()
 alex.summarize_memory()
-
-print(bob.long_memory)
-print(alex.long_memory)
-
-script = script_agent.basic_api_call(". ".join(scene))
-print("Full Script \n\n")
-print(f"script: {script}\n\n")
-
-bob_interview_query = f"Name: {bob.name} Long-term memory: {' '.join(bob.long_memory)}"
-
-bob_interview = interview_agent.basic_api_call(bob_interview_query)
-
-print(f"bob interview: {bob_interview}'\n\n")
-
-alex_interview_query = f"Name: {alex.name} Long-term memory: {' '.join(alex.long_memory)}"
-
-alex_interview = interview_agent.basic_api_call(alex_interview_query)
-
-print(f"alex interview: {alex_interview}\n\n")
-
-full_script = [script,bob_interview,alex_interview]
-
-list_to_txt(full_script,"scene_1")
-
-shots = shot_agent.generate_shots("scene_1.txt",6,[bob,alex])
-
-for shot in shots:
-print(f"{shot}\n\n")
-
-list_to_txt(shots,"shot_prompts")
 ```
+
+Here is an example of how to run a basic example via gradio:
+
+
+## Usage
+The script supports the following command-line arguments:
+
+- --story_beats: Number of story beats (default: 3)
+- --scenario_file_path: Path to the scenario file (default: 'config_files/scenario.yaml')
+- --share: Share the Gradio app (default: False)
+- --debug: Debug mode (default: False)
+- --interactive: Interactive mode (default: False)
+- --show_simulated_thinking: Show the simulated thinking (default: False)
+
+Example usage:
+
+    ```sh
+    python basic_example.py --story_beats 5 --scenario_file_path config_files/scenario.yaml --share
+    ```

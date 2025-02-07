@@ -60,7 +60,7 @@ def generate_img_text_for_beat(beat_number):
     prompt = img_prompt_agent.basic_api_call(concatenated_actions)
     for agent in character_agents:
         if agent.name in prompt.lower():
-            prompt += agent.flux_caption
+            prompt += f"\n\n{agent.flux_caption}"
     return prompt
 
 def generate_vid_text_for_beat(img_text):
