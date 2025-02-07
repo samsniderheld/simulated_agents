@@ -13,6 +13,9 @@ parser.add_argument('--story_beats', type=int, default=3, help='Number of story 
 parser.add_argument('--scenario_file_path', type=str, default='config_files/scenario.yaml', help='Path to the scenario file')
 parser.add_argument('--share', action='store_true', help='Share the Gradio app')
 parser.add_argument('--debug', action='store_true', help='Debug mode')
+parser.add_argument('--interactive', action='store_true', help='Interactive mode')
+parser.add_argument('--show_simulated_thinking', action='store_true', help='show the simulated thinking')
+
 args = parser.parse_args()
 
 os.makedirs('out_imgs', exist_ok=True)
@@ -41,7 +44,9 @@ all_scenes.append(observation)
 
 current_beat = 0
 
-interactive = False
+interactive = args.interactive
+
+show_simulated_thinking = args.show_simulated_thinking
 
 print("loading content generation capabilities")
 image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/cmbnd2.safetensors")
@@ -92,8 +97,6 @@ def run_agents(history: list):
     this_scene = []
 
     message = history[-1]["content"]
-    if message == "interactive":
-        interactive = True
 
     if interactive:
         if current_beat < story_beats:
@@ -103,10 +106,11 @@ def run_agents(history: list):
                 this_scene.append(observation)
 
             for agent in character_agents:
-                reflection = agent.reflect()
-                thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
-                history.append({"role": "assistant", "content": thought})
-                this_scene.append(reflection)
+                if show_simulated_thinking:
+                    reflection = agent.reflect()
+                    thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
+                    history.append({"role": "assistant", "content": thought})
+                    this_scene.append(reflection)
                 observation = agent.process_observation(observation, all_scenes, story_beats, current_beat)
                 all_scenes.append(observation)
                 this_scene.append(observation)
@@ -125,9 +129,11 @@ def run_agents(history: list):
         for i in range(story_beats):
             for agent in character_agents:
                 time.sleep(3)
-                reflection = agent.reflect()
-                thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
-                history.append({"role": "assistant", "content": thought})
+                if show_simulated_thinking:
+                    reflection = agent.reflect()
+                    thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
+                    history.append({"role": "assistant", "content": thought})
+                    this_scene.append(reflection)
                 observation = agent.process_observation(observation, all_scenes, story_beats, i)
                 all_scenes.append(observation)
                 history.append({"role": "assistant", "content": observation})
@@ -140,10 +146,17 @@ def run_agents(history: list):
 with gr.Blocks() as demo:
     with gr.Tab("Simulation"):
         chatbot = gr.Chatbot(type="messages")
-        msg = gr.Textbox()
-        msg.submit(user, [msg, chatbot], [msg, chatbot], queue=False).then(
-            run_agents, chatbot, chatbot
-        )
+        
+        if interactive:
+            msg = gr.Textbox()
+            msg.submit(user, [msg, chatbot], [msg, chatbot], queue=False).then(
+                run_agents, chatbot, chatbot
+            )
+        else:
+            msg = gr.Button("run simulation")
+            msg.click(user, [msg, chatbot], [msg, chatbot], queue=False).then(
+                run_agents, chatbot, chatbot
+            )
 
     with gr.Tab("Generation"):
         textboxes = []
@@ -157,7 +170,7 @@ with gr.Blocks() as demo:
                         with gr.Column():
                             with gr.Tab("image"):
                               image = gr.Image(label=f"Image for Story Beat {i + j + 1}")
-                              default_text = get_default_text(i + j)
+                              default_text = generate_img_text_for_beat(i + j)
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
                               textboxes.append(textbox)
                               image_gen_button = gr.Button(f"Generate for Image {i + j + 1}",
