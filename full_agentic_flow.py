@@ -2,7 +2,7 @@ import argparse
 import os
 import shutil
 
-from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips
+from moviepy import VideoFileClip, AudioFileClip, concatenate_videoclips
 
 from utils import *
 from agents import *
@@ -139,7 +139,7 @@ def combine_video_audio(video_path, audio_path, output_path):
     """
     video_clip = VideoFileClip(video_path)
     audio_clip = AudioFileClip(audio_path)
-    final_clip = video_clip.set_audio(audio_clip)
+    final_clip = video_clip.with_audio(audio_clip)
     final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
 
 def concatenate_videos(video_paths, output_path):
@@ -183,26 +183,32 @@ tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
 
 # Simulate the scene
+print("simulating scene")
 for i in range(args.story_beats):
     for agent in character_agents:
         observation = agent.process_observation(observation, all_scenes, args.story_beats, i)
         all_scenes.append(observation)
 
+print("generating content")
 # Generate the content
 for i in range(args.variations):
     combined_video_paths = []
     for j in range(args.story_beats):
+        print("generating image")
         img_name = f"out_imgs/scene_{i}.png"
         img_text = generate_img_text_for_beat(j, all_scenes)
         img = generate_image(img_text)
         img.save(img_name)
+        print("generating video")
         vid_text = generate_vid_text_for_beat(img_text)
         vid_path = generate_video(vid_text, img)
+        print("generating VO")
         audio_text = generate_audio_text_for_beat(j, all_scenes)
         audio_path = generate_audio(audio_text)
         combined_output_path = f"combined_assets/scene_{j:04d}_variation_{i:04d}.mp4"
         combine_video_audio(vid_path, audio_path, combined_output_path)
         combined_video_paths.append(combined_output_path)
-    
+
+    print("editing everything together")
     final_video_path = f'final_vids/final_video_variation_{i:04d}.mp4'
     concatenate_videos(combined_video_paths, final_video_path)

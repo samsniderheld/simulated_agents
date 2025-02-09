@@ -46,9 +46,14 @@ class VideoWrapper:
         Returns:
             str: The path to the generated video.
         """
-        if self.api == "runway":
+        if isinstance(img, np.ndarray):
             pil_image = Image.fromarray(img.astype('uint8'))
-
+        elif isinstance(img, Image.Image):
+            pil_image = img
+        else:
+            raise ValueError("img must be a numpy array or a PIL image")
+    
+        if self.api == "runway":
             name = "tmp.jpg"
             pil_image.save(name)
 

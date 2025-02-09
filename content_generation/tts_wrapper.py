@@ -23,6 +23,7 @@ class TTSWrapper:
         """
         self.api = api
         self.voice = voice
+        self.voice_id = ""
         if self.api == "eleven_labs":
             api_key = os.getenv("ELEVENLABS_API_KEY")
             if not api_key:
@@ -46,15 +47,15 @@ class TTSWrapper:
         if self.api == "eleven_labs":
 
             if self.voice == "clarion":
-                voice_id = "1vHrrFQuLuyqEl17e9gl"
-            elif self.voice == "brandom":
-                voice_id = "Rn9Yq7uum9irZ6RwppDN"
+                self.voice_id = "1vHrrFQuLuyqEl17e9gl"
+            elif self.voice == "brandon":
+                self.voice_id = "Rn9Yq7uum9irZ6RwppDN"
             else:
                 raise ValueError("voice not specified")
             
             audio = self.client.text_to_speech.convert(
                 text=prompt,
-                voice_id="1vHrrFQuLuyqEl17e9gl",
+                voice_id=self.voice_id,
                 model_id="eleven_multilingual_v2",
                 output_format="mp3_44100_128",
             )
