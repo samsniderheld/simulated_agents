@@ -1,6 +1,6 @@
 import argparse
 import os
-import time
+import shutil
 
 from moviepy.editor import VideoFileClip, AudioFileClip, concatenate_videoclips
 
@@ -16,35 +16,16 @@ parser.add_argument('--variations', type=int, default=1, help='Number of variati
 parser.add_argument('--interactive', action='store_true', help='Interactive mode')
 args = parser.parse_args()
 
-# Create necessary directories
-os.makedirs('out_imgs', exist_ok=True)
-os.makedirs('out_vids', exist_ok=True)
-os.makedirs('out_audio', exist_ok=True)
-os.makedirs('combined_assets', exist_ok=True)
-os.makedirs('final_vids', exist_ok=True)
+def create_directory(directory):
+    """
+    Makes directory. Clears all files in the specified directory if it exists.
 
-all_scenes = []
-
-print("loading agents")
-synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
-alex = get_agent_by_name("alex", synthetic_agents)
-bob = get_agent_by_name("bob", synthetic_agents)
-director = get_agent_by_name("director", synthetic_agents)
-
-img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
-vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
-audio_prompt_agent = get_agent_by_name("audio_prompt", helper_agents)
-
-character_agents = [alex, bob, director]
-
-observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
-all_scenes.append(observation)
-
-print("loading content generation capabilities")
-image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/cmbnd2.safetensors")
-video_gen = VideoWrapper(api="runway")
-tts = TTSWrapper(api="eleven_labs")
-print("loading complete")
+    Args:
+        directory (str): The path to the directory to clear.
+    """
+    if os.path.exists(directory):
+        shutil.rmtree(directory)
+    os.makedirs(directory, exist_ok=True)
 
 def concatenate_scenes(beat_number, all_scenes):
     """
@@ -172,6 +153,34 @@ def concatenate_videos(video_paths, output_path):
     clips = [VideoFileClip(video) for video in video_paths]
     final_clip = concatenate_videoclips(clips)
     final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
+
+# Create and clear necessary directories
+directories = ['out_imgs', 'out_vids', 'out_audio', 'combined_assets', 'final_vids']
+for directory in directories:
+    create_directory(directory)
+
+all_scenes = []
+
+print("loading agents")
+synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
+alex = get_agent_by_name("alex", synthetic_agents)
+bob = get_agent_by_name("bob", synthetic_agents)
+director = get_agent_by_name("director", synthetic_agents)
+
+img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
+vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
+audio_prompt_agent = get_agent_by_name("audio_prompt", helper_agents)
+
+character_agents = [alex, bob, director]
+
+observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
+all_scenes.append(observation)
+
+print("loading content generation capabilities")
+image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/cmbnd2.safetensors")
+video_gen = VideoWrapper(api="runway")
+tts = TTSWrapper(api="eleven_labs")
+print("loading complete")
 
 # Simulate the scene
 for i in range(args.story_beats):
