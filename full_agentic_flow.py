@@ -27,9 +27,9 @@ def create_directory(directory):
         shutil.rmtree(directory)
     os.makedirs(directory, exist_ok=True)
 
-def concatenate_scenes(beat_number, all_scenes):
+def concatenate_actions(beat_number, all_scenes,character_agents):
     """
-    Concatenates scenes for a given beat number.
+    Concatenates actions for a given beat number.
 
     Args:
         beat_number (int): The beat number.
@@ -42,7 +42,7 @@ def concatenate_scenes(beat_number, all_scenes):
     concatenated_actions = " ".join(all_scenes[beat_number:beat_number+character_num])
     return concatenated_actions
 
-def generate_img_text_for_beat(beat_number, all_scenes):
+def generate_img_text_for_beat(beat_number, all_scenes, character_agents):
     """
     Generates image text for a given beat number.
 
@@ -53,7 +53,7 @@ def generate_img_text_for_beat(beat_number, all_scenes):
     Returns:
         str: Generated image text.
     """
-    scene = concatenate_scenes(beat_number, all_scenes)
+    scene = concatenate_actions(beat_number, all_scenes, character_agents)
     prompt = img_prompt_agent.basic_api_call(scene)
     for agent in character_agents:
         if agent.name in prompt.lower():
@@ -73,7 +73,7 @@ def generate_vid_text_for_beat(img_text):
     prompt = vid_prompt_agent.basic_api_call(img_text)
     return prompt
 
-def generate_audio_text_for_beat(beat_number, all_scenes):
+def generate_audio_text_for_beat(beat_number, all_scenes, character_agents):
     """
     Generates audio text for a given beat number.
 
@@ -84,49 +84,9 @@ def generate_audio_text_for_beat(beat_number, all_scenes):
     Returns:
         str: Generated audio text.
     """
-    scene = concatenate_scenes(beat_number, all_scenes)
+    scene = concatenate_actions(beat_number, all_scenes, character_agents)
     prompt = audio_prompt_agent.basic_api_call(scene)
     return prompt
-
-def generate_image(prompt):
-    """
-    Generates an image based on the provided prompt.
-
-    Args:
-        prompt (str): The text prompt for generating the image.
-
-    Returns:
-        Image: The generated image.
-    """
-    image = image_gen.generate_image(prompt)
-    return image
-
-def generate_video(prompt, image):
-    """
-    Generates a video based on the provided prompt and image.
-
-    Args:
-        prompt (str): The text prompt for generating the video.
-        image (Image): The image to use as the prompt.
-
-    Returns:
-        str: The path to the generated video.
-    """
-    path = video_gen.make_api_call(prompt, image)    
-    return path
-
-def generate_audio(prompt):
-    """
-    Generates audio based on the provided prompt.
-
-    Args:
-        prompt (str): The text prompt for generating the audio.
-
-    Returns:
-        str: The path to the generated audio.
-    """
-    path = tts.make_api_call(prompt)
-    return path
 
 def combine_video_audio(video_path, audio_path, output_path):
     """
@@ -162,16 +122,12 @@ for directory in directories:
 all_scenes = []
 
 print("loading agents")
-synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
-alex = get_agent_by_name("alex", synthetic_agents)
-bob = get_agent_by_name("bob", synthetic_agents)
-director = get_agent_by_name("director", synthetic_agents)
+character_agents, helper_agents = instantiate_agents(args.scenario_file_path)
 
 img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
 vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
 audio_prompt_agent = get_agent_by_name("audio_prompt", helper_agents)
 
-character_agents = [alex, bob, director]
 
 observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
 all_scenes.append(observation)
@@ -196,15 +152,15 @@ for i in range(args.variations):
     for j in range(args.story_beats):
         print("generating image")
         img_name = f"out_imgs/scene_{i}.png"
-        img_text = generate_img_text_for_beat(j, all_scenes)
-        img = generate_image(img_text)
+        img_text = generate_img_text_for_beat(j, all_scenes, character_agents)
+        img = image_gen.generate_image(img_text)
         img.save(img_name)
         print("generating video")
         vid_text = generate_vid_text_for_beat(img_text)
-        vid_path = generate_video(vid_text, img)
+        vid_path = video_gen.make_api_call(vid_text, img)
         print("generating VO")
-        audio_text = generate_audio_text_for_beat(j, all_scenes)
-        audio_path = generate_audio(audio_text)
+        audio_text = generate_audio_text_for_beat(j, all_scenes, character_agents)
+        audio_path = tts.make_api_call(audio_text)
         combined_output_path = f"combined_assets/scene_{j:04d}_variation_{i:04d}.mp4"
         combine_video_audio(vid_path, audio_path, combined_output_path)
         combined_video_paths.append(combined_output_path)
