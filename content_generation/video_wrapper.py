@@ -35,7 +35,7 @@ class VideoWrapper:
         else:
             self.client = None
 
-    def make_api_call(self, prompt: str, img: np.ndarray, idx:ing=None) -> str:
+    def make_api_call(self, prompt: str, img: np.ndarray, idx:int=None) -> str:
         """
         Makes an API call to generate a video from the provided image and prompt.
 
