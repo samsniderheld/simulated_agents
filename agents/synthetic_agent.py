@@ -1,5 +1,8 @@
+import json
+
 from typing import List
 from .base_agent import BaseAgent
+from pydantic import BaseModel
 
 class SyntheticAgent(BaseAgent):
     """
@@ -71,7 +74,7 @@ class SyntheticAgent(BaseAgent):
         return response
 
     def process_observation(
-        self, observation: str, scene: list[str], num_beats: int, current_beat: int
+        self, observation: str, scene: list[str], num_beats: int, current_beat: int, use_json:bool=False
     ) -> str:
         """
         Processes an observation within the given context and story beats.
@@ -98,8 +101,12 @@ class SyntheticAgent(BaseAgent):
             },
             {"role": "user", "content": observation}
         ]
-        response = self.llm.make_api_call(messages)
-        self.short_memory.append(response)
+        if use_json:
+            response = self.llm.make_api_call_json(messages)
+            self.short_memory.append(response.to_str())
+        else:
+            response = self.llm.make_api_call(messages)
+            self.short_memory.append(response)
         return response
 
     def load_observations(self, observations: List[str]) -> None:

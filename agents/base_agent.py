@@ -64,3 +64,14 @@ class BaseAgent:
         ]
         response = self.llm.make_api_call(messages)
         return response
+
+    def basic_api_call_json(self, query: str) -> str:
+        messages = [
+            {
+                "role": "system",
+                "content": self.config['system_prompt']
+            },
+            {"role": "user", "content": query}
+        ]
+        response = self.llm.make_api_call_json(messages)
+        return response

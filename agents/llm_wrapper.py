@@ -1,6 +1,24 @@
 import os
 from openai import OpenAI
+from pydantic import BaseModel
 
+class Shot(BaseModel):
+    shot_action: str
+    txt2img_prompt: str
+    vo:str
+
+class ShotList(BaseModel):
+    shots: list[Shot]
+
+    def to_str(self):
+        output_string = ""
+        for i,shot in enumerate(self.shots):
+            output_string+=f"shot {i} action: {shot.shot_action}\n"
+            output_string+=f"shot {i} prompt: {shot.txt2img_prompt}\n"
+            output_string+=f"shot {i} action: {shot.vo}\n"
+        
+        return output_string
+    
 
 class LLMWrapper:
     """
@@ -56,11 +74,11 @@ class LLMWrapper:
             str: The response from the language model.
         """
         if self.llm == "openAI":
-            response = self.client.chat.completions.create(
-                model="gpt-4",
+            response = self.client.beta.chat.completions.parse(
+                model="gpt-4o-2024-08-06",
                 messages=messages,
-                response_format="json"
+                response_format=ShotList
                 
             )
-            return response.choices[0].message.content
+            return response.choices[0].message.parsed
         return ""
