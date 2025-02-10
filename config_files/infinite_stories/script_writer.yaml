@@ -84,3 +84,8 @@ system_prompt: |
 
 lora_key_word: NA,
 flux_caption: NA
+base_observations: [
+    "the script writer is famous for writing children's shows",
+    "he has a good work relationship with the producer",
+    "he likes iterating on scripts with the producer"
+]

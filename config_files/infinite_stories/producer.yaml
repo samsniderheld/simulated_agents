@@ -12,3 +12,9 @@ system_prompt: |
 
 lora_key_word: NA,
 flux_caption: NA
+
+base_observations: [
+    "the producer is good at his job",
+    "he enjoys making his work concise but effective",
+    "he likes to push the script writer to do better"
+]
