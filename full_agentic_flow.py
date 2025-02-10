@@ -39,7 +39,9 @@ def concatenate_actions(beat_number, all_scenes,character_agents):
         str: Concatenated actions for the beat number.
     """
     character_num = len(character_agents)
-    concatenated_actions = " ".join(all_scenes[beat_number:beat_number+character_num])
+    start = int(beat_number*character_num)
+    end = start + character_num
+    concatenated_actions = " ".join(all_scenes[start:end])
     return concatenated_actions
 
 def generate_img_text_for_beat(beat_number, all_scenes, character_agents):
@@ -85,7 +87,8 @@ def generate_audio_text_for_beat(beat_number, all_scenes, character_agents):
         str: Generated audio text.
     """
     scene = concatenate_actions(beat_number, all_scenes, character_agents)
-    prompt = audio_prompt_agent.basic_api_call(scene)
+    text = "convert the following collection of assets into 10 words of voice over:  "
+    prompt = audio_prompt_agent.basic_api_call(text+scene)
     return prompt
 
 def combine_video_audio(video_path, audio_path, output_path):
@@ -143,6 +146,7 @@ print("simulating scene")
 for i in range(args.story_beats):
     for agent in character_agents:
         observation = agent.process_observation(observation, all_scenes, args.story_beats, i)
+        print(observation)
         all_scenes.append(observation)
 
 print("generating content")

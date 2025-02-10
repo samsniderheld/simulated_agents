@@ -34,7 +34,7 @@ class TTSWrapper:
 
         load_dotenv()
 
-    def make_api_call(self, prompt: str) -> str:
+    def make_api_call(self, prompt: str,idx:int=None) -> str:
         """
         Makes an API call to generate the audio given the prompt.
 
@@ -60,7 +60,10 @@ class TTSWrapper:
                 output_format="mp3_44100_128",
             )
 
-            path = f"out_audio/{prompt[:10]}.mp3"
+            if idx is not None:
+                path = f"out_audio/{idx}.mp3"
+            else:
+                path = f"out_audio/{prompt[:10]}.mp3"
 
             save(audio, path)
 

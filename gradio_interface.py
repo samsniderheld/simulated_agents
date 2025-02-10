@@ -1,12 +1,18 @@
 import argparse
 import os
+import shutil
 import time
 
 import gradio as gr
 
+from functools import partial
+
 from utils import *
 from agents import *
 from content_generation import *
+
+from moviepy import VideoFileClip, AudioFileClip, concatenate_videoclips
+
 
 parser = argparse.ArgumentParser(description="Simulated Agents")
 parser.add_argument('--story_beats', type=int, default=3, help='Number of story beats')
@@ -21,6 +27,14 @@ args = parser.parse_args()
 os.makedirs('out_imgs', exist_ok=True)
 os.makedirs('out_vids', exist_ok=True)
 os.makedirs('out_audio', exist_ok=True)
+os.makedirs('final_vids', exist_ok=True)
+
+# Create and clear necessary directories
+directories = ['out_imgs', 'out_vids', 'out_audio', 'combined_assets', 'final_vids']
+for directory in directories:
+    if os.path.exists(directory):
+        shutil.rmtree(directory)
+    os.makedirs(directory, exist_ok=True)
 
 story_beats = args.story_beats
 
@@ -58,7 +72,9 @@ print("loading complete")
 def concatenate_scenes(beat_number):
     global all_scenes
     character_num = len(character_agents)
-    concatenated_actions = " ".join(all_scenes[beat_number:beat_number+character_num])
+    start = int(beat_number*character_num)
+    end = start + character_num
+    concatenated_actions = " ".join(all_scenes[start:end])
     return concatenated_actions
 
 def generate_img_text_for_beat(beat_number):
@@ -97,9 +113,54 @@ def generate_video(prompt,image):
     path = video_gen.make_api_call(prompt,image)    
     return path
 
-def generate_audio(prompt):
+def generate_audio(prompt,idx):
     path = tts.make_api_call(prompt)
     return path
+
+def combine_video_audio(video_path, audio_path, output_path):
+    """
+    Combines video and audio into a single file.
+
+    Args:
+        video_path (str): The path to the video file.
+        audio_path (str): The path to the audio file.
+        output_path (str): The path to the output file.
+    """
+    video_clip = VideoFileClip(video_path)
+    audio_clip = AudioFileClip(audio_path)
+    final_clip = video_clip.with_audio(audio_clip)
+    final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
+
+def concatenate_videos(video_paths, output_path):
+    """
+    Concatenates multiple video files into a single file.
+
+    Args:
+        video_paths (list): List of paths to the video files.
+        output_path (str): The path to the output file.
+    """
+    clips = [VideoFileClip(video) for video in video_paths]
+    final_clip = concatenate_videoclips(clips)
+    final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
+
+def create_video():
+    video_path = "out_vids"
+    audio_path = "out_audio"
+
+    video_files = sorted(os.listdir(video_path))
+    audio_files = sorted(os.listdir(audio_path))
+
+    clips = []
+
+    for video_file, audio_file in zip(video_files, audio_files):
+        video_file_path = os.path.join(video_path, video_file)
+        audio_file_path = os.path.join(audio_path, audio_file)
+        combine_video_audio(video_file_path, audio_file_path, f"combined_assets/{video_file}")
+        clips.append(f"combined_assets/{video_file}")
+
+    concatenate_videos(clips, "final_vids/final_video.mp4")
+    
+
 
 def user(user_message, history: list):
         history.append({"role": "user", "content": user_message})
@@ -176,9 +237,6 @@ with gr.Blocks() as demo:
             )
 
     with gr.Tab("Generation"):
-        textboxes = []
-        update_button = gr.Button("Update Textboxes")
-        update_button.click(update_textboxes, outputs=textboxes)
 
         for i in range(0, story_beats, 3):
             with gr.Row():
@@ -189,23 +247,29 @@ with gr.Blocks() as demo:
                               image = gr.Image(label=f"Image for Story Beat {i + j + 1}")
                               default_text = "input"
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
-                              textboxes.append(textbox)
+                              img_text_button = gr.Button("Generate Prompt")
+                              img_text_button.click(partial(generate_img_text_for_beat, i + j + 1), outputs=textbox)
                               image_gen_button = gr.Button(f"Generate for Image {i + j + 1}",
                                         variant="primary")
                               image_gen_button.click(generate_image, inputs=textbox, outputs=image)
                             with gr.Tab("video"):
                               video = gr.Video(label=f"Video for Story Beat {i + j + 1}")
                               textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
-                              textboxes.append(textbox_2)
+                              vid_text_button = gr.Button("Generate Video Prompt")
+                              vid_text_button.click(generate_vid_text_for_beat, inputs=textbox, outputs=textbox_2)
                               video_gen_button = gr.Button(f"Generate for Video {i + j + 1}",
                                         variant="primary")
                               video_gen_button.click(generate_video, inputs=[textbox_2,image], outputs=video)
                               textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j + 1}", value=default_text)
-                              textboxes.append(textbox_3)
+                              audio_text_button = gr.Button("Generate Audio Prompt")
+                              audio_text_button.click(partial(generate_audio_text_for_beat, i + j + 1), outputs=textbox_3)
                               audio = gr.Audio()
                               audio_gen_button = gr.Button(f"Generate for Audio {i + j + 1}",
                                         variant="primary")
-                              audio_gen_button.click(generate_audio, inputs=[textbox_3,], outputs=audio)
-                            
-                            
+                              audio_gen_button.click(partial(generate_audio, idx=i + j + 1), inputs=[textbox_3,], outputs=audio)
+
+    with gr.Tab("output"): 
+        final_video = gr.Video(label=f"final video")                      
+        gr.button("create_video").click(create_video, outputs=final_video)
+
 demo.launch(debug=args.debug, share=args.share, server_port=9000)

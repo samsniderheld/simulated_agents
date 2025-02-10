@@ -35,7 +35,7 @@ class VideoWrapper:
         else:
             self.client = None
 
-    def make_api_call(self, prompt: str, img: np.ndarray) -> str:
+    def make_api_call(self, prompt: str, img: np.ndarray, idx:ing=None) -> str:
         """
         Makes an API call to generate a video from the provided image and prompt.
 
@@ -75,7 +75,10 @@ class VideoWrapper:
                 time.sleep(self.poll_rate) 
                 task = self.client.tasks.retrieve(task_id)
 
-            name = prompt[:10].replace('"', '')
+            if idx is not None:
+                name = f"{idx}"
+            else:
+                name = prompt[:10].replace('"', '')
             path = f"out_vids/{name}_img2video.mp4"
 
             urllib.request.urlretrieve(task.output[0], path)
