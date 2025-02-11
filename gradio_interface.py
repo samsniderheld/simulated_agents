@@ -51,7 +51,7 @@ show_simulated_thinking = args.show_simulated_thinking
 print("loading agents")
 synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
 script_writer = get_agent_by_name("script_writer", synthetic_agents)
-producer = get_agent_by_name("prodcuer", synthetic_agents)
+producer = get_agent_by_name("producer", synthetic_agents)
 
 img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
 vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
@@ -64,7 +64,7 @@ observation = "today we are writing a story about a young boy learning about the
 all_scenes.append(observation)
 
 print("loading content generation capabilities")
-image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/cmbnd2.safetensors")
+image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/Realistic_PixArt_Doodle_art_style.safetensors")
 video_gen = VideoWrapper(api="runway")
 tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
@@ -82,7 +82,7 @@ def concatenate_scenes(beat_number):
 def generate_img_text_for_beat(beat_number):
     global final_script
     prompt = final_script.shots[beat_number].txt2img_prompt
-    return prompt
+    return f"chibi, {prompt}, super hyper realistic, cinematic volumetric lighting, shot with Sony Fx6"
 
     # scene = concatenate_scenes(beat_number)
     # prompt = img_prompt_agent.basic_api_call(scene)
@@ -195,12 +195,15 @@ def run_agents(history: list):
         for agent in character_agents:
             if agent.name == "script_writer":
                 if i == 0:
-                    script = script_writer.process_observation(observation, all_scenes, story_beats, i)
+                    script = script_writer.process_observation(observation, all_scenes, story_beats, i, use_json=True)
                 else:
-                    script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, story_beats, i)
+                    script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, story_beats, i, use_json=True)
                 
                 script_str = script.to_str()
-                history.append({"role": "assistant", "content": observation})
+                print(script_str)
+                all_scenes.append(script_str)
+                new_script = f"<b style='color:green;'>{agent.name}: \n\n {script_str}</b>"
+                history.append({"role": "assistant", "content": new_script})
                 
                 yield history
 
@@ -209,10 +212,8 @@ def run_agents(history: list):
                 observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes, story_beats, i)
                 print(observation)
                 all_scenes.append(observation)
-
-                observation = agent.process_observation(observation, all_scenes, story_beats, i)
-                all_scenes.append(observation)
-                history.append({"role": "assistant", "content": observation})
+                critique = f"<b style='color:white;'>{agent.name} thinks: \n\n {observation}</b>"
+                history.append({"role": "assistant", "content": critique})
                 
                 yield history
 
@@ -283,42 +284,42 @@ with gr.Blocks() as demo:
 
     with gr.Tab("Generation"):
 
-        for i in range(0, story_beats, 3):
+        for i in range(0, 6, 3):
             with gr.Row():
                 for j in range(3):
-                    if i + j < story_beats:
+                    if i + j < 6:
                         with gr.Column():
                             with gr.Tab("image"):
-                              image = gr.Image(label=f"Image for Story Beat {i + j + 1}")
+                              image = gr.Image(label=f"Image for Story Beat {i + j}")
                               default_text = "input"
 
                               img_text_button = gr.Button("Generate Prompt")
-                              textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
-                              img_text_button.click(partial(generate_img_text_for_beat, i + j + 1), outputs=textbox)
+                              textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value=default_text)
+                              img_text_button.click(partial(generate_img_text_for_beat, i + j), outputs=textbox)
 
-                              image_gen_button = gr.Button(f"Generate for Image {i + j + 1}",
+                              image_gen_button = gr.Button(f"Generate for Image {i + j}",
                                         variant="primary")
                               image_gen_button.click(generate_image, inputs=textbox, outputs=image)
 
                             with gr.Tab("video"):
-                              video = gr.Video(label=f"Video for Story Beat {i + j + 1}")
+                              video = gr.Video(label=f"Video for Story Beat {i + j}")
                               
                               vid_text_button = gr.Button("Generate Video Prompt")
-                              textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
-                              vid_text_button.click(partial(generate_img_text_for_beat, i + j + 1), outputs=textbox)
+                              textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value=default_text)
+                              vid_text_button.click(partial(generate_img_text_for_beat, i + j), outputs=textbox_2)
 
-                              video_gen_button = gr.Button(f"Generate for Video {i + j + 1}",
+                              video_gen_button = gr.Button(f"Generate for Video {i + j}",
                                         variant="primary")
-                              video_gen_button.click(partial(generate_video, idx=i + j + 1), inputs=[textbox_2,image], outputs=video)
+                              video_gen_button.click(partial(generate_video, idx=i + j), inputs=[textbox_2,image], outputs=video)
 
                               audio_text_button = gr.Button("Generate Audio Prompt")
-                              textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j + 1}", value=default_text)
+                              textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j}", value=default_text)
                               
-                              audio_text_button.click(partial(generate_audio_text_for_beat, i + j + 1), outputs=textbox_3)
+                              audio_text_button.click(partial(generate_audio_text_for_beat, i + j), outputs=textbox_3)
                               audio = gr.Audio()
-                              audio_gen_button = gr.Button(f"Generate for Audio {i + j + 1}",
+                              audio_gen_button = gr.Button(f"Generate for Audio {i + j}",
                                         variant="primary")
-                              audio_gen_button.click(partial(generate_audio, idx=i + j + 1), inputs=[textbox_3,], outputs=audio)
+                              audio_gen_button.click(partial(generate_audio, idx=i + j), inputs=[textbox_3,], outputs=audio)
 
     with gr.Tab("output"): 
         final_video = gr.Video(label=f"final video")                      
