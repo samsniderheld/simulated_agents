@@ -15,7 +15,7 @@ from moviepy import VideoFileClip, AudioFileClip, concatenate_videoclips
 
 
 parser = argparse.ArgumentParser(description="Simulated Agents")
-parser.add_argument('--story_beats', type=int, default=3, help='Number of story beats')
+parser.add_argument('--iterations', type=int, default=3, help='Number of story beats')
 parser.add_argument('--scenario_file_path', type=str, default='config_files/scenario.yaml', help='Path to the scenario file')
 parser.add_argument('--share', action='store_true', help='Share the Gradio app')
 parser.add_argument('--debug', action='store_true', help='Debug mode')
@@ -36,7 +36,7 @@ for directory in directories:
         shutil.rmtree(directory)
     os.makedirs(directory, exist_ok=True)
 
-story_beats = args.story_beats
+iterations = args.iterations
 
 history = []
 
@@ -69,7 +69,8 @@ final_script = None
 def update_textboxes():
     global final_script
     text_responses = []
-    for i in range(story_beats):
+    num_shots = len(final_script.shots)
+    for i in range(num_shots):
         img_text = final_script.shots[i].txt2img_prompt
         vid_text = final_script.shots[i].txt2img_prompt
         vo_text = final_script.shots[i].vo
@@ -142,7 +143,7 @@ def user(user_message, history: list):
 
 def run_agents(history: list):
     global current_beat
-    global story_beats
+    global iterations
     global all_scenes
     global observation
     global interactive
@@ -153,15 +154,15 @@ def run_agents(history: list):
 
     if interactive:
         iteration = 0
-        if current_beat < story_beats:
+        if current_beat < iterations:
             if message != "":
                 observation = message
                 all_scenes.append(observation)
             
             if i == 0:
-                script = script_writer.process_observation(observation, all_scenes, story_beats, i, use_json=True)
+                script = script_writer.process_observation(observation, all_scenes, iterations, i, use_json=True)
             else:
-                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, story_beats, i, use_json=True)
+                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, iterations, i, use_json=True)
             
             script_str = script.to_str()
             print(script_str)
@@ -180,14 +181,14 @@ def run_agents(history: list):
     else:
         # Simulate the scene
         print("simulating scene")
-        for i in range(story_beats):
+        for i in range(iterations):
                 
             for agent in character_agents:
                 if agent.name == "script_writer":
                     if i == 0:
-                        script = script_writer.process_observation(observation, all_scenes, story_beats, i, use_json=True)
+                        script = script_writer.process_observation(observation, all_scenes, iterations, i, use_json=True)
                     else:
-                        script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, story_beats, i, use_json=True)
+                        script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, iterations, i, use_json=True)
                     
                     script_str = script.to_str()
                     print(script_str)
@@ -199,7 +200,7 @@ def run_agents(history: list):
 
                 elif agent.name == "producer":
 
-                    observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes, story_beats, i)
+                    observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes, iterations, i)
                     print(observation)
                     all_scenes.append(observation)
                     critique = f"<b style='color:white;'>{agent.name} thinks: \n\n {observation}</b>"
@@ -230,7 +231,7 @@ with gr.Blocks() as demo:
     with gr.Tab("Generation"):
         text_boxes = []
         update_button = gr.Button("Update Textboxes")
-        update_button.click(update_textboxes, outputs=textboxes)
+        update_button.click(update_textboxes, outputs=text_boxes)
         for i in range(0, 6, 3):
             with gr.Row():
                 for j in range(3):
