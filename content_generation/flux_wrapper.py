@@ -16,7 +16,7 @@ class FluxWrapper:
         transformer (FluxTransformer2DModel): The FluxTransformer2DModel object.
     """
 
-    def __init__(self, model_id: str, lora_path: str) -> None:
+    def __init__(self, model_id: str, lora_paths: [str]) -> None:
         """
         Initializes the FluxWrapper with the specified model ID and LoRA weights path.
 
@@ -25,7 +25,7 @@ class FluxWrapper:
             lora_path (str): The path to the LoRA weights.
         """
         self.model_id = model_id
-        self.lora_path = lora_path
+        self.lora_paths = lora_paths
         self.pipe = None
         self.transformer = None
         self.load_model()
@@ -35,7 +35,8 @@ class FluxWrapper:
         Loads the pre-trained model and LoRA weights, and quantizes the transformer model.
         """
         self.pipe = FluxPipeline.from_pretrained(self.model_id, torch_dtype=torch.bfloat16)
-        self.pipe.load_lora_weights(self.lora_path)
+        for path in self.lora_paths:
+            self.pipe.load_lora_weights(path)
         self.pipe.to("cuda")
 
         self.transformer = FluxTransformer2DModel.from_pretrained(

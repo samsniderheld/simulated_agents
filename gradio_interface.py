@@ -59,7 +59,7 @@ observation = "today we are writing a story about a young boy learning about the
 all_scenes.append(observation)
 
 print("loading content generation capabilities")
-image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/Realistic_PixArt_Doodle_art_style.safetensors")
+image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/pencil_draw_line_girl_flux_lora.safetensors")
 video_gen = VideoWrapper(api="runway")
 tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
@@ -71,8 +71,8 @@ def update_textboxes():
     text_responses = []
     num_shots = len(final_script.shots)
     for i in range(num_shots):
-        img_text = final_script.shots[i].txt2img_prompt
-        vid_text = final_script.shots[i].txt2img_prompt
+        img_text = f"TAYLRRR, {final_script.shots[i].txt2img_prompt},super hyper realistic, cinematic volumetric lighting, shot with Sony Fx6" 
+        vid_text = img_text
         vo_text = final_script.shots[i].vo
         text_responses.append(img_text)
         text_responses.append(vid_text)
