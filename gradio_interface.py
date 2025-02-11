@@ -50,17 +50,17 @@ show_simulated_thinking = args.show_simulated_thinking
 
 print("loading agents")
 synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
-alex = get_agent_by_name("alex", synthetic_agents)
-bob = get_agent_by_name("bob", synthetic_agents)
-director = get_agent_by_name("director", synthetic_agents)
+script_writer = get_agent_by_name("script_writer", synthetic_agents)
+producer = get_agent_by_name("prodcuer", synthetic_agents)
 
 img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
 vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
 audio_prompt_agent = get_agent_by_name("audio_prompt", helper_agents)
 
-character_agents = [alex, bob, director]
 
-observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
+character_agents = [script_writer, producer]
+
+observation = "today we are writing a story about a young boy learning about the universe"
 all_scenes.append(observation)
 
 print("loading content generation capabilities")
@@ -68,6 +68,8 @@ image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/cmbnd2.safetensors
 video_gen = VideoWrapper(api="runway")
 tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
+
+final_script = None
 
 def concatenate_scenes(beat_number):
     global all_scenes
@@ -78,21 +80,29 @@ def concatenate_scenes(beat_number):
     return concatenated_actions
 
 def generate_img_text_for_beat(beat_number):
-    scene = concatenate_scenes(beat_number)
-    prompt = img_prompt_agent.basic_api_call(scene)
-    for agent in character_agents:
-        if agent.name in prompt.lower():
-            prompt += f"\n\n{agent.flux_caption}"
+    global final_script
+    prompt = final_script.shots[beat_number].txt2img_prompt
     return prompt
+
+    # scene = concatenate_scenes(beat_number)
+    # prompt = img_prompt_agent.basic_api_call(scene)
+    # for agent in character_agents:
+    #     if agent.name in prompt.lower():
+    #         prompt += f"\n\n{agent.flux_caption}"
+    # return prompt
 
 def generate_vid_text_for_beat(img_text):
     prompt = vid_prompt_agent.basic_api_call(img_text)
     return prompt
 
 def generate_audio_text_for_beat(beat_number):
-    scene = concatenate_scenes(beat_number)
-    prompt = audio_prompt_agent.basic_api_call(scene)
+    global final_script
+    prompt = final_script.shots[beat_number].vo
     return prompt
+    
+    # scene = concatenate_scenes(beat_number)
+    # prompt = audio_prompt_agent.basic_api_call(scene)
+    # return prompt
 
 def update_textboxes():
     text_responses = []
@@ -163,8 +173,6 @@ def create_video():
 
     return out_path
 
-    
-
 
 def user(user_message, history: list):
         history.append({"role": "user", "content": user_message})
@@ -176,53 +184,86 @@ def run_agents(history: list):
     global all_scenes
     global observation
     global interactive
+    global final_script
     this_scene = []
 
     message = history[-1]["content"]
 
-    if interactive:
-        if current_beat < story_beats:
-            if message != "":
-                observation = message
+    # Simulate the scene
+    print("simulating scene")
+    for i in range(story_beats):
+        for agent in character_agents:
+            if agent.name == "script_writer":
+                if i == 0:
+                    script = script_writer.process_observation(observation, all_scenes, story_beats, i)
+                else:
+                    script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, story_beats, i)
+                
+                script_str = script.to_str()
+                history.append({"role": "assistant", "content": observation})
+                
+                yield history
+
+            elif agent.name == "producer":
+
+                observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes, story_beats, i)
+                print(observation)
                 all_scenes.append(observation)
-                this_scene.append(observation)
 
-            for agent in character_agents:
-                if show_simulated_thinking:
-                    reflection = agent.reflect()
-                    thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
-                    history.append({"role": "assistant", "content": thought})
-                    this_scene.append(reflection)
-                observation = agent.process_observation(observation, all_scenes, story_beats, current_beat)
-                all_scenes.append(observation)
-                this_scene.append(observation)
-
-            this_scene_actions = "\n ".join(this_scene)
-
-            current_beat += 1
-
-            history.append({"role": "assistant", "content": this_scene_actions + "\n\n would you like to interact?"})
-
-            yield history
-        else:
-            history.append({"role": "assistant", "content": "The scene is complete"})
-            yield history
-    else:
-        for i in range(story_beats):
-            for agent in character_agents:
-                time.sleep(3)
-                if show_simulated_thinking:
-                    reflection = agent.reflect()
-                    thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
-                    history.append({"role": "assistant", "content": thought})
-                    this_scene.append(reflection)
                 observation = agent.process_observation(observation, all_scenes, story_beats, i)
                 all_scenes.append(observation)
                 history.append({"role": "assistant", "content": observation})
+                
                 yield history
 
-        history.append({"role": "assistant", "content": "The scene is complete"})
-        yield history
+    final_script = script
+
+    history.append({"role": "assistant", "content": "The scene is complete"})
+    yield history
+
+    # if interactive:
+    #     if current_beat < story_beats:
+    #         if message != "":
+    #             observation = message
+    #             all_scenes.append(observation)
+    #             this_scene.append(observation)
+
+    #         for agent in character_agents:
+    #             if show_simulated_thinking:
+    #                 reflection = agent.reflect()
+    #                 thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
+    #                 history.append({"role": "assistant", "content": thought})
+    #                 this_scene.append(reflection)
+    #             observation = agent.process_observation(observation, all_scenes, story_beats, current_beat)
+    #             all_scenes.append(observation)
+    #             this_scene.append(observation)
+
+    #         this_scene_actions = "\n ".join(this_scene)
+
+    #         current_beat += 1
+
+    #         history.append({"role": "assistant", "content": this_scene_actions + "\n\n would you like to interact?"})
+
+    #         yield history
+    #     else:
+    #         history.append({"role": "assistant", "content": "The scene is complete"})
+    #         yield history
+    # else:
+    #     for i in range(story_beats):
+    #         for agent in character_agents:
+    #             time.sleep(3)
+    #             if show_simulated_thinking:
+    #                 reflection = agent.reflect()
+    #                 thought = f"<b style='color:green;'>{agent.name} thinks: {reflection}</b>"
+    #                 history.append({"role": "assistant", "content": thought})
+    #                 this_scene.append(reflection)
+    #             observation = agent.process_observation(observation, all_scenes, story_beats, i)
+    #             all_scenes.append(observation)
+    #             history.append({"role": "assistant", "content": observation})
+    #             yield history
+
+    #     history.append({"role": "assistant", "content": "The scene is complete"})
+    #     yield history
 
 
 with gr.Blocks() as demo:
@@ -264,7 +305,7 @@ with gr.Blocks() as demo:
                               
                               vid_text_button = gr.Button("Generate Video Prompt")
                               textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j + 1}", value=default_text)
-                              vid_text_button.click(generate_vid_text_for_beat, inputs=textbox, outputs=textbox_2)
+                              vid_text_button.click(partial(generate_img_text_for_beat, i + j + 1), outputs=textbox)
 
                               video_gen_button = gr.Button(f"Generate for Video {i + j + 1}",
                                         variant="primary")
