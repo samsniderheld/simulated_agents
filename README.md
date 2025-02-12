@@ -114,7 +114,7 @@ alex.summarize_memory()
 
 Here is an example of how to run a basic example via gradio:
 
-## Usage
+## Gradio Usage
 The script supports the following command-line arguments:
 
 - `--iterations`: Number of iterations for the simulation (default: 3)
@@ -134,8 +134,7 @@ Example usage:
 This will run the `gradio_interface.py` script with 5 iterations, using the specified scenario file, sharing the Gradio app, and using the provided narrative.
 
 
-Here is an example of how to run a full agentic flow:
-## Usage
+## Full Agentic Usage
 The script supports the following command-line arguments:
 
 - `--iterations`: Number of iterations for the simulation (default: 3)
@@ -151,4 +150,3 @@ Example usage:
     ```
 
 This will run the `full_agentic_flow.py` script with 5 iterations, using the specified scenario file, generating 2 variations of the content, and using the provided narrative.
-    ```
