@@ -15,7 +15,7 @@ class ShotList(BaseModel):
         for i,shot in enumerate(self.shots):
             output_string+=f"shot {i} action: {shot.shot_action}\n"
             output_string+=f"shot {i} prompt: {shot.txt2img_prompt}\n"
-            output_string+=f"shot {i} action: {shot.vo}\n"
+            output_string+=f"shot {i} vo: {shot.vo}\n"
         
         return output_string
     
@@ -63,7 +63,7 @@ class LLMWrapper:
             return response.choices[0].message.content
         return ""
     
-    def make_api_call_json(self, messages: list) -> str:
+    def make_api_call_structured(self, messages: list) -> str:
         """
         Makes an API call to the language model with the provided messages.
 
@@ -71,7 +71,7 @@ class LLMWrapper:
             messages (list): The messages to send to the language model.
 
         Returns:
-            str: The response from the language model.
+            str: The the structured response from the language model.
         """
         if self.llm == "openAI":
             response = self.client.beta.chat.completions.parse(

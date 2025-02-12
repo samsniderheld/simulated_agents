@@ -55,6 +55,15 @@ class BaseAgent:
         }
 
     def basic_api_call(self, query: str) -> str:
+        """
+        Makes a basic API call to the language model with the provided query.
+
+        Args:
+            query (str): The query to send to the language model.
+
+        Returns:
+            str: The response from the language model.
+        """
         messages = [
             {
                 "role": "system",
@@ -65,7 +74,16 @@ class BaseAgent:
         response = self.llm.make_api_call(messages)
         return response
 
-    def basic_api_call_json(self, query: str) -> str:
+    def basic_api_call_structured(self, query: str) -> str:
+        """
+        Makes a basic API call to the language model with the provided query and expects a structured response.
+
+        Args:
+            query (str): The query to send to the language model.
+
+        Returns:
+            str: The structured response from the language model.
+        """
         messages = [
             {
                 "role": "system",
@@ -73,5 +91,5 @@ class BaseAgent:
             },
             {"role": "user", "content": query}
         ]
-        response = self.llm.make_api_call_json(messages)
+        response = self.llm.make_api_call_structured(messages)
         return response

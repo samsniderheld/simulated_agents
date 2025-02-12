@@ -1,8 +1,4 @@
 import argparse
-import os
-import shutil
-
-from moviepy import VideoFileClip, AudioFileClip, concatenate_videoclips
 
 from utils import *
 from agents import *
@@ -10,160 +6,80 @@ from content_generation import *
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description="Simulated Agents")
-parser.add_argument('--story_beats', type=int, default=3, help='Number of story beats')
+parser.add_argument('--iterations', type=int, default=3, help='Number of story beats')
 parser.add_argument('--scenario_file_path', type=str, default='config_files/scenario.yaml', help='Path to the scenario file')
 parser.add_argument('--variations', type=int, default=1, help='Number of variations')
 parser.add_argument('--interactive', action='store_true', help='Interactive mode')
+parser.add_argument('--narrative', type=str, default='today we are writing a story about a young boy learning about the universe', help='what are we writing an episode about')
+
 args = parser.parse_args()
 
-def create_directory(directory):
-    """
-    Makes directory. Clears all files in the specified directory if it exists.
-
-    Args:
-        directory (str): The path to the directory to clear.
-    """
-    if os.path.exists(directory):
-        shutil.rmtree(directory)
-    os.makedirs(directory, exist_ok=True)
-
-def concatenate_actions(beat_number, all_scenes,character_agents):
-    """
-    Concatenates actions for a given beat number.
-
-    Args:
-        beat_number (int): The beat number.
-        all_scenes (list): List of all scenes.
-
-    Returns:
-        str: Concatenated actions for the beat number.
-    """
-    character_num = len(character_agents)
-    start = int(beat_number*character_num)
-    end = start + character_num
-    concatenated_actions = " ".join(all_scenes[start:end])
-    return concatenated_actions
-
-def generate_img_text_for_beat(beat_number, all_scenes, character_agents):
-    """
-    Generates image text for a given beat number.
-
-    Args:
-        beat_number (int): The beat number.
-        all_scenes (list): List of all scenes.
-
-    Returns:
-        str: Generated image text.
-    """
-    scene = concatenate_actions(beat_number, all_scenes, character_agents)
-    prompt = img_prompt_agent.basic_api_call(scene)
-    for agent in character_agents:
-        if agent.name in prompt.lower():
-            prompt += f"\n\n{agent.flux_caption}"
-    return prompt
-
-def generate_vid_text_for_beat(img_text):
-    """
-    Generates video text for a given image text.
-
-    Args:
-        img_text (str): The image text.
-
-    Returns:
-        str: Generated video text.
-    """
-    prompt = vid_prompt_agent.basic_api_call(img_text)
-    return prompt
-
-def generate_audio_text_for_beat(beat_number, all_scenes, character_agents):
-    """
-    Generates audio text for a given beat number.
-
-    Args:
-        beat_number (int): The beat number.
-        all_scenes (list): List of all scenes.
-
-    Returns:
-        str: Generated audio text.
-    """
-    scene = concatenate_actions(beat_number, all_scenes, character_agents)
-    text = "convert the following collection of assets into 10 words of voice over:  "
-    prompt = audio_prompt_agent.basic_api_call(text+scene)
-    return prompt
-
-def combine_video_audio(video_path, audio_path, output_path):
-    """
-    Combines video and audio into a single file.
-
-    Args:
-        video_path (str): The path to the video file.
-        audio_path (str): The path to the audio file.
-        output_path (str): The path to the output file.
-    """
-    video_clip = VideoFileClip(video_path)
-    audio_clip = AudioFileClip(audio_path)
-    final_clip = video_clip.with_audio(audio_clip)
-    final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
-
-def concatenate_videos(video_paths, output_path):
-    """
-    Concatenates multiple video files into a single file.
-
-    Args:
-        video_paths (list): List of paths to the video files.
-        output_path (str): The path to the output file.
-    """
-    clips = [VideoFileClip(video) for video in video_paths]
-    final_clip = concatenate_videoclips(clips)
-    final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
+all_scenes = []
 
 # Create and clear necessary directories
 directories = ['out_imgs', 'out_vids', 'out_audio', 'combined_assets', 'final_vids']
 for directory in directories:
     create_directory(directory)
 
-all_scenes = []
-
+#load all the agents
 print("loading agents")
-character_agents, helper_agents = instantiate_agents(args.scenario_file_path)
+synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
+script_writer = get_agent_by_name("script_writer", synthetic_agents)
+producer = get_agent_by_name("producer", synthetic_agents)
 
-img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
-vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
-audio_prompt_agent = get_agent_by_name("audio_prompt", helper_agents)
+character_agents = [script_writer, producer]
 
-
-observation = "bob walks into the living room and says ' I thought I told you not to drink my beer!'"
-all_scenes.append(observation)
-
+#load all the content generation capabilities
 print("loading content generation capabilities")
-image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/cmbnd2.safetensors")
+image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", ["lora/Realistic_PixArt_Doodle_art_style.safetensors", "lora/taylor-v2.safetensors"])
 video_gen = VideoWrapper(api="runway")
 tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
 
+#instantiate the first observation
+observation = args.narrative
+all_scenes.append(observation)
+final_script = None
+
 # Simulate the scene
 print("simulating scene")
-for i in range(args.story_beats):
+for i in range(args.iterations):
     for agent in character_agents:
-        observation = agent.process_observation(observation, all_scenes, args.story_beats, i)
-        print(observation)
-        all_scenes.append(observation)
+        if agent.name == "script_writer":
+            if i == 0:
+                script = script_writer.process_observation(observation, all_scenes, args.iterations, i, use_structured=True)
+            else:
+                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, args.iterations, i, use_structured=True)
+            
+            script_str = script.to_str()
+            print(script_str)
+            all_scenes.append(script_str)
+        
+        elif agent.name == "producer":
 
-print("generating content")
+            observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes, args.iterations, i)
+            print(observation)
+            all_scenes.append(observation)
+
+final_script = script
+
+script_len = len(final_script.shots)
+
 # Generate the content
+print("generating content")
 for i in range(args.variations):
     combined_video_paths = []
-    for j in range(args.story_beats):
+    for j,shot in enumerate(final_script.shots):
         print("generating image")
         img_name = f"out_imgs/scene_{i}.png"
-        img_text = generate_img_text_for_beat(j, all_scenes, character_agents)
+        img_text = f"{script_writer.lora_key_word}, {shot.txt2img_prompt}, {script_writer.flux_caption}"
         img = image_gen.generate_image(img_text)
         img.save(img_name)
         print("generating video")
-        vid_text = generate_vid_text_for_beat(img_text)
+        vid_text = img_text
         vid_path = video_gen.make_api_call(vid_text, img)
         print("generating VO")
-        audio_text = generate_audio_text_for_beat(j, all_scenes, character_agents)
+        audio_text = shot.vo
         audio_path = tts.make_api_call(audio_text)
         combined_output_path = f"combined_assets/scene_{j:04d}_variation_{i:04d}.mp4"
         combine_video_audio(vid_path, audio_path, combined_output_path)

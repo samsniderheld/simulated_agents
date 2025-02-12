@@ -1,7 +1,6 @@
 import argparse
 import os
 import shutil
-import time
 
 import gradio as gr
 
@@ -11,8 +10,6 @@ from utils import *
 from agents import *
 from content_generation import *
 
-from moviepy import VideoFileClip, AudioFileClip, concatenate_videoclips
-
 
 parser = argparse.ArgumentParser(description="Simulated Agents")
 parser.add_argument('--iterations', type=int, default=3, help='Number of story beats')
@@ -21,6 +18,7 @@ parser.add_argument('--share', action='store_true', help='Share the Gradio app')
 parser.add_argument('--debug', action='store_true', help='Debug mode')
 parser.add_argument('--interactive', action='store_true', help='Interactive mode')
 parser.add_argument('--show_simulated_thinking', action='store_true', help='show the simulated thinking')
+parser.add_argument('--narrative', type=str, default='today we are writing a story about a young boy learning about the universe', help='what are we writing an episode about')
 
 args = parser.parse_args()
 
@@ -42,7 +40,7 @@ history = []
 
 all_scenes = []
 
-current_beat = 0
+current_iteration = 0
 
 interactive = args.interactive
 
@@ -55,11 +53,11 @@ producer = get_agent_by_name("producer", synthetic_agents)
 
 character_agents = [script_writer, producer]
 
-observation = "today we are writing a story about a young boy learning about the universe"
+observation = args.narrative
 all_scenes.append(observation)
 
 print("loading content generation capabilities")
-image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", "lora/pencil_draw_line_girl_flux_lora.safetensors")
+image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", ["lora/Realistic_PixArt_Doodle_art_style.safetensors", "lora/taylor-v2.safetensors"])
 video_gen = VideoWrapper(api="runway")
 tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
@@ -67,57 +65,33 @@ print("loading complete")
 final_script = None
 
 def update_textboxes():
+    """
+    A function to fill the generation tabs inputs with the generated content for each shot.
+
+    Returns:
+        list: A list of text responses for each shot.
+    """
     global final_script
     text_responses = []
     num_shots = len(final_script.shots)
     for i in range(num_shots):
-        img_text = f"TAYLRRR, {final_script.shots[i].txt2img_prompt},super hyper realistic, cinematic volumetric lighting, shot with Sony Fx6" 
+        action_text = final_script.shots[i].shot_action
+        img_text = f"{script_writer.lora_key_word}, {final_script.shots[i].txt2img_prompt}, {script_writer.flux_caption}" 
         vid_text = img_text
         vo_text = final_script.shots[i].vo
+        text_responses.append(action_text)
         text_responses.append(img_text)
         text_responses.append(vid_text)
         text_responses.append(vo_text)
     return text_responses
 
-def generate_image(prompt):
-    image = image_gen.generate_image(prompt)
-    return image
-
-def generate_video(prompt,image,idx):
-    path = video_gen.make_api_call(prompt,image,idx)    
-    return path
-
-def generate_audio(prompt,idx):
-    path = tts.make_api_call(prompt,idx)
-    return path
-
-def combine_video_audio(video_path, audio_path, output_path):
-    """
-    Combines video and audio into a single file.
-
-    Args:
-        video_path (str): The path to the video file.
-        audio_path (str): The path to the audio file.
-        output_path (str): The path to the output file.
-    """
-    video_clip = VideoFileClip(video_path)
-    audio_clip = AudioFileClip(audio_path)
-    final_clip = video_clip.with_audio(audio_clip)
-    final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
-
-def concatenate_videos(video_paths, output_path):
-    """
-    Concatenates multiple video files into a single file.
-
-    Args:
-        video_paths (list): List of paths to the video files.
-        output_path (str): The path to the output file.
-    """
-    clips = [VideoFileClip(video) for video in video_paths]
-    final_clip = concatenate_videoclips(clips)
-    final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
-
 def create_video():
+    """
+    Creates a final video by combining video and audio files.
+
+    Returns:
+        str: The path to the final video.
+    """
     video_path = "out_vids"
     audio_path = "out_audio"
     out_path = "final_vids/final_video.mp4"
@@ -138,36 +112,54 @@ def create_video():
     return out_path
 
 def user(user_message, history: list):
-        history.append({"role": "user", "content": user_message})
-        return "", history
+    """
+    Handles user input and updates the chat history.
+
+    Args:
+        user_message (str): The user's message.
+        history (list): The chat history.
+
+    Returns:
+        tuple: An empty string and the updated chat history.
+    """
+    history.append({"role": "user", "content": user_message})
+    return "", history
 
 def run_agents(history: list):
-    global current_beat
+    """
+    Runs the agents to process the scene and generate content. This is the main script generation loop.
+
+    Args:
+        history (list): The chat history.
+
+    Yields:
+        list: The updated chat history.
+    """
+    global current_iteration
     global iterations
     global all_scenes
     global observation
     global interactive
     global final_script
-    this_scene = []
 
     message = history[-1]["content"]
 
     if interactive:
         iteration = 0
-        if current_beat < iterations:
+        if current_iteration < iterations:
             if message != "":
                 observation = message
                 all_scenes.append(observation)
             
-            if i == 0:
-                script = script_writer.process_observation(observation, all_scenes, iterations, i, use_json=True)
+            if iteration == 0:
+                script = script_writer.process_observation(observation, all_scenes, iterations, iteration, use_structured=True)
             else:
-                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, iterations, i, use_json=True)
+                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, iterations, i, use_structured=True)
             
             script_str = script.to_str()
             print(script_str)
             all_scenes.append(script_str)
-            new_script = f"<b style='color:green;'>{agent.name}: \n\n {script_str}</b>"
+            new_script = f"<b style='color:green;'>{script_writer.name}: \n\n {script_str}</b>"
             history.append({"role": "assistant", "content": new_script})
 
             iteration += 1
@@ -186,9 +178,9 @@ def run_agents(history: list):
             for agent in character_agents:
                 if agent.name == "script_writer":
                     if i == 0:
-                        script = script_writer.process_observation(observation, all_scenes, iterations, i, use_json=True)
+                        script = script_writer.process_observation(observation, all_scenes, iterations, i, use_structured=True)
                     else:
-                        script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, iterations, i, use_json=True)
+                        script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, iterations, i, use_structured=True)
                     
                     script_str = script.to_str()
                     print(script_str)
@@ -213,6 +205,8 @@ def run_agents(history: list):
         history.append({"role": "assistant", "content": "The scene is complete"})
         yield history
 
+
+# below the gradio interface is defined
 with gr.Blocks() as demo:
     with gr.Tab("Simulation"):
         chatbot = gr.Chatbot(type="messages")
@@ -239,10 +233,12 @@ with gr.Blocks() as demo:
                         with gr.Column():
                             with gr.Tab("image"):
                               image = gr.Image(label=f"Image for Story Beat {i + j}")
+                              action_box = gr.Textbox(label=f"scene {i + j}", value="")
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
                               image_gen_button = gr.Button(f"Generate for Image {i + j}",
                                         variant="primary")
-                              image_gen_button.click(generate_image, inputs=textbox, outputs=image)
+                              image_gen_button.click(image_gen.generate_image, inputs=textbox, outputs=image)
+                              text_boxes.append(action_box)
                               text_boxes.append(textbox)
 
                             with gr.Tab("video"):
@@ -250,12 +246,12 @@ with gr.Blocks() as demo:
                               textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
                               video_gen_button = gr.Button(f"Generate for Video {i + j}",
                                         variant="primary")
-                              video_gen_button.click(partial(generate_video, idx=i + j), inputs=[textbox_2,image], outputs=video)
+                              video_gen_button.click(partial(video_gen.make_api_call, idx=i + j), inputs=[textbox_2,image], outputs=video)
                               textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j}", value="")
                               audio = gr.Audio()
                               audio_gen_button = gr.Button(f"Generate for Audio {i + j}",
                                         variant="primary")
-                              audio_gen_button.click(partial(generate_audio, idx=i + j), inputs=[textbox_3,], outputs=audio)
+                              audio_gen_button.click(partial(tts.make_api_call, idx=i + j), inputs=[textbox_3,], outputs=audio)
                               text_boxes.append(textbox_2)
                               text_boxes.append(textbox_3)
     with gr.Tab("output"): 

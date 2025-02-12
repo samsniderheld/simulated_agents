@@ -74,7 +74,7 @@ class SyntheticAgent(BaseAgent):
         return response
 
     def process_observation(
-        self, observation: str, scene: list[str], num_beats: int, current_beat: int, use_json:bool=False
+        self, observation: str, scene: list[str], num_beats: int, current_beat: int, use_structured:bool=False
     ) -> str:
         """
         Processes an observation within the given context and story beats.
@@ -101,8 +101,8 @@ class SyntheticAgent(BaseAgent):
             },
             {"role": "user", "content": observation}
         ]
-        if use_json:
-            response = self.llm.make_api_call_json(messages)
+        if use_structured:
+            response = self.llm.make_api_call_structured(messages)
             self.short_memory.append(response.to_str())
         else:
             response = self.llm.make_api_call(messages)

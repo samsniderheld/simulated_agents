@@ -28,9 +28,9 @@ This repository contains code for creating and managing simulated agents using l
     pip install git+https://github.com/xhinker/sd_embed.git@main
     ```
 
-## LLM Configuration
+## API Configurations
 
-Before running the agents, you need to configure the language model settings. Set your OpenAI API key as an environment variable.
+Before running the agents, you need to configure the your APIs. Here is the OpenAI Example.
 
 1. Obtain your OpenAI API key from the [OpenAI website](https://beta.openai.com/signup/).
 
@@ -114,19 +114,41 @@ alex.summarize_memory()
 
 Here is an example of how to run a basic example via gradio:
 
-
 ## Usage
 The script supports the following command-line arguments:
 
-- --story_beats: Number of story beats (default: 3)
-- --scenario_file_path: Path to the scenario file (default: 'config_files/scenario.yaml')
-- --share: Share the Gradio app (default: False)
-- --debug: Debug mode (default: False)
-- --interactive: Interactive mode (default: False)
-- --show_simulated_thinking: Show the simulated thinking (default: False)
+- `--iterations`: Number of iterations for the simulation (default: 3)
+- `--scenario_file_path`: Path to the scenario file (default: 'config_files/scenario.yaml')
+- `--share`: Share the Gradio app (default: False)
+- `--debug`: Debug mode (default: False)
+- `--interactive`: Interactive mode (default: False)
+- `--show_simulated_thinking`: Show the simulated thinking (default: False)
+- `--narrative`: Narrative for the episode (default: 'today we are writing a story about a young boy learning about the universe')
 
 Example usage:
 
     ```sh
-    python basic_example.py --story_beats 5 --scenario_file_path config_files/scenario.yaml --share
+    python gradio_interface.py --iterations 5 --scenario_file_path config_files/scenario.yaml --share --narrative "A story about a brave knight on a quest"
+    ```
+
+This will run the `gradio_interface.py` script with 5 iterations, using the specified scenario file, sharing the Gradio app, and using the provided narrative.
+
+
+Here is an example of how to run a full agentic flow:
+## Usage
+The script supports the following command-line arguments:
+
+- `--iterations`: Number of iterations for the simulation (default: 3)
+- `--scenario_file_path`: Path to the scenario file (default: 'config_files/scenario.yaml')
+- `--variations`: Number of variations for the generated content (default: 1)
+- `--interactive`: Interactive mode (default: False)
+- `--narrative`: Narrative for the episode (default: 'today we are writing a story about a young boy learning about the universe')
+
+Example usage:
+
+    ```sh
+    python full_agentic_flow.py --iterations 5 --scenario_file_path config_files/scenario.yaml --variations 2 --narrative "A story about a brave knight on a quest"
+    ```
+
+This will run the `full_agentic_flow.py` script with 5 iterations, using the specified scenario file, generating 2 variations of the content, and using the provided narrative.
     ```

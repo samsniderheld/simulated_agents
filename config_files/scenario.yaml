@@ -1,11 +1,9 @@
 synthetic_agents: [
-  "config_files/bob.yaml",
-  "config_files/alex.yaml",
-  "config_files/director.yaml"
+  "config_files/infinite_stories/script_writer.yaml",
+  "config_files/infinite_stories/producer.yaml",
 ]
 
 helper_agents: [
   "config_files/img_prompt.yaml",
   "config_files/vid_prompt.yaml",
-  "config_files/audio_prompt.yaml",
-]
+  ]
