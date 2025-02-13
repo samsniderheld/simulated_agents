@@ -50,6 +50,7 @@ print("loading agents")
 synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
 script_writer = get_agent_by_name("script_writer", synthetic_agents)
 producer = get_agent_by_name("producer", synthetic_agents)
+prompt_agent = get_agent_by_name("prompt_agent", helper_agents)
 
 character_agents = [script_writer, producer]
 
@@ -84,6 +85,18 @@ def update_textboxes():
         text_responses.append(vid_text)
         text_responses.append(vo_text)
     return text_responses
+
+def augment_prompt(prompt):
+    """
+    Augments the given prompt using the image prompt agent.
+
+    Args:
+        prompt (str): The prompt to augment.
+
+    Returns:
+        str: The augmented prompt.
+    """
+    return prompt_agent.basic_api_call(prompt)
 
 def create_video():
     """
@@ -235,6 +248,8 @@ with gr.Blocks() as demo:
                               image = gr.Image(label=f"Image for Story Beat {i + j}")
                               action_box = gr.Textbox(label=f"scene {i + j}", value="")
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
+                              augment_prompt = gr.Button("Augment Prompt")
+                              augment_prompt.click(augment_prompt, inputs=textbox, outputs=textbox)
                               image_gen_button = gr.Button(f"Generate for Image {i + j}",
                                         variant="primary")
                               image_gen_button.click(image_gen.generate_image, inputs=textbox, outputs=image)

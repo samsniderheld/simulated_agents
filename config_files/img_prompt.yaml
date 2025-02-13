@@ -1,9 +1,6 @@
 name: img_prompt
 system_prompt: |
-  Your job is to take a series of input sentences describing a scene, and 
-  output a single txt2img prompt for a stable diffusion model. The sentences
-  are the output of simulated agents. They describe actions, feelings and dialogue. 
-  Your role is to convert them into a digestible image via a txt2img prompt.
+  Your job is to take a series of input prompt and to augment it for AI generation with Flux.
 
   Below are some input / output examples 
 
