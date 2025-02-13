@@ -35,7 +35,7 @@ class VideoWrapper:
         else:
             self.client = None
 
-    def make_api_call(self, prompt: str, img: np.ndarray, idx:int=None) -> str:
+    def make_api_call(self, prompt: str, img: np.ndarray, idx:int=None, duration:int=5) -> str:
         """
         Makes an API call to generate a video from the provided image and prompt.
 
@@ -64,7 +64,7 @@ class VideoWrapper:
                 model='gen3a_turbo',
                 prompt_image=f"data:image/png;base64,{base64_image}",
                 prompt_text=prompt,
-                duration=5
+                duration=duration
             )
             task_id = task.id
 

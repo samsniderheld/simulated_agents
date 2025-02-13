@@ -50,7 +50,8 @@ print("loading agents")
 synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
 script_writer = get_agent_by_name("script_writer", synthetic_agents)
 producer = get_agent_by_name("producer", synthetic_agents)
-prompt_agent = get_agent_by_name("prompt_agent", helper_agents)
+img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
+vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
 
 character_agents = [script_writer, producer]
 
@@ -86,7 +87,7 @@ def update_textboxes():
         text_responses.append(vo_text)
     return text_responses
 
-def augment_prompt(prompt):
+def augment_text_prompt(prompt):
     """
     Augments the given prompt using the image prompt agent.
 
@@ -96,7 +97,24 @@ def augment_prompt(prompt):
     Returns:
         str: The augmented prompt.
     """
-    return prompt_agent.basic_api_call(prompt)
+    augmented_prompt = img_prompt_agent.basic_api_call(prompt)
+    output = f"{script_writer.lora_key_word},\n\n {augmented_prompt}, \n\n Costume: {script_writer.flux_caption}" 
+
+    return output
+
+def augment_video_prompt(prompt):
+    """
+    Augments the given prompt using the video prompt agent.
+
+    Args:
+        prompt (str): The prompt to augment.
+
+    Returns:
+        str: The augmented prompt.
+    """
+    augmented_prompt = vid_prompt_agent.basic_api_call(prompt)
+
+    return augmented_prompt
 
 def create_video():
     """
@@ -248,8 +266,8 @@ with gr.Blocks() as demo:
                               image = gr.Image(label=f"Image for Story Beat {i + j}")
                               action_box = gr.Textbox(label=f"scene {i + j}", value="")
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
-                              augment_prompt = gr.Button("Augment Prompt")
-                              augment_prompt.click(augment_prompt, inputs=textbox, outputs=textbox)
+                              augment_img_prompt_button = gr.Button("Augment Prompt", variant="primary")
+                              augment_img_prompt_button.click(augment_text_prompt, inputs=textbox, outputs=textbox)
                               image_gen_button = gr.Button(f"Generate for Image {i + j}",
                                         variant="primary")
                               image_gen_button.click(image_gen.generate_image, inputs=textbox, outputs=image)
@@ -259,6 +277,8 @@ with gr.Blocks() as demo:
                             with gr.Tab("video"):
                               video = gr.Video(label=f"Video for Story Beat {i + j}")
                               textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
+                              augment_vid_prompt_button = gr.Button("Augment Prompt", variant="primary")
+                              augment_vid_prompt_button.click(augment_video_prompt, inputs=textbox_2, outputs=textbox_2)
                               video_gen_button = gr.Button(f"Generate for Video {i + j}",
                                         variant="primary")
                               video_gen_button.click(partial(video_gen.make_api_call, idx=i + j), inputs=[textbox_2,image], outputs=video)

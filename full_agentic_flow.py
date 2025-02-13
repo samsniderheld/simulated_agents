@@ -26,6 +26,8 @@ print("loading agents")
 synthetic_agents, helper_agents = instantiate_agents(args.scenario_file_path)
 script_writer = get_agent_by_name("script_writer", synthetic_agents)
 producer = get_agent_by_name("producer", synthetic_agents)
+img_prompt_agent = get_agent_by_name("img_prompt", helper_agents)
+vid_prompt_agent = get_agent_by_name("vid_prompt", helper_agents)
 
 character_agents = [script_writer, producer]
 
@@ -72,12 +74,14 @@ for i in range(args.variations):
     for j,shot in enumerate(final_script.shots):
         print("generating image")
         img_name = f"out_imgs/scene_{i}.png"
-        img_text = f"{script_writer.lora_key_word}, {shot.txt2img_prompt}, {script_writer.flux_caption}"
+
+        augmented_prompt = img_prompt_agent.basic_api_call(shot.txt2img_prompt)
+        img_text = f"{script_writer.lora_key_word},\n\n {augmented_prompt}, \n\n Costume: {script_writer.flux_caption}"
         img = image_gen.generate_image(img_text)
         img.save(img_name)
         print("generating video")
-        vid_text = img_text
-        vid_path = video_gen.make_api_call(vid_text, img)
+        vid_text = vid_prompt_agent.basic_api_call(shot.txt2img_prompt)
+        vid_path = video_gen.make_api_call(vid_text, img, duration=10)
         print("generating VO")
         audio_text = shot.vo
         audio_path = tts.make_api_call(audio_text)

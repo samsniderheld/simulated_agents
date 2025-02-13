@@ -1,6 +1,6 @@
 synthetic_agents: [
-  "config_files/infinite_stories/script_writer.yaml",
-  "config_files/infinite_stories/producer.yaml",
+  "config_files/script_writer.yaml",
+  "config_files/producer.yaml",
 ]
 
 helper_agents: [

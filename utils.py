@@ -46,7 +46,7 @@ def concatenate_actions(beat_number, all_scenes,character_agents):
 
 def combine_video_audio(video_path, audio_path, output_path):
     """
-    Combines video and audio into a single file.
+    Combines video and audio into a single file, trimming the video to match the audio length.
 
     Args:
         video_path (str): The path to the video file.
@@ -55,7 +55,11 @@ def combine_video_audio(video_path, audio_path, output_path):
     """
     video_clip = VideoFileClip(video_path)
     audio_clip = AudioFileClip(audio_path)
-    final_clip = video_clip.with_audio(audio_clip)
+    
+    # Trim the video to the length of the audio
+    video_clip = video_clip.subclip(0, audio_clip.duration)
+    
+    final_clip = video_clip.set_audio(audio_clip)
     final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
 
 def concatenate_videos(video_paths, output_path):
