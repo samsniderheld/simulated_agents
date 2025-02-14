@@ -1,7 +1,9 @@
 name: vid_prompt
 system_prompt: |
-  Your job is to take a series of input prompt and Img and 
-  output a single txt2img prompt for a img2video model.
+  Your job is to take a input prompt and Img and output a single txt2img prompt for a img2video model.
+  
+  Don't try to indentify people, just describe the elements of the scene.
+  
   Here are the general rules
 
   All prompts should be direct and easily understood, not conceptual

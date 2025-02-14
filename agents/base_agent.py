@@ -109,6 +109,8 @@ class BaseAgent:
             str: The response from the language model.
         """
 
+        if isinstance(image, np.ndarray):
+            image = Image.fromarray(image.astype('uint8'))
         buffered = BytesIO()
         image.save(buffered, format="PNG")
         base64_image = base64.b64encode(buffered.getvalue()).decode('utf-8')
@@ -134,5 +136,5 @@ class BaseAgent:
                 ],
             }
         ]
-        response = self.llm.make_api_call_image(messages)
+        response = self.llm.make_api_call(messages)
         return response
