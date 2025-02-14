@@ -102,7 +102,7 @@ def augment_text_prompt(prompt):
 
     return output
 
-def augment_video_prompt(prompt):
+def augment_video_prompt(prompt, img):
     """
     Augments the given prompt using the video prompt agent.
 
@@ -112,7 +112,7 @@ def augment_video_prompt(prompt):
     Returns:
         str: The augmented prompt.
     """
-    augmented_prompt = vid_prompt_agent.basic_api_call(prompt)
+    augmented_prompt = vid_prompt_agent.basic_api_call(prompt,img)
 
     return augmented_prompt
 
@@ -278,7 +278,7 @@ with gr.Blocks() as demo:
                               video = gr.Video(label=f"Video for Story Beat {i + j}")
                               textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
                               augment_vid_prompt_button = gr.Button("Augment Prompt", variant="primary")
-                              augment_vid_prompt_button.click(augment_video_prompt, inputs=textbox_2, outputs=textbox_2)
+                              augment_vid_prompt_button.click(augment_video_prompt, inputs=[textbox_2,image], outputs=textbox_2)
                               video_gen_button = gr.Button(f"Generate for Video {i + j}",
                                         variant="primary")
                               video_gen_button.click(partial(video_gen.make_api_call, idx=i + j), inputs=[textbox_2,image], outputs=video)

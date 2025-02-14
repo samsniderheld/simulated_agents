@@ -82,3 +82,41 @@ class LLMWrapper:
             )
             return response.choices[0].message.parsed
         return ""
+    
+    # def make_api_call_image(self, messages: list) -> str:
+    #     """
+    #     Makes an API call to the language model with the provided messages.
+
+    #     Args:
+    #         messages (list): The messages to send to the language model.
+
+    #     Returns:
+    #         str: The response from the language model.
+    #     """
+    #     if self.llm == "openAI":
+    #         response = self.client.chat.completions.create(
+    #             model="gpt-4o",
+    #             messages=[
+    #                 {
+    #                 "role": "system",
+    #                 "content": system_prompt,
+    #                 },
+    #                 {
+    #                 "role": "user",
+    #                 "content": [
+    #                     {
+    #                     "type": "text",
+    #                     "text": prompt,
+    #                     },
+    #                     {
+    #                     "type": "image_url",
+    #                     "image_url": {
+    #                         "url":  f"data:image/jpeg;base64,{base64_image}"
+    #                     },
+    #                     },
+    #                 ],
+    #                 }
+    #             ],
+    #         )
+    #         return response.choices[0].message.content
+    #     return ""

@@ -57,9 +57,9 @@ def combine_video_audio(video_path, audio_path, output_path):
     audio_clip = AudioFileClip(audio_path)
     
     # Trim the video to the length of the audio
-    video_clip = video_clip.subclip(0, audio_clip.duration)
+    video_clip = video_clip.subclipped(0, audio_clip.duration)
     
-    final_clip = video_clip.set_audio(audio_clip)
+    final_clip = video_clip.with_audio(audio_clip)
     final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
 
 def concatenate_videos(video_paths, output_path):
