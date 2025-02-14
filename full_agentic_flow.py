@@ -80,7 +80,7 @@ for i in range(args.variations):
         img = image_gen.generate_image(img_text)
         img.save(img_name)
         print("generating video")
-        vid_text = vid_prompt_agent.basic_api_call(shot.txt2img_prompt)
+        vid_text = vid_prompt_agent.image_api_call(shot.txt2img_prompt,img)
         vid_path = video_gen.make_api_call(vid_text, img, duration=10)
         print("generating VO")
         audio_text = shot.vo

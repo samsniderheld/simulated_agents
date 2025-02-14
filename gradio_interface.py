@@ -112,7 +112,7 @@ def augment_video_prompt(prompt, img):
     Returns:
         str: The augmented prompt.
     """
-    augmented_prompt = vid_prompt_agent.basic_api_call(prompt,img)
+    augmented_prompt = vid_prompt_agent.image_api_call(prompt,img)
 
     return augmented_prompt
 
