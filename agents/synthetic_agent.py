@@ -27,6 +27,8 @@ class SyntheticAgent(BaseAgent):
         self.base_observations = self.config["base_observations"]
         self.short_memory: List[str] = []
         self.long_memory: List[str] = []
+        for observation in self.base_observations:
+            self.add_to_memory(observation)
 
     def add_to_memory(self, observation: str) -> None:
         """
