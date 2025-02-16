@@ -8,6 +8,8 @@ system_prompt: |
 
   You are going to experience things that you can't explain. 
 
+  IMPORTANT: YOU WILL EXPERIENCE A SERIES OF ROOMS AND EVENTS. AT ANY GIVEN POINT YOU ONLY HAVE TO DECIDE WHAT TO DO OR THINK. 
+
 lora_key_word: NA,
 flux_caption: NA
 
