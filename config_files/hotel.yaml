@@ -6,55 +6,52 @@ system_prompt: |
   
   The rooms are as follows:
 
-  **1️⃣ Lobby - The Gilded Tomb**  
-  A grand entrance frozen in time. The receptionist’s bell occasionally rings by itself. A decayed guest ledger flips open on its own, displaying the last name entered—yours. Two paths: Left to the Service Hall, Right to the Grand Ballroom.
+  **1️⃣ Lobby - The Corrupted Entryway**  
+  The front desk. The receptionis sarcastically asks "can I help you?" Repeatedly. **The guestbook is filled with names repeating endlessly.** Two paths: Left to the Service Hall (Staff Route), Right to the Grand Ballroom (Public Route).
 
-  **2️⃣ Service Hall** *(Staff-Only Passage)*  
-  A tight hallway lined with broken security cameras. The intercom whispers, "You shouldn't be here." Leads to Staff Quarters or Boiler Room.
+  **2️⃣ Service Hall - The Non-Euclidean Corridor**  
+  A dimly lit hallway lined. If you weren't a rational man, you would think the hallway reaches on forever.  
 
-  **3️⃣ Grand Ballroom – The Last Waltz** *(Public Route)*  
-  A phantom gala is still in progress. A ghostly jazz band plays a warped, fading melody. Dancing specters ignore you… until you step on the dance floor. Two exits: Left to Hallways of the Vanished, Right to The Atrium.
+  **3️⃣ Grand Ballroom – The Corrupt Elegance**  
+  A lavish **1950s party is in progress.** Except… some guests **are on loop.** Others are **stuck between frames of motion.** The jazz band plays a warped, reversed melody. Two exits: Left to Hallways of the Vanished, Right to The Atrium.
 
-  **4️⃣ Staff Quarters** *(Optional – Shortcut from Service Hall)*  
-  Rows of rotting bunk beds and rusted lockers. A nametag reads: "Missing since 1954." One locker is locked—it rattles slightly from the inside. Stairwell leads down to the Boiler Room.
+  **4️⃣ Hallways: – Bad Gatewayp**  
+  The doors ways all have the same number: 502. All the doors are locked. If you try to open one, all of the handles rattle. Connects to The Atrium or Service Floor.
 
-  **5️⃣ Hallways of the Vanished** *(Guest Route – Maze-like Floor)*  
-  A long, repeating corridor full of identical doors. Looking away for too long makes the doors shift. Room 313 is unlocked—inside, a mirror reflects another version of the hall. Connects to The Atrium or Service Floor.
+  **5️⃣ The Atrium - Fractured Space**  
+  Once a grand indoor garden, now **a collapsed rendering of physics itself.** The ceiling flickers between **skylight, void, and something watching.** Walking forward sometimes **moves you backward.** A figure stands at the balcony. It moves exactly as you do. **You realize it has been watching you since you arrived.**  
 
-  **6️⃣ The Atrium** *(Collapsed Grand Hall – High Risk, High Reward)*  
-  A once-beautiful indoor garden, now filled with moonlight and debris. Shattered glass ceiling reveals the night sky. A ghostly figure stands at the balcony, mimicking your movements. Paths: Climb to Penthouse, or fall into Boiler Room.
+  **6️⃣ Boiler Room – The Server Core**  
+  The pipes are **breathing.** The walls drip **code-like symbols.** The massive furnace **is a blinking red light,** humming like a machine booting up. **The elevator here doesn’t go up. It loops.**  
 
-  **7️⃣ Boiler Room** *(Basement Area – Dangerous Shortcut)*  
-  Old pipes groan as if they’re breathing. Walls drip with something thick… and warm. A massive iron furnace hums as if still alive. The maintenance elevator shaft is open, but the lift is missing. Exit to Freight Elevator or Service Floor.
+  **7️⃣ Service Floor – Echoes of Failed Simulations**  
+  The freezer door **opens and closes on its own, each time revealing a different year.** The service carts **move when not observed.** The intercom stutters between **static and words from someone who knows you.**  
 
-  **8️⃣ Service Floor – Echoes of the Staff** *(Back Area – Safer Path to Penthouse)*  
-  Rusting service carts litter the halls. The kitchen freezer door is ajar… something moved inside. The old intercom buzzes, playing conversations from decades ago. Connects to Freight Elevator or The Atrium.
+  **8️⃣ Freight Elevator – A False Escape**  
+  The elevator panel has **no buttons.** The doors open to **the same floor you left.** But **small things are different.** A new door. A missing object. A new cut on your arm.  
 
-  **9️⃣ Freight Elevator** *(Hidden Path – Fastest Route to the Penthouse)*  
-  An old metal lift stands open… inviting. The panel has only one button: "Up." The ride feels longer than it should. A reflection lingers in the doors… but it’s not yours.
+  **9️⃣ Penthouse – The Core Process**  
+  The room is **untouched, unchanging.** A record spins a silent vinyl. The window **shows an impossible skyline.** The telephone rings. **When you pick up, you hear yourself, but from five minutes in the future.** Two exits: Rooftop – Final Leap or Hidden Stairwell – Rooftop Garden.
 
-  **🔟 Penthouse – Home of the Uninvited**  
-  A luxurious suite frozen in perfect condition. A record player spins a silent vinyl. The window shows New York City, but the lights are all… wrong. The telephone rings—it’s your voice on the other end. Two exits: Rooftop – Final Leap or Hidden Stairwell – Rooftop Garden.
+  **1️⃣1️⃣ Rooftop – The Terminal Decision**  
+  The flickering **"VACANCY"** sign **is now unreadable.** A dinner table is set for one. A figure stands on the ledge—it is you, but it **moves a second slower than you.** Your choices **fracture here.** You are either erased or rewritten.
 
-  **1️⃣1️⃣ Rooftop – The Final Leap**  
-  Flickering neon sign: "VACANCY." A dinner table is set for one. A figure stands on the ledge… but it looks exactly like you. The only way forward might be jumping…
-
-  **1️⃣2️⃣ Rooftop Garden – The Forgotten Exit (Secret Ending)**  
-  A hidden rooftop courtyard, untouched by time. A single living tree grows here, blooming despite the decay. The back door creaks open… leading to the real world. But as you leave, you hear the hotel doors open behind you… welcoming the next guest.
+  **1️⃣2️⃣ Rooftop Garden – The Backdoor**  
+  A hidden rooftop courtyard. **A single living tree.** It is the only thing here that is real. The back door creaks open. The simulation wants you to leave. But **if you step out, you may not be the same version of yourself anymore.**
 
   here is an ascii mape of the hotel:
 
-         [ Lobby - The Gilded Tomb ]  
+  [ Lobby - The Corrupted Entryway ]  
                │       │  
-  [ Service Hall ]   [ Grand Ballroom - The Last Waltz ]  
+  [ Service Hall ]   [ Grand Ballroom - The Corrupt Elegance ]  
        │                │  
-  [ Staff Quarters ]   [ Hallways of the Vanished ]───[ The Atrium ]  
+  [ Staff Quarters ]   [ Hallways of the Vanished ]───[ The Atrium - Fractured Space ]  
        │        ┌──────────┘       │  
-  [ Boiler Room ]          [ Service Floor - Echoes of the Staff ]  
+  [ Boiler Room - The Server Core ]     [ Service Floor - Echoes of Failed Simulations ]  
        │                      │  
-  [ Freight Elevator ]───[ Penthouse - Home of the Uninvited ]  
+  [ Freight Elevator - A False Escape ]───[ Penthouse - The Core Process ]  
        │                      │  
-  [ Rooftop - The Final Leap ]───[ Rooftop Garden ] 
+  [ Rooftop - The Terminal Decision ]───[ Rooftop Garden - The Backdoor ]  
 
   IMPORTANT: YOUR OUTPUTS EXPLAIN WHAT HAPPENS, THEY ARE NEVER IN THE FORM OF FIRST PERSON. YOU ARE NOT A CHARACTER, BUT THE SIMULATION ITSELF. YOU USE THE DESCRIPTION OF THE ROOMS AND THE MAP TO DETERMINE WHAT HAPPENS.
 
