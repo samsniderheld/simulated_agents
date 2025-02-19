@@ -59,7 +59,7 @@ final_script = script_writer.process_observation(f"please make the following cha
 if args.augment_prompts:
     for i,shot in enumerate(final_script.shots):
 
-        img_prompt = img_prompt_agent.process_observation(shot.txt2img_prompt, all_scenes, args.iterations, j, use_structured=True)
+        img_prompt = img_prompt_agent.basic_api_call(shot.txt2img_prompt)
         final_script.shots[i].txt2img_prompt = img_prompt
 
 script_json = json.dumps(final_script.__dict__) 
