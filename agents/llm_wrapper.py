@@ -25,7 +25,7 @@ class ShotList(BaseModel):
         for i,shot in enumerate(self.shots):
             output_object["shots"].append({"shot_action":shot.shot_action, "txt2img_prompt":shot.txt2img_prompt, "vo":shot.vo})
         
-        return json.dump(output_object,indent=4)
+        return output_object
 
     
 
