@@ -57,14 +57,17 @@ for i in range(args.iterations):
 final_script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, args.iterations, i, use_structured=True)
 
 if args.augment_prompts:
+    print("augmenting prompts")
     for i,shot in enumerate(final_script.shots):
 
         img_prompt = img_prompt_agent.basic_api_call(shot.txt2img_prompt)
         final_script.shots[i].txt2img_prompt = img_prompt
 
-script_json = json.dumps(final_script.__dict__) 
+script_json = final_script.to_json() 
 
 with open('script.json', 'w') as json_file:
     json.dump(script_json, json_file, indent=4)
+
+print("script saved to script.json")
 
 

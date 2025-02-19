@@ -1,4 +1,5 @@
 import os
+import json
 from openai import OpenAI
 from pydantic import BaseModel
 
@@ -18,6 +19,14 @@ class ShotList(BaseModel):
             output_string+=f"shot {i} vo: {shot.vo}\n"
         
         return output_string
+    
+    def to_json(self):
+        output_object = {"shots":[]}
+        for i,shot in enumerate(self.shots):
+            output_object["shots"].append({"shot_action":shot.shot_action, "txt2img_prompt":shot.txt2img_prompt, "vo":shot.vo})
+        
+        return json.dumps(output_object)
+
     
 
 class LLMWrapper:
