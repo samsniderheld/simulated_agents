@@ -81,7 +81,12 @@ class VideoWrapper:
                 name = prompt[:10].replace('"', '')
             path = f"out_vids/{name}_img2video.mp4"
 
-            urllib.request.urlretrieve(task.output[0], path)
+            try:
+                urllib.request.urlretrieve(task.output[0], path)
+            except:
+                print("error downloading video")
+                print(task)
+                return None
 
             return path
         else:
