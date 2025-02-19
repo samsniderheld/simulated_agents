@@ -60,7 +60,8 @@ if args.augment_prompts:
     print("augmenting prompts")
     for i,shot in enumerate(final_script.shots):
 
-        img_prompt = img_prompt_agent.basic_api_call(shot.txt2img_prompt)
+        augmented_prompt = img_prompt_agent.basic_api_call(shot.txt2img_prompt)
+        img_prompt = f"{script_writer.lora_key_word},\n\n {augmented_prompt}, \n\n Costume: {script_writer.flux_caption}"
         final_script.shots[i].txt2img_prompt = img_prompt
 
 script_json = final_script.to_json() 
