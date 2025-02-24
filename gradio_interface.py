@@ -231,7 +231,6 @@ def run_agents(history: list):
                     
                     yield history
 
-        # final_script = script
         final_script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, use_structured=True)
         final_script_str = final_script.to_str()
         new_script = f"<b style='color:green;'>script writer: \n\n {final_script_str}</b>"
