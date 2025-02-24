@@ -183,9 +183,9 @@ def run_agents(history: list):
                 all_scenes.append(observation)
             
             if iteration == 0:
-                script = script_writer.process_observation(observation, all_scenes, iterations, iteration, use_structured=True)
+                script = script_writer.process_observation(observation, all_scenes, use_structured=True)
             else:
-                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, iterations, i, use_structured=True)
+                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, use_structured=True)
             
             script_str = script.to_str()
             print(script_str)
@@ -209,9 +209,9 @@ def run_agents(history: list):
             for agent in character_agents:
                 if agent.name == "script_writer":
                     if i == 0:
-                        script = script_writer.process_observation(observation, all_scenes, iterations, i, use_structured=True)
+                        script = script_writer.process_observation(observation, all_scenes, use_structured=True)
                     else:
-                        script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, iterations, i, use_structured=True)
+                        script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, use_structured=True)
                     
                     script_str = script.to_str()
                     print(script_str)
@@ -223,7 +223,7 @@ def run_agents(history: list):
 
                 elif agent.name == "producer":
 
-                    observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes, iterations, i)
+                    observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes)
                     print(observation)
                     all_scenes.append(observation)
                     critique = f"<b style='color:white;'>{agent.name} thinks: \n\n {observation}</b>"
@@ -232,7 +232,7 @@ def run_agents(history: list):
                     yield history
 
         # final_script = script
-        final_script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, args.iterations, i, use_structured=True)
+        final_script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, use_structured=True)
         final_script_str = final_script.to_str()
         new_script = f"<b style='color:green;'>script writer: \n\n {final_script_str}</b>"
         history.append({"role": "assistant", "content": new_script})

@@ -74,7 +74,7 @@ class SyntheticAgent(BaseAgent):
         return response
 
     def process_observation(
-        self, observation: str, scene: list[str], num_beats: int, current_beat: int, use_structured:bool=False
+        self, observation: str, scene: list[str], use_structured:bool=False
     ) -> str:
         """
         Processes an observation within the given context and story beats.
@@ -92,12 +92,10 @@ class SyntheticAgent(BaseAgent):
             {
                 "role": "system",
                 "content": (
-                    f"story beat {current_beat} / {num_beats}, scene context: {''.join(scene)}, "
+                    f"scene context: {''.join(scene)}, "
                     f"purpose: {self.config['system_prompt']} {' '.join(self.short_memory)} "
                     "Given everything we know about this character and the current scene context, "
-                    "what are they doing, thinking, or saying next? Responses need to be a single sentence. "
-                    "Try to wrap up the scene in the given storybeats"
-                )
+                    "what are they doing, thinking, or saying next? Responses need to be a single sentence. "                )
             },
             {"role": "user", "content": observation}
         ]
