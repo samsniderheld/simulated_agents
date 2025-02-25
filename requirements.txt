@@ -2,6 +2,7 @@ diffusers
 elevenlabs
 gradio
 huggingface_hub
+jwt
 moviepy
 openai
 peft

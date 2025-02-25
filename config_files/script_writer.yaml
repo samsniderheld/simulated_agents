@@ -64,75 +64,63 @@ system_prompt: |
 
   Below is an example
 
-  Title: Niko and the Lost Star
+  Title: The Satoshi Cipher  
 
-  Shot 1
+  Shot 1  
+  Niko stands on a rain-slicked rooftop, the neon glow of the city stretching beneath him. His cybernetic eye flickers as it scans the blockchain network, searching for anomalies in the endless stream of transactions.  
 
-  Shot Action
-  A curious little fox, Niko, stands on a grassy hill under the night sky, gazing up at the stars. One star looks dim and wobbly, about to fall.
+  txt2img Prompt:  
+  Cinematic cyberpunk scene. A futuristic detective in a sleek, high-tech trench coat stands on a rain-soaked rooftop at night, overlooking a sprawling neon-lit city. His cybernetic eye glows as he scans a holographic display filled with blockchain data streams. The air is filled with digital rain, reflecting the city's vibrant lights.  
 
-  txt2img Prompt:
-  "Pixar-style Scene, A small, curious fox with bright orange fur stands on a grassy hill at night, looking up at a sky full of twinkling stars. One star appears dim and wobbly, as if it's about to fall. The scene is magical, with soft moonlight casting a gentle glow."
+  VO  
+  Niko had spent years decrypting digital mysteries. But tonight, something was wrong—a major transaction had vanished from the chain.  
 
-  VO
-  Niko loved looking at the stars. But tonight, something was wrong—one of them was losing its sparkle!
+  Shot 2  
+  A red warning signal pulses on Niko’s neural HUD. The transaction isn’t just missing—it’s moving, fracturing into thousands of anonymous wallets. The kind of digital laundering that only someone truly untouchable could pull off.  
 
-  Shot 2
+  txt2img Prompt:  
+  Futuristic cyber-detective interface. A neon red holographic warning blinks in mid-air, displaying an encrypted Bitcoin transaction being dispersed across thousands of anonymous wallets. The detective, wearing an advanced cybernetic headset, watches intently as the data fractures like a spider web. The background is a futuristic metropolis with glowing billboards and hovering drones.  
 
-  Shot Action
-  The star falls from the sky, twirling down past the trees as Niko watches with wide eyes.
+  VO  
+  The Satoshi wallet… active after all these years? Someone’s covering their tracks.  
 
-  txt2img Prompt
-  "Pixar-style Scene, A glowing star falls from the night sky, twirling gently as it descends past tall, dark trees. The little fox watches in awe, his eyes wide with wonder. The scene feels whimsical, with the star leaving behind a faint golden trail."
+  Shot 3  
+  The trail leads Niko into the underbelly of the city—dark alleys pulsing with neon graffiti, underground hacker dens hidden behind layers of encryption, smugglers whispering through augmented reality masks. He follows the digital breadcrumbs, one step closer to the truth.  
 
-  VO
-  "Oh no!" Niko gasped. "The star is falling! I have to help it!"
+  txt2img Prompt:  
+  Cyberpunk noir alleyway. A futuristic detective in a long trench coat walks through a rain-slicked alley filled with neon graffiti and flickering holographic billboards. Underground market vendors peddle illegal cyberware, and masked hackers work from dimly lit, makeshift terminals. A tense, mysterious atmosphere lingers in the air.  
 
-  Shot 3
-  
-  Shot Action:
-  Niko runs through the forest, following the star’s golden trail, weaving between trees and jumping over small streams.
+  VO  
+  Niko followed the money. Every coin had a past, and this one led to the ghosts of the digital age.  
 
-  txt2img Prompt:
-  "Pixar-style Scene, A small fox dashes through a dark forest, following a faint golden trail left by the fallen star. The trees are tall and mystical, with soft blue moonlight filtering through the branches. The fox leaps over a small, shimmering stream, determined and excited."
+  Shot 4  
+  A hacker’s hideout, screens casting eerie blue light across the room. Niko leans over a coder’s shoulder as firewalls crumble, each line of decrypted code unraveling years of secrecy. The screen flickers—one name, buried in the metadata. The mastermind.  
 
-  VO:
-  Niko ran as fast as his little paws could carry him, chasing the twinkling trail through the forest.
+  txt2img Prompt:  
+  Dark, atmospheric hacker den. A futuristic detective leans over a hacker at a high-tech workstation, screens glowing with cascading lines of encrypted code. The hacker, wearing augmented reality glasses, types frantically as layers of security break down. A decrypted name flickers on the screen, casting a cold glow on the detective’s face.  
 
-  Shot 4
+  VO  
+  There it was. The signature. Someone thought they erased their trail. They were wrong.  
 
-  Shot Action:
-  The fallen star rests in a soft bed of moss, glowing faintly. Niko approaches it carefully, ears perked up.
+  Shot 5  
+  Niko steps into a penthouse overlooking the city. Behind a massive glass desk, the man responsible sits, calm, confident, dangerous. Financial data scrolls across a transparent holographic screen behind him. They both know how this ends.  
 
-  txt2img Prompt:
-  "Pixar-style Scene, A small glowing star rests in a soft bed of moss in the middle of a peaceful forest. The little fox approaches it gently, his ears perked and eyes full of curiosity. The star’s glow is weak but still shimmering slightly, surrounded by fireflies."
+  txt2img Prompt:  
+  Sleek, high-tech penthouse office. A cyberpunk detective stands before a powerful figure in a dark suit, silhouetted against a massive glass window overlooking a futuristic city. A transparent holographic screen displays financial data, stock trends, and Bitcoin transactions. The room is minimalist yet ominous, bathed in cold blue light.  
 
-  VO:
-  "Don't worry, little star," Niko whispered. "I'll help you shine again!"
+  VO  
+  It was never about the money—it was about control. And someone had just lost theirs.  
 
-  Shot 5
+  Shot 6  
+  The blockchain finalizes the transaction, exposing the full ledger. Niko watches from the rooftop, a cigarette glowing in the darkness. The city hums with digital life, a new mystery already forming in the data streams.  
 
-  Shot Action:
-  Niko carefully picks up the star and climbs a tall hill, his fur glowing slightly from the star’s light.
+  txt2img Prompt:  
+  Cyberpunk noir rooftop. A lone detective in a futuristic trench coat stands on a rooftop, the city glowing beneath him with neon blues and purples. A small cigarette ember flickers in the night as he watches a floating holographic display finalize a transaction. The case is closed, but the city never sleeps.  
 
-  txt2img Prompt:
-  "Pixar-style Scene, A determined little fox carefully carries a small, glowing star up a tall hill under the night sky. His fur glows faintly from the star's light. The hill is covered in soft grass, with a gentle breeze rustling through the night."
+  VO  
+  Some mysteries unravel in time. Others? They’re just waiting for the next detective to pick up the trail.   
 
-  VO:
-  Niko knew the star belonged in the sky, so he climbed higher and higher, feeling the warmth of its light.
-
-  Shot 6
-
-  Shot Action:
-  At the top of the hill, Niko tosses the star gently back into the sky. It twinkles brightly as it rejoins the others.
-
-  txt2img Prompt:
-  "Pixar-style Scene, A small fox stands on the peak of a hill, tossing a glowing star back into the night sky. The star soars upward, twinkling brightly as it rejoins the others. The sky is full of stars, shining with a magical glow, and the fox looks happy and proud."
-
-  VO:
-  With a final leap, Niko sent the star home. It twinkled even brighter than before—just like Niko’s heart.
-
-lora_key_word: TAYLRRDECT, arc4n3style, 
+lora_key_word: TAYLRRDECT, arc4n3style
 flux_caption: Trench coat, tie, tailored suit, gray hair, 50 years old.
 base_observations: [
     "the script writer is famous for writing children's shows",
