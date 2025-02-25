@@ -45,7 +45,7 @@ class VideoWrapper:
         else:
             self.client = None
 
-    def encode_jwt_token(access_key, secret_key):
+    def encode_jwt_token(self, access_key, secret_key):
         headers = {"alg": "HS256", "typ": "JWT"}
         payload = {
             "iss": access_key,
@@ -108,14 +108,14 @@ class VideoWrapper:
                 print("error downloading video")
                 print(task)
                 return None
+            
+            print(f"video saved to {path}")
 
             return path
         
         elif self.api == "kling":
 
-            api_token = self.encode_jwt_token(self.api_key_key,self.secret_key)
-
-            submit_url = "https://api.klingai.com/v1/videos/image2video"
+            api_token = self.encode_jwt_token(self.api_key,self.secret_key)
             
             headers = {
                 'content-type': 'application/json;charset=utf-8',
@@ -141,10 +141,9 @@ class VideoWrapper:
                 return []
             
             task_id = response_json["data"]["task_id"]
-            count = 0
 
             time.sleep(self.poll_rate) 
-            result_url = "https://api.klingai.com/v1/videos/image2video/{task_id}"
+            result_url = f"https://api.klingai.com/v1/videos/image2video/{task_id}"
             response_task = requests.get(result_url, headers=headers)
             response_json_task = response_task.json()
 
@@ -155,10 +154,15 @@ class VideoWrapper:
                     break
 
                 time.sleep(self.poll_rate) 
-                result_url = "https://api.klingai.com/v1/videos/image2video/{task_id}"
+                result_url = f"https://api.klingai.com/v1/videos/image2video/{task_id}"
                 response_task = requests.get(result_url, headers=headers)
                 response_json_task = response_task.json()
 
+            
+            if 'failed' in response_json_task['data']['task_status']:
+                print("video generation failed")
+                print(response_json_task)
+                
             videos_result_list = response_json_task['data']['task_result']['videos']
             video_urls = [video['url'] for video in videos_result_list]
 
@@ -175,6 +179,8 @@ class VideoWrapper:
                 print("error downloading video")
                 print(video_urls[0])
                 return None
+            
+            print(f"video saved to {path}")
 
             return path
         else:
