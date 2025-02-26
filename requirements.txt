@@ -1,5 +1,6 @@
 diffusers
 elevenlabs
+google-genai
 gradio
 huggingface_hub
 jwt

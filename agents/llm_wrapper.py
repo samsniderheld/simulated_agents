@@ -1,5 +1,7 @@
 import os
 import json
+
+from google import genai
 from openai import OpenAI
 from pydantic import BaseModel
 
@@ -38,7 +40,7 @@ class LLMWrapper:
         client (OpenAI): The client for the OpenAI API.
     """
 
-    def __init__(self, llm: str = "openAI") -> None:
+    def __init__(self, llm: str = "gemini") -> None:
         """
         Initializes the LLMWrapper with the specified language model.
 
@@ -51,6 +53,11 @@ class LLMWrapper:
             if not api_key:
                 raise ValueError("OPENAI_API_KEY environment variable is not set.")
             self.client = OpenAI()
+        elif self.llm == "gemini":
+            api_key = os.getenv("GEMINI_API_KEY")
+            if not api_key:
+                raise ValueError("GEMINI_API_KEY environment variable is not set.")
+            self.client = genai.Client(api_key="YOUR_API_KEY")
         else:
             self.client = None
 
@@ -70,7 +77,13 @@ class LLMWrapper:
                 messages=messages
             )
             return response.choices[0].message.content
-        return ""
+        elif self.llm == "gemini":
+            response = self.client.models.generate_content(
+                model="gemini-2.0-flash", contents=messages
+            )
+            return response.text
+        else:
+         return ""
     
     def make_api_call_structured(self, messages: list) -> str:
         """
@@ -90,4 +103,16 @@ class LLMWrapper:
                 
             )
             return response.choices[0].message.parsed
+        
+        elif self.llm == "gemini":
+            response = self.client.models.generate_content(
+                model='gemini-2.0-flash',
+                contents=messages,
+                config={
+                    'response_mime_type': 'application/json',
+                    'response_schema': ShotList
+                },
+)
+            return response.text
+
         return ""
