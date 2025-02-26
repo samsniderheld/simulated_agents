@@ -115,6 +115,8 @@ class VideoWrapper:
         
         elif self.api == "kling":
 
+            submit_url = "https://api.klingai.com/v1/videos/image2video"
+            
             api_token = self.encode_jwt_token(self.api_key,self.secret_key)
             
             headers = {
