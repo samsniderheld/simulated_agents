@@ -2,6 +2,7 @@ import os
 import json
 
 from google import genai
+from google.genai import types
 from openai import OpenAI
 from pydantic import BaseModel
 
@@ -28,6 +29,22 @@ class ShotList(BaseModel):
             output_object["shots"].append({"shot_action":shot.shot_action, "txt2img_prompt":shot.txt2img_prompt, "vo":shot.vo})
         
         return output_object
+
+    @classmethod
+    def from_json(cls, json_str: str):
+        """
+        Loads a JSON string into the ShotList object.
+
+        Args:
+            json_str (str): The JSON string to load.
+
+        Returns:
+            ShotList: The ShotList object populated with data from the JSON string.
+        """
+        data = json.loads(json_str)
+        shots = [Shot(**shot) for shot in data["shots"]]
+        return cls(shots=shots)
+        
 
     
 
@@ -57,7 +74,7 @@ class LLMWrapper:
             api_key = os.getenv("GEMINI_API_KEY")
             if not api_key:
                 raise ValueError("GEMINI_API_KEY environment variable is not set.")
-            self.client = genai.Client(api_key="YOUR_API_KEY")
+            self.client = genai.Client(api_key=api_key)
         else:
             self.client = None
 
@@ -79,8 +96,11 @@ class LLMWrapper:
             return response.choices[0].message.content
         elif self.llm == "gemini":
             response = self.client.models.generate_content(
-                model="gemini-2.0-flash", contents=messages
-            )
+                model="gemini-2.0-flash", 
+                contents=messages[1]["content"],
+                config=types.GenerateContentConfig(
+                    system_instruction=messages[0]["content"]),
+                )
             return response.text
         else:
          return ""
@@ -107,12 +127,15 @@ class LLMWrapper:
         elif self.llm == "gemini":
             response = self.client.models.generate_content(
                 model='gemini-2.0-flash',
-                contents=messages,
-                config={
-                    'response_mime_type': 'application/json',
-                    'response_schema': ShotList
-                },
-)
-            return response.text
+                contents=messages[1]["content"],
+                config=types.GenerateContentConfig(
+                    system_instruction=messages[0]["content"],
+                    response_mime_type='application/json',
+                    response_schema=ShotList
+                    )
+            )
+
+            parsed = ShotList.from_json(response.text)
+            return parsed
 
         return ""
