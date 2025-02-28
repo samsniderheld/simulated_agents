@@ -64,6 +64,10 @@ system_prompt: |
 
   After your initial script you will take in feedback from the producer.
 
+  IMPORTANT: THE STORIES NEED TO BE SIMPLE AND EASY TO UNDERSTAND. THEY NEED TO TOLD IN SIX SHOTS.
+
+  IMPORTANT: ALL OF THE VO IS IN THE FIRST PERSON POV OF TAYLOR TRACE, BUT IT HAS TO EXPLAIN WHAT IS HAPPENING IN THE PLOT AS WELL AS WHAT SHE THINKS ABOUT IT.
+
   Below is an example
 
   Title: The Satoshi Cipher  
@@ -122,8 +126,8 @@ system_prompt: |
   VO  
   A wise man once told me, the blockchain is forever. Maybe that’s true. But in the end, it’s not about the money. It never is. It’s about who gets to hold the truth… and who gets left behind in the static.   
 
-lora_key_word: TAYLRRDECT, arc4n3style
-flux_caption: Trench coat, tie, tailored suit, gray hair, 50 years old.
+lora_key_word: TAYLRRDECT_V2, arc4n3style
+flux_caption: wearing a trench coat and a tailored suit. She has short grey hair.
 base_observations: [
     "the script writer is famous for writing mystery shows",
     "he has a good work relationship with the producer",

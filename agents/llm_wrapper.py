@@ -79,6 +79,7 @@ class LLMWrapper:
             self.client = None
 
     def make_api_call(self, messages: list) -> str:
+        # todo: make an error catch for when the API call fails
         """
         Makes an API call to the language model with the provided messages.
 
