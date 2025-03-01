@@ -1,3 +1,4 @@
+import json
 import os
 import shutil
 
@@ -73,3 +74,17 @@ def concatenate_videos(video_paths, output_path):
     clips = [VideoFileClip(video) for video in video_paths]
     final_clip = concatenate_videoclips(clips)
     final_clip.write_videofile(output_path, codec='libx264', audio_codec='aac')
+
+def load_json(file_path):
+    """
+    Loads a JSON file and returns the corresponding object.
+
+    Args:
+        file_path (str): The path to the JSON file.
+
+    Returns:
+        object: The object represented by the JSON file.
+    """
+    with open(file_path, 'r') as file:
+        data = json.load(file)
+    return data

@@ -1,0 +1,50 @@
+{
+    "scenes": [
+      {
+        "id": 1,
+        "name": "Lobby - The Clerk Ignores You",
+        "description": "The front desk is occupied by a clerk who does not acknowledge your presence. You speak, move, wave your hands—but they continue their work as if you do not exist. The guestbook is open, but every name has been scribbled over."
+      },
+      {
+        "id": 2,
+        "name": "Ballroom - The Glitched Dance",
+        "description": "The grand ballroom is completely empty except for one couple dancing. Their movement is elegant, but wrong—glitching forward and backward. Their faces blur, shifting between expressions of joy, sorrow, and nothingness. The music does not match their movements."
+      },
+      {
+        "id": 3,
+        "name": "Elevator - The Looping Descent",
+        "description": "The elevator has no buttons—only a flickering red light above the door. The moment the doors close, there is a jolt—a feeling of falling. When the doors open again, you are back where you started."
+      },
+      {
+        "id": 4,
+        "name": "Staircase - The Endless Ascent",
+        "description": "The staircase spirals upward, but no ceiling is visible. You climb. The air grows thinner. You climb. Your footsteps sound delayed, like an echo catching up. You climb—until suddenly, you are at the top."
+      },
+      {
+        "id": 5,
+        "name": "Hallway - The Repeating Door",
+        "description": "Every room number is 512. The doors look identical, and the handles are cold, unyielding. At the end of the hallway, a window reveals a strange sight—it is raining. But there is no sky. No clouds. Just water falling from nothing."
+      },
+      {
+        "id": 6,
+        "name": "Hotel Room - Glitches in the Code",
+        "description": "The hotel room is frozen, colorless, dim. You step inside, and your hand glitches—flickering, momentarily transparent. The roses on the nightstand suddenly gain color, deep red. A soft blue glow spills from the bathroom door."
+      },
+      {
+        "id": 7,
+        "name": "Bathroom - A Window to Another World",
+        "description": "The bathroom is full color, vibrant, warm. It does not match the rest of the hotel. Outside the frosted bathroom window, you see a beach. The scent of saltwater drifts into the room."
+      },
+      {
+        "id": 8,
+        "name": "Beach - A Shallow Infinity",
+        "description": "The ocean stretches forever, but the water never deepens. You walk, and the waves ripple unnaturally, as if you are stepping through a painted world."
+      },
+      {
+        "id": 9,
+        "name": "Edge of the Horizon - The Sonorous Voice",
+        "description": "The sky distorts. The ocean trembles. A deep, sonorous voice speaks from everywhere at once.\n\n'You and everything in this world are not real.'\n\nThe voice carries weight beyond human understanding. It sees through you. It knows every thought you have ever had.\n\n'Will you submit?'"
+      }
+    ]
+  }
+  
