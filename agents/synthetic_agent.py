@@ -64,15 +64,21 @@ class SyntheticAgent(BaseAgent):
         Returns:
             str: Reflection response.
         """
+
+        memory = ' '.join(self.short_memory)
+
         messages = [
             {
                 "role": "system",
-                "content": "you are a bot that takes an input text about a series of thoughts and events and determines how the subject feels about them."
+                "content": "you are a bot that takes an input text about a series of thoughts and events and determines what the subject things. "
+                "The output should be a single line describing a thought or an emotion. The response is always in the first person POV. They are thingss like:"
+                "'hmmm, that's weird', 'I don't want to go in there', 'why did you leave me', 'That's impossible' etc"
             },
-            {"role": "user", "content": f"{' '.join(self.long_memory)} {' '.join(self.short_memory)}"}
+            {"role": "user", "content": memory}
         ]
         response = self.llm.make_api_call(messages)
-        self.long_memory.append(response)
+        self.long_memory.append(memory)
+        self.short_memory = []
         return response
 
     def process_observation(

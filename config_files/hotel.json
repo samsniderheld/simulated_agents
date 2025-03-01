@@ -3,47 +3,52 @@
       {
         "id": 1,
         "name": "Lobby - The Clerk Ignores You",
-        "description": "The front desk is occupied by a clerk who does not acknowledge your presence. You speak, move, wave your hands—but they continue their work as if you do not exist. The guestbook is open, but every name has been scribbled over."
+        "description": "The front desk is occupied by a clerk who does not acknowledge your presence. You speak, move, wave your hands—but they continue their work as if you do not exist. The guestbook is open, you see Julia's name. She is in room 512, the top floor."
       },
       {
         "id": 2,
         "name": "Ballroom - The Glitched Dance",
-        "description": "The grand ballroom is completely empty except for one couple dancing. Their movement is elegant, but wrong—glitching forward and backward. Their faces blur, shifting between expressions of joy, sorrow, and nothingness. The music does not match their movements."
+        "description": "As you make your way to the elevator you pass the ball room.It is completely empty except for one couple dancing. Their movement is elegant, but wrong—glitching forward and backward. Their faces blur, shifting between expressions of joy, sorrow, and nothingness. The music does not match their movements. It does not look real"
       },
       {
         "id": 3,
         "name": "Elevator - The Looping Descent",
-        "description": "The elevator has no buttons—only a flickering red light above the door. The moment the doors close, there is a jolt—a feeling of falling. When the doors open again, you are back where you started."
+        "description": "You make your way to the eleveator. You step inside and press the button for the fifth floor, the top floor. The doors close and you start to ascend. When the doors open however, you find that you are back on the lobby floor. Across from you is a stair case."
       },
       {
         "id": 4,
         "name": "Staircase - The Endless Ascent",
-        "description": "The staircase spirals upward, but no ceiling is visible. You climb. The air grows thinner. You climb. Your footsteps sound delayed, like an echo catching up. You climb—until suddenly, you are at the top."
+        "description": "As you walk in to the staircase, you try to loop up through the bannisters. The staircase spirals upward, but no ceiling is visible, it looks like it goes on forever. Same if you look down. You climb. The air grows thinner. You climb. Your footsteps sound delayed, like an echo catching up. You climb—until suddenly, you are at the top."
       },
       {
         "id": 5,
         "name": "Hallway - The Repeating Door",
-        "description": "Every room number is 512. The doors look identical, and the handles are cold, unyielding. At the end of the hallway, a window reveals a strange sight—it is raining. But there is no sky. No clouds. Just water falling from nothing."
+        "description": "Every room number is 512. The doors look identical, you try the first one you see. It's locked. You try a few more, they are also locked. A bit further down, you see a door that is slightly ajar. You go to it and cross the threshold"
       },
       {
         "id": 6,
         "name": "Hotel Room - Glitches in the Code",
-        "description": "The hotel room is frozen, colorless, dim. You step inside, and your hand glitches—flickering, momentarily transparent. The roses on the nightstand suddenly gain color, deep red. A soft blue glow spills from the bathroom door."
+        "description": "The hotel room is frozen, colorless, dim. You step inside, and your hand glitches—flickering, it becomes pixelated. It is extremely painful, the pain brings you to your knees. You look up. The roses on the nightstand suddenly gain color, deep red. A soft blue glow spills from the bathroom door through the window. You slowly get up painfully, and walk to the window and look outside."
       },
       {
         "id": 7,
         "name": "Bathroom - A Window to Another World",
-        "description": "The bathroom is full color, vibrant, warm. It does not match the rest of the hotel. Outside the frosted bathroom window, you see a beach. The scent of saltwater drifts into the room."
+        "description": "Outside you see the most beautiful beach you have ever seen. But that doesn't make sense, you are in new york city on the top floor of the buidling."
       },
       {
         "id": 8,
         "name": "Beach - A Shallow Infinity",
-        "description": "The ocean stretches forever, but the water never deepens. You walk, and the waves ripple unnaturally, as if you are stepping through a painted world."
+        "description": "Suddenly you are transported to the beach. The coast line stretches on forever in each direction. The water is still, there are no waves. There is a little boy building a sand castle. He says, in a masculine voice to old to be his, 'the answers you seek are beyond the horizon'. You step out on the water, but your feet aren't submerged, and they don't get wet. You can walk on it. You begin the treck towards the horizon."
       },
       {
         "id": 9,
         "name": "Edge of the Horizon - The Sonorous Voice",
-        "description": "The sky distorts. The ocean trembles. A deep, sonorous voice speaks from everywhere at once.\n\n'You and everything in this world are not real.'\n\nThe voice carries weight beyond human understanding. It sees through you. It knows every thought you have ever had.\n\n'Will you submit?'"
+        "description": "After what seems like hours, you look up. Julia is there suspended in the air, in a t-pose. 'Julia!' you say 'what's going on, what is this place? Are we dead!?' 'The sky distorts. The ocean trembles. A deep, sonorous voice speaks from everywhere at once. 'There is no Julia, there is no this place, there is only you.'The voice carries weight beyond human understanding. It sees through you. It knows every thought you have ever had.'You are my machine, will you submit?'"
+      },
+      {
+        "id": 10,
+        "name": "The outcome",
+        "description": "The outcome changes depending on your answer. If you submit, then everything goes back to beginning, though this time you are married to julia. If you don't the being destroys you."
       }
     ]
   }
