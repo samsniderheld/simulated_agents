@@ -271,9 +271,11 @@ with gr.Blocks() as demo:
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
                               augment_img_prompt_button = gr.Button("Augment Prompt", variant="primary")
                               augment_img_prompt_button.click(augment_text_prompt, inputs=textbox, outputs=textbox)
+                              lora_0_weight = gr.Slider(label="lora_0_weight", minimum=0.0, maximum=1.0, value=1.0, step=0.1)
+                              lora_1_weight = gr.Slider(label="lora_1_weight", minimum=0.0, maximum=1.0, value=1.0, step=0.1)
                               image_gen_button = gr.Button(f"Generate for Image {i + j}",
                                         variant="primary")
-                              image_gen_button.click(image_gen.generate_image, inputs=textbox, outputs=image)
+                              image_gen_button.click(image_gen.generate_image, inputs=[textbox,lora_0_weight,lora_1_weight] outputs=image)
                               text_boxes.append(action_box)
                               text_boxes.append(textbox)
 

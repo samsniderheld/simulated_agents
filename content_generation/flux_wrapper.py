@@ -35,8 +35,8 @@ class FluxWrapper:
         Loads the pre-trained model and LoRA weights, and quantizes the transformer model.
         """
         self.pipe = FluxPipeline.from_pretrained(self.model_id, torch_dtype=torch.bfloat16)
-        for path in self.lora_paths:
-            self.pipe.load_lora_weights(path)
+        for i,path in enumerate(self.lora_paths):
+            self.pipe.load_lora_weights(path,adapter_name=f"lora_{i}")
         self.pipe.to("cuda")
 
         self.transformer = FluxTransformer2DModel.from_pretrained(
@@ -46,7 +46,7 @@ class FluxWrapper:
         )
         quantize_(self.transformer, int8_weight_only())
 
-    def generate_image(self, prompt: str, seed: int = None, width: int = 1024, height: int = 576, steps: int = 40) -> torch.Tensor:
+    def generate_image(self, prompt: str, lora_0_weight: float = 1.0 ,lora_1_weight: float = 1.0, seed: int = None, width: int = 1024, height: int = 576, steps: int = 40) -> torch.Tensor:
         """
         Generates an image based on the provided prompt.
 
@@ -66,6 +66,8 @@ class FluxWrapper:
         )
         if seed is None:
             seed = random.randint(0, 100000)
+
+        self.pipe.set_adapters(["lora_0", "lora_1"], adapter_weights=[lora_0_weight, lora_1_weight])
         image = self.pipe(
             prompt_embeds=prompt_embeds,
             pooled_prompt_embeds=pooled_prompt_embeds,
