@@ -271,9 +271,9 @@ with gr.Blocks() as demo:
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
                               augment_img_prompt_button = gr.Button("Augment Prompt", variant="primary")
                               augment_img_prompt_button.click(augment_text_prompt, inputs=textbox, outputs=textbox)
-                              lora_0_weight = gr.Slider(label="lora_0_weight", minimum=0.0, maximum=1.0, value=1.0, step=0.1)
+                              lora_0_weight = gr.Slider(label="lora_0_weight", minimum=0.0, maximum=1.0, value=0.5, step=0.1)
                               lora_1_weight = gr.Slider(label="lora_1_weight", minimum=0.0, maximum=1.0, value=1.0, step=0.1)
-                              image_gen_button = gr.Button(f"Generate for Image {i + j}",
+                              image_gen_button = gr.Button(f"Generate Image {i + j}",
                                         variant="primary")
                               image_gen_button.click(image_gen.generate_image, inputs=[textbox,lora_0_weight,lora_1_weight], outputs=image)
                               text_boxes.append(action_box)
@@ -284,12 +284,12 @@ with gr.Blocks() as demo:
                               textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
                               augment_vid_prompt_button = gr.Button("Augment Prompt", variant="primary")
                               augment_vid_prompt_button.click(augment_video_prompt, inputs=textbox_2, outputs=textbox_2)
-                              video_gen_button = gr.Button(f"Generate for Video {i + j}",
+                              video_gen_button = gr.Button(f"Generate Video {i + j}",
                                         variant="primary")
                               video_gen_button.click(partial(video_gen.make_api_call, idx=i + j), inputs=[textbox_2,image], outputs=video)
                               textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j}", value="")
                               audio = gr.Audio()
-                              audio_gen_button = gr.Button(f"Generate for Audio {i + j}",
+                              audio_gen_button = gr.Button(f"Generate Audio {i + j}",
                                         variant="primary")
                               audio_gen_button.click(partial(tts.make_api_call, idx=i + j), inputs=[textbox_3,], outputs=audio)
                               text_boxes.append(textbox_2)
