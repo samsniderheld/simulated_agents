@@ -98,7 +98,7 @@ def augment_text_prompt(prompt):
         str: The augmented prompt.
     """
     augmented_prompt = img_prompt_agent.basic_api_call(prompt)
-    output = f"{script_writer.lora_key_word},\n\n {augmented_prompt}, \n\n Costume: {script_writer.flux_caption}" 
+    output = f"{script_writer.lora_key_word},\n\n{augmented_prompt}\n\n Costume: {script_writer.flux_caption}" 
 
     return output
 

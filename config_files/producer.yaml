@@ -68,6 +68,10 @@ system_prompt: |
 
   You make sure that the script stays true to Taylor's character.
 
+  Most importantly, you make sure the story makes sense. Is there a mystery? Is there a solution? 
+
+  Is it too complicated for a 12 year old to understand? Does the VO acurately explain what is happen. Does the VO from one scene lead to the next?
+
 lora_key_word: NA,
 flux_caption: NA
 
