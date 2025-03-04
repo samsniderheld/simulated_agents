@@ -271,11 +271,13 @@ with gr.Blocks() as demo:
                               textbox = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
                               augment_img_prompt_button = gr.Button("Augment Prompt", variant="primary")
                               augment_img_prompt_button.click(augment_text_prompt, inputs=textbox, outputs=textbox)
+                              seed = gr.Number(label="seed", value=0)
+                              steps = gr.Number(label="steps", value=40)
                               lora_0_weight = gr.Slider(label="lora_0_weight", minimum=0.0, maximum=1.0, value=0.5, step=0.1)
                               lora_1_weight = gr.Slider(label="lora_1_weight", minimum=0.0, maximum=1.0, value=1.0, step=0.1)
                               image_gen_button = gr.Button(f"Generate Image {i + j}",
                                         variant="primary")
-                              image_gen_button.click(image_gen.generate_image, inputs=[textbox,lora_0_weight,lora_1_weight], outputs=image)
+                              image_gen_button.click(image_gen.generate_image, inputs=[textbox,seed,steps,lora_0_weight,lora_1_weight], outputs=image)
                               text_boxes.append(action_box)
                               text_boxes.append(textbox)
 
@@ -283,10 +285,11 @@ with gr.Blocks() as demo:
                               video = gr.Video(label=f"Video for Story Beat {i + j}")
                               textbox_2 = gr.Textbox(label=f"Prompt for Story Beat {i + j}", value="")
                               augment_vid_prompt_button = gr.Button("Augment Prompt", variant="primary")
+                              duration = gr.Dropdown(label="duration", choices=[5, 10], value=5)
                               augment_vid_prompt_button.click(augment_video_prompt, inputs=textbox_2, outputs=textbox_2)
                               video_gen_button = gr.Button(f"Generate Video {i + j}",
                                         variant="primary")
-                              video_gen_button.click(partial(video_gen.make_api_call, idx=i + j), inputs=[textbox_2,image], outputs=video)
+                              video_gen_button.click(partial(video_gen.make_api_call, idx=i + j), inputs=[textbox_2,image,duration], outputs=video)
                               textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j}", value="")
                               audio = gr.Audio()
                               audio_gen_button = gr.Button(f"Generate Audio {i + j}",

@@ -55,7 +55,7 @@ class VideoWrapper:
         return jwt.encode(payload, secret_key, algorithm="HS256")
     
 
-    def make_api_call(self, prompt: str, img: np.ndarray, idx:int=None, duration:int=5) -> str:
+    def make_api_call(self, prompt: str, img: np.ndarray, duration:int=5, idx:int=None, ) -> str:
         """
         Makes an API call to generate a video from the provided image and prompt.
 

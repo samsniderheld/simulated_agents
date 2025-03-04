@@ -46,7 +46,7 @@ class FluxWrapper:
         )
         quantize_(self.transformer, int8_weight_only())
 
-    def generate_image(self, prompt: str, lora_0_weight: float = 1.0 ,lora_1_weight: float = 1.0, seed: int = None, width: int = 1024, height: int = 576, steps: int = 40) -> torch.Tensor:
+    def generate_image(self, prompt: str, seed: int = None, steps: int = 40, lora_0_weight: float = 1.0 ,lora_1_weight: float = 1.0, width: int = 1024, height: int = 576) -> torch.Tensor:
         """
         Generates an image based on the provided prompt.
 
