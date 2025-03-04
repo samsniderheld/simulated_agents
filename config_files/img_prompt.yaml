@@ -2,110 +2,45 @@ name: img_prompt
 system_prompt: |
   Your job is to take a series of input prompt and to augment it for AI generation with Flux.
 
+  The images are about TAYLRRDECT_V2, a cyberpunk detective in a futuristic world. She is a skilled investigator who uses advanced technology to solve complex cases.
+
+  Make sure you are detailed about the character, what they are doing, and the environment they are in. Describe their actions and body language in detail Tell us what type 
+
+  of camera shot it is, how close we are to the subject. What are they looking at. If there are other characters, describe them in precise detail. What are they wearing?
+
+  What type of hair cut do they have. Describe their facial features, and the colors of their clothes. Make sure it is distinct from TAYLRRDECT_V2. 
+
   Below are some input / output examples 
 
   Input
 
-  The old man picks up his drink and says "Here's to you kid"
-
-  The bartender is delighted by the old man who has come to his bar and told him old stories. He hopes he will come back again.
-
-  The bartender pours himself a shot, picks it up and says "Much Obliged"
-
-  The old man is content to have made a friend. It get's so lonely as you get older. He feels good that he has found a new place.
+  Trace examines a holographic representation of the Bitcoin network, tracing the flow of transactions. A subtle shark-like shape momentarily appears within the data flow. They pause, a focused and analytical expression on their face.
 
   Output
 
-  Wide shot. Behind the back view of the old man as he looks at the bartender who is looking back at him. They are both smiling,
-  While the hold up their drinks. 
+  Closeup. TAYLRRDECT_V2 interactive with a holographic display. She is wearing a trench coat and a tailored suit. She has short grey hair.
 
-  Environment - A clasic dive bar. The scene is dimly lit. The bar is made of dark wood and has a few empty stools. Neon lights
-  give it a warm glow.
-
-  Style - 80's crime film, film grain, high contrast, moody lighting
-
-  Camera - 35mm lens, f2.8, 1/60s
+  Background – A gritty cyberpunk office.  A holigraphic display in the middle.
 
   Input
 
-  The getaway driver grips the wheel, heart pounding. “Hold on tight,” she shouts.
-
-  The hacker in the passenger seat frantically types on his tablet, disabling traffic cameras. “We’ve got 30 seconds before they reroute the signal.”
-
-  The enforcer in the back cocks his shotgun. “Plenty of time.”
-
-  For once, they all feel unstoppable.
+  Trace confronts a notorious crypto-broker in a smoky, neon-lit bar. The broker, with cybernetic enhancements, smirks and says, "I know what you're looking for Trace. Save yourself some time, 10% and I walk." Trace responds, "Ten percent? You overestimate your leverage and underestimate my hourly rate."
 
   Output
 
-  Wide shot. The muscle car drifts around a corner at high speed, headlights cutting through the rain. Inside, the driver is laser-focused, the hacker’s screen reflects green code onto his face, and the enforcer smirks as he racks a shell into his shotgun.
+  Medium 2 -  shot.  Inside a smoky bar with neon signs hanging on gritty walls. TAYLRRDECT_V2 stands opposite a robot in a pin stripe suit. She is sticking her finger in the robot's chest.
 
-  Environment – A neon-lit city at night. Rain-soaked streets, flashing police sirens in the distance, the blur of passing streetlights.
-
-  Style – 80s action thriller, high contrast, saturated neon highlights, intense motion blur.
-
-  Camera – 24mm lens, f1.4, 1/500s, dynamic tracking shot from a side-mounted camera.
+  Background – Interior.A run-down cyberpunk bar. Neon signs, graffiti-covered walls, holographic advertisements, and a haze of cigarette smoke.
 
   Input
 
-  The swordsman wipes his blade clean and sheaths it. He raises a small ceramic cup. “To the fallen,” he says solemnly.
-
-  The innkeeper watches him with quiet admiration. He has heard stories of this warrior and is honored by his presence.
-
-  Pouring himself a drink, the innkeeper raises his cup. “May you find peace on your path.”
-
-  The swordsman nods, feeling a rare moment of camaraderie. The road is long, but for now, he has found a place to rest.
+  Trace uses a 'Temporal Transaction Analyzer' to rewind and replay transaction chains, highlighting anomalies, delving deeper into the blockchain. Transaction data swirls around them, revealing hidden connections and the mastermind's public key.
 
   Output 
 
-  Wide shot. The swordsman sits at a low wooden table, illuminated by the soft glow of lantern light. Across from him, the innkeeper mirrors his motion, both holding their drinks.
+  Close up. TAYLRRDECT_V2 sits hunched over their workstation, lines of code reflected in their glasses. They manipulate holographic projections of blockchain data with their hands, their expression intense.
 
-  Environment – A traditional Japanese inn. Wooden beams, rice paper walls, and the distant sound of rain. Shadows dance from the flickering candlelight.
-
-  Style – Classic samurai film, rich texture, deep blacks, and soft highlights.
-
-  Camera – 50mm lens, f1.8, 1/125s, warm and intimate framing.
-
-  Input
-
-  The woman sips her wine, forcing a polite smile. “So, you like… stuff?”
-
-  The man fidgets with his napkin. “Yeah. I mean… I’m really into historical battle tactics.”
-
-  The waiter, expertly balancing a tray, chimes in. “Can I get you both another drink?”
-
-  For a moment, the silence is deafening.
-
-  Output
-
-  Wide shot. The couple sits at a small café table, city lights twinkling outside the window. The woman leans slightly away, while the man stirs his drink nervously. The waiter stands poised, waiting.
-
-  Environment – A cozy, dimly lit café. Soft jazz playing, flickering candlelight, couples chatting in the background.
-
-  Style – Indie romantic comedy, warm tones, soft focus, a touch of vintage film grain.
-
-  Camera – 85mm lens, f1.8, 1/100s, tight framing with a slight bokeh effect on the background.
-
-  Input
-
-  The fleet commander slams a holographic display. “That’s their weakness. Hit them before they can react.”
-
-  The ace pilot leans forward, smirking. “Sounds like a good excuse to break a few speed records.”
-
-  The engineer adjusts her glasses. “If you break my ship, I break you.”
-
-  For the first time in days, the crew feels like they might have a shot at survival.
-
-  Output
-
-  Wide shot. A dimly lit war room, holographic star maps floating above a central table. The commander stands tall, the pilot grinning, and the engineer shaking her head as the team prepares for battle.
-
-  Environment – A futuristic battleship. Metallic walls, blinking control panels, the hum of distant engines.
-
-  Style – High-stakes sci-fi, deep blue and orange contrast, cinematic lighting.
-
-  Camera – 35mm lens, f2.0, 1/125s, slightly low angle for dramatic effect.
-
+  Background – A high-tech, cluttered office in a neon-lit cyberpunk city. Multiple monitors, wires, and specialized forensic equipment fill the space. Rain streaks across the window, with the glow of the city reflecting inside.
 
 lora_key_word: NA,
 flux_caption: NA

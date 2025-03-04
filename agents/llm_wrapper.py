@@ -1,5 +1,8 @@
 import os
 import json
+
+from google import genai
+from google.genai import types
 from openai import OpenAI
 from pydantic import BaseModel
 
@@ -27,6 +30,22 @@ class ShotList(BaseModel):
         
         return output_object
 
+    @classmethod
+    def from_json(cls, json_str: str):
+        """
+        Loads a JSON string into the ShotList object.
+
+        Args:
+            json_str (str): The JSON string to load.
+
+        Returns:
+            ShotList: The ShotList object populated with data from the JSON string.
+        """
+        data = json.loads(json_str)
+        shots = [Shot(**shot) for shot in data["shots"]]
+        return cls(shots=shots)
+        
+
     
 
 class LLMWrapper:
@@ -38,7 +57,7 @@ class LLMWrapper:
         client (OpenAI): The client for the OpenAI API.
     """
 
-    def __init__(self, llm: str = "openAI") -> None:
+    def __init__(self, llm: str = "gemini") -> None:
         """
         Initializes the LLMWrapper with the specified language model.
 
@@ -51,10 +70,16 @@ class LLMWrapper:
             if not api_key:
                 raise ValueError("OPENAI_API_KEY environment variable is not set.")
             self.client = OpenAI()
+        elif self.llm == "gemini":
+            api_key = os.getenv("GEMINI_API_KEY")
+            if not api_key:
+                raise ValueError("GEMINI_API_KEY environment variable is not set.")
+            self.client = genai.Client(api_key=api_key)
         else:
             self.client = None
 
     def make_api_call(self, messages: list) -> str:
+        # todo: make an error catch for when the API call fails
         """
         Makes an API call to the language model with the provided messages.
 
@@ -70,7 +95,16 @@ class LLMWrapper:
                 messages=messages
             )
             return response.choices[0].message.content
-        return ""
+        elif self.llm == "gemini":
+            response = self.client.models.generate_content(
+                model="gemini-2.0-flash", 
+                contents=messages[1]["content"],
+                config=types.GenerateContentConfig(
+                    system_instruction=messages[0]["content"]),
+                )
+            return response.text
+        else:
+         return ""
     
     def make_api_call_structured(self, messages: list) -> str:
         """
@@ -90,4 +124,19 @@ class LLMWrapper:
                 
             )
             return response.choices[0].message.parsed
+        
+        elif self.llm == "gemini":
+            response = self.client.models.generate_content(
+                model='gemini-2.0-flash',
+                contents=messages[1]["content"],
+                config=types.GenerateContentConfig(
+                    system_instruction=messages[0]["content"],
+                    response_mime_type='application/json',
+                    response_schema=ShotList
+                    )
+            )
+
+            parsed = ShotList.from_json(response.text)
+            return parsed
+
         return ""
