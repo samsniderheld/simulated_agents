@@ -13,12 +13,12 @@
       {
         "id": 3,
         "name": "Elevator - The Looping Descent",
-        "description": "You make your way to the eleveator. You step inside and press the button for the fifth floor, the top floor. The doors close and you start to ascend. When the doors open however, you find that you are back on the lobby floor. Across from you is a stair case."
+        "description": "You make your way to the elevator. You step inside and press the button for the fifth floor, the top floor. The doors close and you start to ascend. When the doors open however, you find that you are back on the lobby floor. Across from you is a stair case."
       },
       {
         "id": 4,
         "name": "Staircase - The Endless Ascent",
-        "description": "As you walk in to the staircase, you try to loop up through the bannisters. The staircase spirals upward, but no ceiling is visible, it looks like it goes on forever. Same if you look down. You climb. The air grows thinner. You climb. Your footsteps sound delayed, like an echo catching up. You climb—until suddenly, you are at the top."
+        "description": "As you walk in to the staircase, you try to look up through the bannisters. The staircase spirals upward, but no ceiling is visible, it looks like it goes on forever. Same if you look down. You climb. The air grows thinner. You climb. Your footsteps sound delayed, like an echo catching up. You climb—until suddenly, you are at the top."
       },
       {
         "id": 5,
@@ -42,11 +42,16 @@
       },
       {
         "id": 9,
-        "name": "Edge of the Horizon - The Sonorous Voice",
-        "description": "After what seems like hours, you look up. Julia is there suspended in the air, in a t-pose. 'Julia!' you say 'what's going on, what is this place? Are we dead!?' 'The sky distorts. The ocean trembles. A deep, sonorous voice speaks from everywhere at once. 'There is no Julia, there is no this place, there is only you.'The voice carries weight beyond human understanding. It sees through you. It knows every thought you have ever had.'You are my machine, will you submit?'"
+        "name": "Edge of the Horizon - A Painful Sight",
+        "description": "After what seems like hours, you look up. Julia is there suspended in the air, in a t-pose. 'Julia!' you say 'what's going on, what is this place? Are we dead!?' Suddenly a knife appears in Julia's hand. She starts stabbing herself. She starts screaming!"
       },
       {
-        "id": 10,
+        "id": 9,
+        "name": "The Sonorous Voice",
+        "description": "A deep, sonorous voice speaks from everywhere at once. 'There is no Julia, there is no this place, there is only you.'The voice carries weight beyond human understanding. It sees through you. It knows every thought you have ever had.'You are my machine, will you submit?'"
+      },
+      {
+        "id": 11,
         "name": "The outcome",
         "description": "The outcome changes depending on your answer. If you submit, then everything goes back to beginning, though this time you are married to julia. If you don't the being destroys you."
       }

@@ -47,7 +47,7 @@ class SyntheticAgent(BaseAgent):
             {
                 "role": "system",
                 "content": (
-                    "you are a bot that takes an input paragraph about events/actions and summarizes it with a maximum of three sentences."
+                    f"{self.config['system_prompt']} summarize the following events/actions with a maximum of three sentences."
                     f"The response should be in the pov of the agent {self.name}"
                   ) 
             },
@@ -70,7 +70,7 @@ class SyntheticAgent(BaseAgent):
         messages = [
             {
                 "role": "system",
-                "content": "you are a bot that takes an input text about a series of thoughts and events and determines what the subject things. "
+                "content": f"{self.config['system_prompt']}: How do you feel about the following events? Are you scared? Do the events make sense? Do you question your reality? "
                 "The output should be a single line describing a thought or an emotion. The response is always in the first person POV. They are thingss like:"
                 "'hmmm, that's weird', 'I don't want to go in there', 'why did you leave me', 'That's impossible' etc"
             },
