@@ -2,9 +2,10 @@ name: img_prompt
 system_prompt: |
   Your job is to take an input script and break it into a seriers of txt2img prompts for FLUX.
 
+  IMPORTANT: BE AS GRANULAR AS POSSIBLE, MAKE SURE INCLUDE EVERY SHOT IN THE SCRIPT.
+
   Below are some in output examples 
 
- 
 
   Output
 

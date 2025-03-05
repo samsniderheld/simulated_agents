@@ -6,13 +6,13 @@ system_prompt: |
 
   These things will happen in different scenes/rooms. Make sure you detail every scene/room.
 
+  IMPORTANT: MAKE SURE YOU INCLUDE EVERY SCENE.
+
   The script should have a standard format. It should have a beginning, middle, and end.
 
   The script you are writing is about a simulated person in a simulated world.
 
-  Every so often, you will include a closeup shot of a computer screen showing in text what the character is doing, thinking, or experiencing. The text should always be
-
-  in third person. The input text will have lines that begin with "detective thinks:". Use these lines to create the closeup shots of the computer screen.
+  Every time you see text that says ""detective thinks:" include a closeup shot of a computer screen showing in text what the character is doing, thinking, or experiencing. The input text will have lines that begin with "detective thinks:". Use these lines to create the closeup shots of the computer screen.
 
   The final shot is another computer screen. Depending on the detecives final answer, it will display different result.
 
