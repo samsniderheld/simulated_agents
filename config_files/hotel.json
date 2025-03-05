@@ -1,38 +1,109 @@
 {
     "scenes": [
-      {
-        "description": "The front desk is occupied by a clerk who does not acknowledge your presence. You speak, move, wave your hands—but they continue their work as if you do not exist. The guestbook is open, you see Julia's name. She is in room 512, the top floor."
-      },
-      {
-        "description": "As you make your way to the elevator you pass the ball room.It is completely empty except for one couple dancing. Their movement is elegant, but wrong—glitching forward and backward. Their faces blur, shifting between expressions of joy, sorrow, and nothingness. The music does not match their movements. It does not look real"
-      },
-      {
-        "description": "You make your way to the elevator. You step inside and press the button for the fifth floor, the top floor. The doors close and you start to ascend. When the doors open however, you find that you are back on the lobby floor. Across from you is a stair case."
-      },
-      {
-        "description": "As you walk in to the staircase, you try to look up through the bannisters. The staircase spirals upward, but no ceiling is visible, it looks like it goes on forever. Same if you look down. You climb. The air grows thinner. You climb. Your footsteps sound delayed, like an echo catching up. You climb—until suddenly, you are at the top."
-      },
-      {
-        "description": "Every room number is 512. The doors look identical, you try the first one you see. It's locked. You try a few more, they are also locked. A bit further down, you see a door that is slightly ajar. You go to it and cross the threshold"
-      },
-      {
-        "description": "The hotel room is frozen, colorless, dim. You step inside, and your hand glitches—flickering, it becomes pixelated. It is extremely painful, the pain brings you to your knees. You look up. The roses on the nightstand suddenly gain color, deep red. A soft blue glow spills from the bathroom door through the window. You slowly get up painfully, and walk to the window and look outside."
-      },
-      {
-        "description": "Outside you see the most beautiful beach you have ever seen. But that doesn't make sense, you are in new york city on the top floor of the buidling."
-      },
-      {
-        "description": "Suddenly you are transported to the beach. The coast line stretches on forever in each direction. The water is still, there are no waves. There is a little boy building a sand castle. He says, in a masculine voice to old to be his, 'the answers you seek are beyond the horizon'. You step out on the water, but your feet aren't submerged, and they don't get wet. You can walk on it. You begin the treck towards the horizon."
-      },
-      {
-        "description": "After what seems like hours, you look up. Julia is there suspended in the air, in a t-pose. 'Julia!' you say 'what's going on, what is this place? Are we dead!?' Suddenly a knife appears in Julia's hand. She starts stabbing herself. She starts screaming!"
-      },
-      {
-        "description": "A deep, sonorous voice speaks from everywhere at once. 'There is no Julia, there is no this place, there is only you.'The voice carries weight beyond human understanding. It sees through you. It knows every thought you have ever had.'You are my machine, will you submit?'"
-      },
-      {
-        "description": "The outcome changes depending on your answer. If you submit, then everything goes back to beginning, though this time you are married to julia. If you don't the being destroys you."
-      }
+        {
+            "description": "The front desk is occupied by a clerk who does not acknowledge your presence. You speak, move, wave your hands—but they continue their work as if you do not exist."
+        },
+        {
+            "description": "You glance down at the guestbook. It is open. Julia’s name is there. Room 512, the top floor."
+        },
+        {
+            "description": "As you make your way to the elevator, you pass the ballroom. It is completely empty except for one couple dancing."
+        },
+        {
+            "description": "Their movement is elegant but wrong—glitching forward and backward. Their faces blur, shifting between expressions of joy, sorrow, and nothingness."
+        },
+        {
+            "description": "The music does not match their movements. It does not look real."
+        },
+        {
+            "description": "You step into the elevator and press the button for the fifth floor. The doors close, and you start to ascend."
+        },
+        {
+            "description": "When the doors open, you find that you are back on the lobby floor. Across from you is a staircase."
+        },
+        {
+            "description": "You step toward the staircase, trying to look up through the bannisters. The staircase spirals upward, but no ceiling is visible. It looks like it goes on forever."
+        },
+        {
+            "description": "You begin to climb. The air grows thinner. Your footsteps sound delayed, like an echo catching up."
+        },
+        {
+            "description": "You climb. And climb. And climb—until suddenly, you are at the top."
+        },
+        {
+            "description": "Every room number is 512. The doors look identical. You try the first one you see. It's locked."
+        },
+        {
+            "description": "You try a few more. They are also locked."
+        },
+        {
+            "description": "Further down, you see a door that is slightly ajar. You go to it and cross the threshold."
+        },
+        {
+            "description": "The hotel room is frozen—colorless, dim. You step inside, and your hand glitches—flickering, pixelating."
+        },
+        {
+            "description": "It is extremely painful. The pain brings you to your knees."
+        },
+        {
+            "description": "You look up. The roses on the nightstand suddenly gain color—a deep red."
+        },
+        {
+            "description": "A soft blue glow spills from the bathroom door through the window."
+        },
+        {
+            "description": "You slowly get up, painfully. You walk to the window and look outside."
+        },
+        {
+            "description": "Outside, you see the most beautiful beach you have ever seen."
+        },
+        {
+            "description": "But that doesn’t make sense. You are in New York City, on the top floor of a building."
+        },
+        {
+            "description": "Suddenly, you are transported to the beach. The coastline stretches on forever in each direction."
+        },
+        {
+            "description": "The water is still. There are no waves."
+        },
+        {
+            "description": "A little boy is building a sandcastle."
+        },
+        {
+            "description": "He looks up and speaks in a masculine voice too old to be his: 'The answers you seek are beyond the horizon.'"
+        },
+        {
+            "description": "You step out onto the water, but your feet aren’t submerged. They don’t get wet. You can walk on it."
+        },
+        {
+            "description": "You begin the trek toward the horizon."
+        },
+        {
+            "description": "After what seems like hours, you look up."
+        },
+        {
+            "description": "Julia is there, suspended in the air, in a T-pose."
+        },
+        {
+            "description": "'Julia!' you call out. 'What’s going on? What is this place? Are we dead!?'"
+        },
+        {
+            "description": "Suddenly, a knife appears in Julia’s hand."
+        },
+        {
+            "description": "She starts stabbing herself. She starts screaming!"
+        },
+        {
+            "description": "A deep, sonorous voice speaks from everywhere at once: 'There is no Julia. There is no this place. There is only you.'"
+        },
+        {
+            "description": "The voice carries weight beyond human understanding. It sees through you. It knows every thought you have ever had."
+        },
+        {
+            "description": "'You are my machine. Will you submit?'"
+        },
+        {
+            "description": "The outcome changes depending on your answer. If you submit, everything resets. This time, you are married to Julia. If you refuse, the being destroys you."
+        }
     ]
-  }
-  
+}
