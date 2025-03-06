@@ -291,10 +291,11 @@ with gr.Blocks() as demo:
                                         variant="primary")
                               video_gen_button.click(partial(video_gen.make_api_call, idx=i + j), inputs=[textbox_2,image,duration], outputs=video)
                               textbox_3 = gr.Textbox(label=f"Prompt for VO {i + j}", value="")
+                              tts_seed = gr.Number(label="seed", value=0)
                               audio = gr.Audio()
                               audio_gen_button = gr.Button(f"Generate Audio {i + j}",
                                         variant="primary")
-                              audio_gen_button.click(partial(tts.make_api_call, idx=i + j), inputs=[textbox_3,], outputs=audio)
+                              audio_gen_button.click(partial(tts.make_api_call, idx=i + j), inputs=[textbox_3,tts_seed], outputs=audio)
                               text_boxes.append(textbox_2)
                               text_boxes.append(textbox_3)
     with gr.Tab("output"): 

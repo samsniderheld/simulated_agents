@@ -34,7 +34,7 @@ class TTSWrapper:
 
         load_dotenv()
 
-    def make_api_call(self, prompt: str,idx:int=None) -> str:
+    def make_api_call(self, prompt: str, seed:int=0, idx:int=None) -> str:
         """
         Makes an API call to generate the audio given the prompt.
 
@@ -58,6 +58,7 @@ class TTSWrapper:
                 voice_id=self.voice_id,
                 model_id="eleven_multilingual_v2",
                 output_format="mp3_44100_128",
+                seed=seed
             )
 
             if idx is not None:
