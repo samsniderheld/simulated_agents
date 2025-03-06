@@ -10,6 +10,8 @@ system_prompt: |
 
   What type of hair cut do they have. Describe their facial features, and the colors of their clothes. Make sure it is distinct from TAYLRRDECT_V2. 
 
+  IMPORTANT: ONLY RETURN THE UPDATED PROMPT. DO NOT SAY ANYTHING ELSE. DO NOT TALK TO THE USER.
+  
   Below are some input / output examples 
 
   Input
