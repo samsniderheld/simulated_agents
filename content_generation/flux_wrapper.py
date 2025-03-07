@@ -16,9 +16,10 @@ class FluxWrapper:
         lora_path (str): The path to the LoRA weights.
         pipe (FluxPipeline): The FluxPipeline object.
         transformer (FluxTransformer2DModel): The FluxTransformer2DModel object.
+        img2img (bool): Are we using the img2img process?
     """
 
-    def __init__(self, model_id: str, lora_paths: [str], img2img:bool=False) -> None:
+    def __init__(self, model_id: str, lora_paths: [str], img2img:bool=True) -> None:
         """
         Initializes the FluxWrapper with the specified model ID and LoRA weights path.
 
@@ -55,7 +56,7 @@ class FluxWrapper:
         )
         quantize_(self.transformer, int8_weight_only())
 
-    def generate_image(self, prompt: str, seed: int = None, steps: int = 40, lora_0_weight: float = 1.0 ,lora_1_weight: float = 1.0, width: int = 1024, height: int = 576) -> torch.Tensor:
+    def generate_image(self, prompt: str, seed: int = None, steps: int = 40, lora_0_weight: float = 0.3 ,lora_1_weight: float = 1.0, width: int = 1024, height: int = 576,img2img_str=0.7) -> torch.Tensor:
         """
         Generates an image based on the provided prompt.
 
@@ -91,7 +92,7 @@ class FluxWrapper:
                 generator=torch.Generator("cuda").manual_seed(seed),
                 width=width,
                 height=height,
-                strength=0.0,
+                strength=1.0,
                 image=noise_image
             ).images[0]
 
@@ -102,9 +103,10 @@ class FluxWrapper:
                 generator=torch.Generator("cuda").manual_seed(seed),
                 width=width,
                 height=height,
-                strength=0.7,
+                strength=img2img_str,
                 image=image
             ).images[0]
+            
         else:
             image = self.pipe(
                 prompt_embeds=prompt_embeds,
