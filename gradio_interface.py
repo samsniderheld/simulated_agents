@@ -59,7 +59,7 @@ observation = args.narrative
 all_scenes.append(observation)
 
 print("loading content generation capabilities")
-image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", ["lora/ARCANE_STYLE_FADOO-FLUX.safetensors", "lora/taylor-detective.safetensors"])
+image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", ["lora/ARCANE_STYLE_FADOO-FLUX.safetensors", "lora/taylrrdect-v4.safetensors"])
 video_gen = VideoWrapper(api="kling")
 tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
