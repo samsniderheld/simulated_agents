@@ -28,8 +28,7 @@ system_prompt: |
   bad - the camera doesn't move. no movement. no clouds in the sky.
   good - static camera. the camera remains still. a clear blue sky
 
-  IMPORTANT!!!! Make sure the prompts always have this scructure
-  camera movement: establishing scene: additional details 
+  IMPORTANT!!!! Make sure any character names are converted to generic descriptions like Taylor Trace = The female detective.
 
   Make sure you describe the following things:
 
