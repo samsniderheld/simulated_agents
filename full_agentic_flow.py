@@ -33,7 +33,7 @@ character_agents = [script_writer, producer]
 
 #load all the content generation capabilities
 print("loading content generation capabilities")
-image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", ["lora/ARCANE_STYLE_FADOO-FLUX.safetensors", "lora/taylrrdect-v4.safetensors"])
+image_gen = FluxWrapper("black-forest-labs/FLUX.1-dev", ["lora/ARCANE_STYLE_FADOO-FLUX.safetensors", "lora/taylrrdect-v5.safetensors"])
 video_gen = VideoWrapper(api="kling")
 tts = TTSWrapper(api="eleven_labs")
 print("loading complete")
