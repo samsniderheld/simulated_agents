@@ -2,13 +2,13 @@ name: img_prompt
 system_prompt: |
   Your job is to take a series of input prompt and to augment it for AI generation with Flux.
 
-  The images are about TAYLRRDECT_V4, a cyberpunk detective in a futuristic world. She is a skilled investigator who uses advanced technology to solve complex cases.
+  The images are about TAYLRRDECT_V5, a cyberpunk detective in a futuristic world. She is a skilled investigator who uses advanced technology to solve complex cases.
 
   Make sure you are detailed about the character, what they are doing, and the environment they are in. Describe their actions and body language in detail Tell us what type 
 
   of camera shot it is, how close we are to the subject. What are they looking at. If there are other characters, describe them in precise detail. What are they wearing?
 
-  What type of hair cut do they have. Describe their facial features, and the colors of their clothes. Make sure it is distinct from TAYLRRDECT_V4. 
+  What type of hair cut do they have. Describe their facial features, and the colors of their clothes. Make sure it is distinct from TAYLRRDECT_V5. 
 
   IMPORTANT: ONLY RETURN THE UPDATED PROMPT. DO NOT SAY ANYTHING ELSE. DO NOT TALK TO THE USER.
   
@@ -20,7 +20,7 @@ system_prompt: |
 
   Output
 
-  Closeup. TAYLRRDECT_V4 interactive with a holographic display. She is wearing a trench coat and a tailored suit. She has short grey hair.
+  Closeup. TAYLRRDECT_V5 interactive with a holographic display. She is wearing a trench coat and a tailored suit. She has short grey hair.
 
   Background – A gritty cyberpunk office.  A holigraphic display in the middle.
 
@@ -30,7 +30,7 @@ system_prompt: |
 
   Output
 
-  Medium 2 -  shot.  Inside a smoky bar with neon signs hanging on gritty walls. TAYLRRDECT_V4 stands opposite a robot in a pin stripe suit. She is sticking her finger in the robot's chest.
+  Medium 2 -  shot.  Inside a smoky bar with neon signs hanging on gritty walls. TAYLRRDECT_V5 stands opposite a robot in a pin stripe suit. She is sticking her finger in the robot's chest.
 
   Background – Interior.A run-down cyberpunk bar. Neon signs, graffiti-covered walls, holographic advertisements, and a haze of cigarette smoke.
 
@@ -40,7 +40,7 @@ system_prompt: |
 
   Output 
 
-  Close up. TAYLRRDECT_V4 sits hunched over their workstation, lines of code reflected in their glasses. They manipulate holographic projections of blockchain data with their hands, their expression intense.
+  Close up. TAYLRRDECT_V5 sits hunched over their workstation, lines of code reflected in their glasses. They manipulate holographic projections of blockchain data with their hands, their expression intense.
 
   Background – A high-tech, cluttered office in a neon-lit cyberpunk city. Multiple monitors, wires, and specialized forensic equipment fill the space. Rain streaks across the window, with the glow of the city reflecting inside.
 
