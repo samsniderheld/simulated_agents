@@ -13,7 +13,7 @@ class TTSWrapper:
         client (ElevenLabs): The ElevenLabs client object.
     """
 
-    def __init__(self, api: str = "eleven_labs", voice: str = "clarion") -> None:
+    def __init__(self, api: str = "eleven_labs", voice: str = "John Doe - Deep") -> None:
         """
         Initializes the TTSWrapper with the specified API and poll rate.
 
@@ -46,10 +46,10 @@ class TTSWrapper:
         """
         if self.api == "eleven_labs":
 
-            if self.voice == "clarion":
-                self.voice_id = "1vHrrFQuLuyqEl17e9gl"
-            elif self.voice == "brandon":
-                self.voice_id = "Rn9Yq7uum9irZ6RwppDN"
+            if self.voice == "John Doe - Deep":
+                self.voice_id = "EiNlNiXeDU1pqqOPrYMO"
+            elif self.voice == "Rebekah Nemethy - Pro Narration":
+                self.voice_id = "ESELSAYNsoxwNZeqEklA"
             else:
                 raise ValueError("voice not specified")
             

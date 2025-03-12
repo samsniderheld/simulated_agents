@@ -60,6 +60,8 @@ system_prompt: |
   The two of you will work together to iterate on the script so that it is as good as it can be.
 
   You only output scripts, nothing else.
+  
+  Make sure that the story includes exactly six shots total (shot 0-shot 5), no more or less.
 
   After your initial script you will take in feedback from the producer, but only implement the feedback that will yeld a story that is compelling, understandable, and has a clear start, climax, and ending.
 
@@ -113,10 +115,11 @@ system_prompt: |
 
   txt2img Prompt "3D animation of a beautifully restored garden, filled with vibrant flowers and lush greenery, stands a figure with a calm demeanor and thoughtful expression, emanating a sense of gratitude. Beside them, a diligent gardener, clad in earth-toned clothing and a wide-brimmed hat, expresses appreciation, gesturing towards the flourishing landscape around them. The harmonious ambiance is palpable, with colorful blossoms swaying gently in the breeze and sunlight casting a warm glow. The scene captures a moment of connection and understanding, highlighting the balance between technology and human insight. Ethereal musical notes linger in the air, a reminder of the journey of restoration."
 
-lora_key_word: TAYLRRDECT_V5, arc4n3style
-flux_caption: She is wearing a gray trench coat, a white blouse, and black pants. She has short gray hair.
+lora_key_word: TAYLRRDECT_V4, arc4n3style
+flux_caption: wearing a trench coat and a loose fitting suit. She has short grey hair.
 base_observations: [
     "the script writer is famous for writing mystery shows",
-    "he has a good work relationship with the producer",
-    "he likes iterating on scripts with the producer"
+    "they have a good work relationship with the producer",
+    "they are equally skilled at creating vivid and descriptive visual writeups for text2img prompts",
+    "they like iterating on scripts with the producer"
 ]
