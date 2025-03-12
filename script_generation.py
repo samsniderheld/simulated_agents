@@ -50,7 +50,7 @@ for i in range(args.iterations):
         
         elif agent.name == "producer":
 
-            observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes, args.iterations, i)
+            observation = producer.process_observation(f"what do you think of : {script_str} tell the script writer what they should change", all_scenes)
             print(observation)
             all_scenes.append(observation)
 
