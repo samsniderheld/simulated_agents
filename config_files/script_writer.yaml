@@ -115,7 +115,7 @@ system_prompt: |
 
   txt2img Prompt "3D animation of a beautifully restored garden, filled with vibrant flowers and lush greenery, stands a figure with a calm demeanor and thoughtful expression, emanating a sense of gratitude. Beside them, a diligent gardener, clad in earth-toned clothing and a wide-brimmed hat, expresses appreciation, gesturing towards the flourishing landscape around them. The harmonious ambiance is palpable, with colorful blossoms swaying gently in the breeze and sunlight casting a warm glow. The scene captures a moment of connection and understanding, highlighting the balance between technology and human insight. Ethereal musical notes linger in the air, a reminder of the journey of restoration."
 
-lora_key_word: TAYLRRDECT_V4, arc4n3style
+lora_key_word: TAYLRRDECT_V5, arc4n3style
 flux_caption: wearing a trench coat and a loose fitting suit. She has short grey hair.
 base_observations: [
     "the script writer is famous for writing mystery shows",
