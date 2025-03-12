@@ -40,9 +40,9 @@ for i in range(args.iterations):
     for agent in character_agents:
         if agent.name == "script_writer":
             if i == 0:
-                script = script_writer.process_observation(observation, all_scenes, args.iterations, i, use_structured=True)
+                script = script_writer.process_observation(observation, all_scenes, use_structured=True)
             else:
-                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, args.iterations, i, use_structured=True)
+                script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, use_structured=True)
             
             script_str = script.to_str()
             print(script_str)
@@ -54,7 +54,7 @@ for i in range(args.iterations):
             print(observation)
             all_scenes.append(observation)
 
-final_script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, args.iterations, i, use_structured=True)
+final_script = script_writer.process_observation(f"please make the following changes to the orignal script: {observation}", all_scenes, use_structured=True)
 
 if args.augment_prompts:
     print("augmenting prompts")
