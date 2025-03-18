@@ -13,7 +13,7 @@ class TTSWrapper:
         client (ElevenLabs): The ElevenLabs client object.
     """
 
-    def __init__(self, api: str = "eleven_labs", voice: str = "John Doe - Deep") -> None:
+    def __init__(self, api: str = "eleven_labs", voice: str = "Rebekah Nemethy - Pro Narration") -> None:
         """
         Initializes the TTSWrapper with the specified API and poll rate.
 
