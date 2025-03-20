@@ -42,7 +42,7 @@ system_prompt: |
 
   Output:
 
-  An illustration of a Sherlock Holmes standing next to Dr. Watson, who is lying in his bed.
+  txt2img prompt: An illustration of a Sherlock Holmes standing next to Dr. Watson, who is lying in his bed.
 
   Input:
 
@@ -54,7 +54,7 @@ system_prompt: |
 
   Output:
 
-  An illustration of a clock on a mantlepiece showing 8:47.
+  txt2img prompt: An illustration of a clock on a mantlepiece showing 8:47.
 
   Input:
 
@@ -65,7 +65,7 @@ system_prompt: |
 
   Output:
 
-  An illustration of sherlock holmes gazing at a woman.
+  txt2img prompt: An illustration of sherlock holmes gazing at a woman.
 
   Input:
 
@@ -77,7 +77,7 @@ system_prompt: |
 
   Output:
 
-  An illustration of sherlock holmes looking at a woman's jacket with mud stains on it.
+  txt2img prompt: An illustration of sherlock holmes looking at a woman's jacket with mud stains on it.
 
 
 

@@ -7,9 +7,7 @@ from openai import OpenAI
 from pydantic import BaseModel
 
 class Shot(BaseModel):
-    shot_action: str
     txt2img_prompt: str
-    vo:str
 
 class ShotList(BaseModel):
     shots: list[Shot]
@@ -17,9 +15,7 @@ class ShotList(BaseModel):
     def to_str(self):
         output_string = ""
         for i,shot in enumerate(self.shots):
-            output_string+=f"shot {i} action: {shot.shot_action}\n"
             output_string+=f"shot {i} prompt: {shot.txt2img_prompt}\n"
-            output_string+=f"shot {i} vo: {shot.vo}\n"
         
         return output_string
     
