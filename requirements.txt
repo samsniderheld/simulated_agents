@@ -1,3 +1,4 @@
+boto3
 diffusers
 elevenlabs
 google-genai

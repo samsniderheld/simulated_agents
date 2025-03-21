@@ -1,5 +1,7 @@
+import boto3
 import base64
 import numpy as np
+import json
 import jwt
 import os
 import requests
@@ -42,6 +44,8 @@ class VideoWrapper:
             self.secret_key = os.getenv("Kling_API_SECRET")  
             if not self.secret_key:
                 raise ValueError("Kling_API_SECRET environment variable is not set.")
+        elif self.api == "nova":
+            self.client = boto3.client("bedrock-runtime")
         else:
             self.client = None
 
@@ -53,6 +57,22 @@ class VideoWrapper:
             "nbf": int(time.time()) - 5
         }
         return jwt.encode(payload, secret_key, algorithm="HS256")
+    
+    def download_from_s3(s3_uri, local_path):
+        """
+        Downloads a file from an S3 URI to a local file path.
+        """
+        if not s3_uri.startswith("s3://"):
+            raise ValueError("Invalid S3 URI")
+
+        # Parse bucket and key from URI
+        parts = s3_uri[5:].split("/", 1)
+        bucket = parts[0]
+        key = parts[1]
+
+        s3 = boto3.client("s3")
+        s3.download_file(bucket, key, local_path)
+        print(f"Downloaded {s3_uri} to {local_path}")
     
 
     def make_api_call(self, prompt: str, img: np.ndarray, duration:int=5, idx:int=None, ) -> str:
@@ -79,6 +99,12 @@ class VideoWrapper:
         with open(name, "rb") as f:
             base64_image = base64.b64encode(f.read()).decode("utf-8")
 
+        if idx is not None:
+            name = f"{idx}"
+        else:
+            name = prompt[:10].replace('"', '')
+        path = f"out_vids/{name}_img2video.mp4"
+
         if self.api == "runway":
             
             task = self.client.image_to_video.create(
@@ -95,12 +121,6 @@ class VideoWrapper:
                 print("polling")
                 time.sleep(self.poll_rate) 
                 task = self.client.tasks.retrieve(task_id)
-
-            if idx is not None:
-                name = f"{idx}"
-            else:
-                name = prompt[:10].replace('"', '')
-            path = f"out_vids/{name}_img2video.mp4"
 
             try:
                 urllib.request.urlretrieve(task.output[0], path)
@@ -168,11 +188,6 @@ class VideoWrapper:
             videos_result_list = response_json_task['data']['task_result']['videos']
             video_urls = [video['url'] for video in videos_result_list]
 
-            if idx is not None:
-                name = f"{idx}"
-            else:
-                name = prompt[:10].replace('"', '')
-
             path = f"out_vids/{name}_img2video.mp4"
 
             try:
@@ -185,5 +200,76 @@ class VideoWrapper:
             print(f"video saved to {path}")
 
             return path
+        
+        elif self.api == "nova":
+
+            model_input = {
+                "taskType": "TEXT_VIDEO",
+                "textToVideoParams": {
+                    "text": prompt,
+                    "images": [
+                        {
+                            "format": "png",
+                            "source": {
+                                "bytes": base64_image
+                            }
+                        }
+                    ]
+                    },
+                "videoGenerationConfig": {
+                    "durationSeconds": 6,
+                    "fps": 24,
+                    "dimension": "1280x720",
+                    "seed": 0
+                },
+            }
+
+            invocation = self.client.start_async_invoke(
+                modelId="amazon.nova-reel-v1:0",
+                modelInput=model_input,
+                outputDataConfig={
+                    "s3OutputDataConfig": {
+                        "s3Uri": "s3://nova-video-gen"
+                    }
+                },
+            )
+
+            status = "InProgress"
+
+            while status == "InProgress":
+                print("polling")
+                invocation = self.client.get_async_invoke(
+                    invocationArn=invocation["invocationArn"]
+                )
+                
+                # Print the JSON response
+                # print(json.dumps(invocation, indent=2, default=str))
+                
+                invocation_arn = invocation["invocationArn"]
+                status = invocation["status"]
+                if (status == "Completed"):
+                    bucket_uri = invocation["outputDataConfig"]["s3OutputDataConfig"]["s3Uri"]
+                    video_uri = bucket_uri + "/output.mp4"
+                    print(f"Video is available at: {video_uri}")
+
+                    try:
+                        self.download_from_s3(video_uri, path)
+                    except:
+                        print("error downloading video")
+                        print(video_uri)
+                    
+                    print(f"video saved to {path}")
+                
+                elif (status == "InProgress"):
+                    start_time = invocation["submitTime"]
+                    print(f"Job {invocation_arn} is in progress. Started at: {start_time}")
+                
+                elif (status == "Failed"):
+                    failure_message = invocation["failureMessage"]
+                    print(f"Job {invocation_arn} failed. Failure message: {failure_message}")
+
+                time.sleep(self.poll_rate)
+
+
         else:
             raise ValueError("video api not specified")
