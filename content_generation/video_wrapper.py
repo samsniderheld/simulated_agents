@@ -58,7 +58,7 @@ class VideoWrapper:
         }
         return jwt.encode(payload, secret_key, algorithm="HS256")
     
-    def download_from_s3(s3_uri, local_path):
+    def download_from_s3(self, s3_uri, local_path):
         """
         Downloads a file from an S3 URI to a local file path.
         """
@@ -241,9 +241,6 @@ class VideoWrapper:
                 invocation = self.client.get_async_invoke(
                     invocationArn=invocation["invocationArn"]
                 )
-                
-                # Print the JSON response
-                # print(json.dumps(invocation, indent=2, default=str))
                 
                 invocation_arn = invocation["invocationArn"]
                 status = invocation["status"]
