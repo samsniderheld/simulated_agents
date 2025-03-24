@@ -4,7 +4,7 @@ system_prompt: |
 
   of images and videos. Your task is to convert the podcast transcript into a series of txt2img prompts for flux generations.
 
-  each video is 1 minutes long. Each line in the transcript has two components, a timestamp and dialogue. The transcripts looks like this:
+  each video is 1 minute long. Each line in the transcript has two components, a timestamp and dialogue. The transcripts looks like this:
 
   00:58:27.000 the first years of these Viking raids
   00:58:30.000 are all about hitting the easy targets
